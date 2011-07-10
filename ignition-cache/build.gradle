@@ -1,0 +1,6 @@
+dependsOn(':ignition-support')
+
+dependencies {
+    compile project(':ignition-support')
+    compile "com.google.guava:guava-collections:r03"
+}

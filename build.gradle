@@ -1,0 +1,34 @@
+dependsOnChildren()
+
+allprojects {
+ 
+    group = 'com.github.ignition'
+    version = '0.1'
+    
+    defaultTasks 'clean', 'build', 'install'
+
+    apply plugin: 'maven'
+    
+    repositories {
+        mavenCentral()
+        mavenLocal()
+    }    
+}
+
+subprojects {
+    
+    apply plugin: 'java'
+    apply plugin: 'eclipse'
+    
+    sourceCompatibility = 1.6
+        
+    dependencies {
+        compile "com.google.android:android:1.5_r4"
+    }
+    
+    uploadArchives {
+        repositories.mavenDeployer {
+            repository(url: "file://localhost/Users/matthias/Projects/test/")
+        }
+    }
+}

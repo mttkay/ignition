@@ -1,0 +1,7 @@
+dependsOn(':ignition-support')
+dependsOn(':ignition-cache')
+
+dependencies {
+    compile project(':ignition-support')
+    compile project(':ignition-cache')
+}
