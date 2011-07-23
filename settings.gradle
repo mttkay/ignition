@@ -1,1 +1,1 @@
-include 'ignition-support', 'ignition-cache', 'ignition-http'
+include 'ignition-support', 'ignition-cache', 'ignition-http', 'ignition-ui'
