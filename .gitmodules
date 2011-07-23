@@ -1,0 +1,3 @@
+[submodule "ignition-support"]
+	path = ignition-support
+	url = git@github.com:kaeppler/ignition-support.git
