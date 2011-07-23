@@ -1,0 +1,15 @@
+dependsOn(':ignition-support')
+dependsOn(':ignition-cache')
+
+sourceSets {
+    main {
+        java {
+            srcDir 'gen'
+        }
+    }
+}
+
+dependencies {
+    compile project(':ignition-support')
+    compile project(':ignition-cache')
+}
