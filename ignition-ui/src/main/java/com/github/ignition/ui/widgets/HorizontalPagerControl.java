@@ -56,19 +56,22 @@ public class HorizontalPagerControl extends View {
         super(context, attrs, defStyle);
 
         TypedArray a = context.obtainStyledAttributes(attrs,
-                R.styleable.com_github_ignition_ui_widgets_PagerControl);
-        int barColor = a.getColor(R.styleable.com_github_ignition_ui_widgets_PagerControl_barColor,
+                R.styleable.com_github_ignition_ui_widgets_HorizontalPagerControl);
+        int barColor = a.getColor(
+                R.styleable.com_github_ignition_ui_widgets_HorizontalPagerControl_barColor,
                 DEFAULT_BAR_COLOR);
         int highlightColor = a.getColor(
-                R.styleable.com_github_ignition_ui_widgets_PagerControl_highlightColor,
+                R.styleable.com_github_ignition_ui_widgets_HorizontalPagerControl_highlightColor,
                 DEFAULT_HIGHLIGHT_COLOR);
-        fadeDelay = a.getInteger(R.styleable.com_github_ignition_ui_widgets_PagerControl_fadeDelay,
+        fadeDelay = a.getInteger(
+                R.styleable.com_github_ignition_ui_widgets_HorizontalPagerControl_fadeDelay,
                 DEFAULT_FADE_DELAY);
         fadeDuration = a.getInteger(
-                R.styleable.com_github_ignition_ui_widgets_PagerControl_fadeDuration,
+                R.styleable.com_github_ignition_ui_widgets_HorizontalPagerControl_fadeDuration,
                 DEFAULT_FADE_DURATION);
         ovalRadius = a.getDimension(
-                R.styleable.com_github_ignition_ui_widgets_PagerControl_roundRectRadius, 0f);
+                R.styleable.com_github_ignition_ui_widgets_HorizontalPagerControl_roundRectRadius,
+                0f);
         a.recycle();
 
         barPaint = new Paint();
