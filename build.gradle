@@ -28,7 +28,7 @@ subprojects {
     
     uploadArchives {
         repositories.mavenDeployer {
-            repository(url: "file://localhost/Users/matthias/Projects/test/")
+            repository(url: "file://localhost/Users/matthias/Projects/maven2/")
         }
     }
 }
