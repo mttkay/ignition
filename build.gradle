@@ -1,5 +1,8 @@
 dependsOnChildren()
 
+def androidProjects = [ project(':ignition-ui') ]
+def javaProjects = subprojects - androidProjects
+
 allprojects {
  
     group = 'com.github.ignition'
@@ -21,14 +24,17 @@ subprojects {
     apply plugin: 'eclipse'
     
     sourceCompatibility = 1.6
-        
-    dependencies {
-        compile "com.google.android:android:1.5_r4"
-    }
-    
+
     uploadArchives {
         repositories.mavenDeployer {
             repository(url: "file://localhost/Users/matthias/Projects/maven2/")
         }
+    }
+}
+
+configure(javaProjects) {
+
+    dependencies {
+        compile "com.google.android:android:1.5_r4"
     }
 }
