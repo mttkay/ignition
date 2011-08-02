@@ -1,12 +1,6 @@
 [submodule "ignition-support"]
 	path = ignition-support
 	url = git@github.com:kaeppler/ignition-support.git
-[submodule "ignition-ui"]
-	path = ignition-ui
-	url = git@github.com:kaeppler/ignition-ui.git
-[submodule "ignition-cache"]
-	path = ignition-cache
-	url = git@github.com:kaeppler/ignition-cache.git
-[submodule "ignition-http"]
-	path = ignition-http
-	url = git@github.com:kaeppler/ignition-http.git
+[submodule "ignition-core"]
+	path = ignition-core
+	url = git@github.com:kaeppler/ignition-core.git
