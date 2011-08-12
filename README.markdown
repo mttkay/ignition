@@ -16,7 +16,7 @@ Ignition is split up into two projects:
  * [ignition-core](https://github.com/kaeppler/ignition-core). This is an Android library project that is compiled straight into your apps. This allows you to re-use views and shared resources right in your own code.
  * [ignition-support](https://github.com/kaeppler/ignition-support). This is a standard Java library project, deployed as an ordinary JAR. It contains most of the utility classes. You can use this independently of the core module.
 
- ## Installation
+## Installation
  For installation instructions, refer to the individual documentation of the sub-projects.
 
  If you want to checkout the entire project, do this:
@@ -42,4 +42,3 @@ Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
  * Stefano Dacchille (stefano.dacchille@gmail.com)
  * Michael England (mg.england@gmail.com)
  * the Android open-source community (http://stackoverflow.com/questions/tagged/android)
- 
