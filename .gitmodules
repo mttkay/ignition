@@ -4,3 +4,6 @@
 [submodule "ignition-core"]
 	path = ignition-core
 	url = git@github.com:kaeppler/ignition-core.git
+[submodule "ignition-location"]
+	path = ignition-location
+	url = git@github.com:stefanodacchille/ignition-location.git
