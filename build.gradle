@@ -1,6 +1,6 @@
 dependsOnChildren()
 
-def androidProjects = [ project(':ignition-core') ]
+def androidProjects = [ project(':ignition-core'), project(':ignition-location') ]
 def javaProjects = subprojects - androidProjects
 
 allprojects {
