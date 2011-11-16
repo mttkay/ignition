@@ -21,8 +21,12 @@
     <androidVersion>1.6</androidVersion>
     <androidApiRevision>r2</androidApiRevision>
 
+    <!-- build settings -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <sourceCompatibility>1.6</sourceCompatibility>
+
+    <!-- repository settings -->
+    <qypeRepositoryUrl>http://gandalf.qype.hamburg:8081/nexus/content/repositories</qypeRepositoryUrl>
   </properties>
 
   <dependencyManagement>
@@ -84,4 +88,39 @@
       </plugins>
     </pluginManagement>
   </build>
+
+  <distributionManagement>
+    <snapshotRepository>
+      <id>qype-snapshots-repository</id>
+      <url>${qypeRepositoryUrl}/snapshots</url>
+    </snapshotRepository>
+    <repository>
+      <id>qype-releases-repository</id>
+      <url>${qypeRepositoryUrl}/releases</url>
+    </repository>
+  </distributionManagement>
+
+  <repositories>
+    <repository>
+      <id>qype-snapshots-repository</id>
+      <url>${qypeRepositoryUrl}/snapshots</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>qype-releases-repository</id>
+      <url>${qypeRepositoryUrl}/releases</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+
 </project>
