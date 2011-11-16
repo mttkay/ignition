@@ -13,13 +13,13 @@
   <modules>
     <module>ignition-core</module>
     <module>ignition-support</module>
-    <!-- <module>ignition-location</module> -->
+    <module>ignition-location</module>
   </modules>
 
   <properties>
     <androidApiLevel>4</androidApiLevel>
     <androidVersion>1.6</androidVersion>
-    <androidApiRevision>_r2</androidApiRevision>
+    <androidApiRevision>r2</androidApiRevision>
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <sourceCompatibility>1.6</sourceCompatibility>
@@ -30,28 +30,48 @@
       <dependency>
         <groupId>com.google.android</groupId>
         <artifactId>android</artifactId>
-        <version>${androidVersion}${androidApiRevision}</version>
+        <version>${androidVersion}_${androidApiRevision}</version>
         <scope>provided</scope>
       </dependency>
       <dependency>
         <groupId>com.google.android.maps</groupId>
         <artifactId>maps</artifactId>
-        <version>${androidApiLevel}${androidApiRevision}</version>
+        <version>${androidApiLevel}_${androidApiRevision}</version>
         <scope>provided</scope>
       </dependency>
+      <dependency>
+        <groupId>com.github.ignition</groupId>
+        <artifactId>ignition-support</artifactId>
+        <version>${project.version}</version>
+      </dependency>      
     </dependencies>
   </dependencyManagement>
 
   <build>
+
+    <plugins>
+      <!-- compiler settings -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.3.2</version>
+        <configuration>
+          <source>${sourceCompatibility}</source>
+          <target>${sourceCompatibility}</target>
+        </configuration>
+      </plugin>
+    </plugins>
+
     <pluginManagement>
       <plugins>
         <plugin>
           <groupId>com.jayway.maven.plugins.android.generation2</groupId>
           <artifactId>android-maven-plugin</artifactId>
-          <version>3.0.0-alpha-11</version>
+          <version>3.0.0-alpha-14</version>
+          <extensions>true</extensions>
           <configuration>
             <sdk>
-              <platform>10</platform>
+              <platform>${androidApiLevel}</platform>
             </sdk>
             <undeployBeforeDeploy>true</undeployBeforeDeploy>
           </configuration>
