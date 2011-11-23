@@ -43,22 +43,18 @@
   </dependencyManagement>
 
   <build>
-
-    <plugins>
-      <!-- compiler settings -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>2.3.2</version>
-        <configuration>
-          <source>${sourceCompatibility}</source>
-          <target>${sourceCompatibility}</target>
-        </configuration>
-      </plugin>
-    </plugins>
-
     <pluginManagement>
       <plugins>
+	      <!-- compiler settings -->
+	      <plugin>
+	        <groupId>org.apache.maven.plugins</groupId>
+	        <artifactId>maven-compiler-plugin</artifactId>
+	        <version>2.3.2</version>
+	        <configuration>
+	          <source>${sourceCompatibility}</source>
+	          <target>${sourceCompatibility}</target>
+	        </configuration>
+	      </plugin>
         <plugin>
           <groupId>com.jayway.maven.plugins.android.generation2</groupId>
           <artifactId>android-maven-plugin</artifactId>
@@ -68,6 +64,10 @@
             <sdk>
               <platform>${androidApiLevel}</platform>
             </sdk>
+            <dexJvmArguments>
+              <jvmArgument>-Xms256m</jvmArgument>
+              <jvmArgument>-Xmx512m</jvmArgument>
+            </dexJvmArguments>
             <undeployBeforeDeploy>true</undeployBeforeDeploy>
           </configuration>
         </plugin>
