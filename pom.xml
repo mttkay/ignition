@@ -13,7 +13,6 @@
   <modules>
     <module>ignition-core</module>
     <module>ignition-support</module>
-    <module>ignition-location</module>
   </modules>
 
   <properties>
