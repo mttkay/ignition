@@ -19,7 +19,8 @@
     <androidApiLevel>4</androidApiLevel>
     <androidVersion>1.6</androidVersion>
     <androidApiRevision>r3</androidApiRevision>
-    <androidPluginVersion>3.0.0</androidPluginVersion>
+
+    <androidPluginVersion>3.0.2</androidPluginVersion>
 
     <!-- build settings -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
