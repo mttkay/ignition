@@ -20,8 +20,7 @@
     <androidApiLevel>4</androidApiLevel>
     <androidVersion>1.6</androidVersion>
     <androidApiRevision>r3</androidApiRevision>
-
-    <androidPluginVersion>3.0.0-alpha-14</androidPluginVersion>
+    <androidPluginVersion>3.0.0</androidPluginVersion>
 
     <!-- build settings -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -58,7 +57,7 @@
         <plugin>
           <groupId>com.jayway.maven.plugins.android.generation2</groupId>
           <artifactId>android-maven-plugin</artifactId>
-          <version>3.0.0-alpha-14</version>
+          <version>${androidPluginVersion}</version>
           <extensions>true</extensions>
           <configuration>
             <sdk>
