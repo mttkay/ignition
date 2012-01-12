@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/status"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onDownloadButtonClicked"
+        android:text="Click to download image into view" />
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="150dip"
+        android:layout_height="150dip"
+        android:layout_gravity="center"
+        android:scaleType="fitXY"
+        android:background="#FFF" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Memory Cache"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+    
+    <EditText
+        android:id="@+id/text_cache_memory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/empty"
+        android:inputType="textMultiLine" >
+    </EditText>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Disk Cache"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <EditText
+        android:id="@+id/text_cache_disk"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/empty"
+        android:inputType="textMultiLine" />
+
+</LinearLayout>
