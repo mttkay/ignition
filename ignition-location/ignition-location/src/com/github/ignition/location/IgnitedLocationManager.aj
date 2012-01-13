@@ -55,7 +55,7 @@ public aspect IgnitedLocationManager {
 
     declare parents : (@IgnitedLocationActivity *) implements OnIgnitedLocationChangedListener;
 
-    protected Criteria criteria;
+    private Criteria defaultCriteria;
     protected LocationUpdateRequester locationUpdateRequester;
     protected PendingIntent locationListenerPendingIntent, locationListenerPassivePendingIntent;
     protected LocationManager locationManager;
@@ -79,9 +79,7 @@ public aspect IgnitedLocationManager {
             Log.d(LOG_TAG,
                     "It looks like GPS isn't available at this time (i.e.: maybe you're indoors). Removing GPS location updates and requesting network updates.");
 
-            Criteria criteria = new Criteria();
-            criteria.setPowerRequirement(Criteria.POWER_LOW);
-            criteria.setAccuracy(Criteria.NO_REQUIREMENT);
+            Criteria criteria = lowBatteryConsumptionCriteria();
 
             disableLocationUpdates(false);
             requestLocationUpdates(context, criteria);
@@ -117,11 +115,8 @@ public aspect IgnitedLocationManager {
                 disableLocationUpdates(false);
                 requestLocationUpdates(context, null);
             } else {
-                Criteria criteria = new Criteria();
-                criteria.setPowerRequirement(Criteria.POWER_LOW);
-
                 disableLocationUpdates(false);
-                requestLocationUpdates(context, criteria);
+                requestLocationUpdates(context, lowBatteryConsumptionCriteria());
             }
         }
     };
@@ -141,16 +136,14 @@ public aspect IgnitedLocationManager {
 
         // Specify the Criteria to use when requesting location updates while
         // the application is Active
-        criteria = new Criteria();
+        defaultCriteria = new Criteria();
         // Use gps if it's enabled and if battery level is at least 15%
         boolean useGps = prefs.getBoolean(IgnitedLocationConstants.SP_KEY_LOCATION_UPDATES_USE_GPS,
-                IgnitedLocationConstants.USE_GPS_DEFAULT) && isBatteryOk();
+                IgnitedLocationConstants.USE_GPS_DEFAULT);
         if (useGps) {
-            criteria.setAccuracy(Criteria.ACCURACY_FINE);
-            criteria.setPowerRequirement(Criteria.NO_REQUIREMENT);
+            defaultCriteria.setAccuracy(Criteria.ACCURACY_FINE);
         } else {
-            criteria.setPowerRequirement(Criteria.POWER_LOW);
-            criteria.setAccuracy(Criteria.NO_REQUIREMENT);
+            defaultCriteria.setPowerRequirement(Criteria.POWER_LOW);
         }
 
         // Setup the location update Pending Intent
@@ -285,30 +278,28 @@ public aspect IgnitedLocationManager {
                 disableLocationUpdates(true);
             } else if (enableLocationUpdates
                     && locationUpdatesDisabled
-                    && !freshLocation.getExtras().containsKey(
+                    && !freshLocation.getExtras().getBoolean(
                             ILastLocationFinder.LAST_LOCATION_TOO_OLD_EXTRA)) {
                 // If we have requested location updates, turn them on here.
-                requestLocationUpdates(context);
+                requestLocationUpdates(context, isBatteryOk()? defaultCriteria : lowBatteryConsumptionCriteria());
             }
         }
 
         // If gps is enabled location comes from gps, remove runnable that removes gps updates
         boolean lastLocation = freshLocation.getExtras().getBoolean(
                 IgnitedLocationConstants.IGNITED_LAST_LOCATION_EXTRA);
-        if (!lastLocation && criteria.getAccuracy() == Criteria.ACCURACY_FINE
+        if (!lastLocation && defaultCriteria.getAccuracy() == Criteria.ACCURACY_FINE
                 && currentLocation.getProvider().equals(LocationManager.GPS_PROVIDER)) {
             handler.removeCallbacks(removeGpsUpdates);
         }
     }
 
-    protected void requestLocationUpdates(Context context) {
-        requestLocationUpdates(context, criteria);
-    }
-
     /**
      * Start listening for location updates.
      */
-    protected void requestLocationUpdates(Context context, Criteria criteria) {
+    protected void requestLocationUpdates(Context context, Criteria locationUpdatesCriteria) {
+        Criteria criteria = locationUpdatesCriteria == null? defaultCriteria : locationUpdatesCriteria;
+
         Log.d(LOG_TAG, "Disabling passive location updates");
         locationManager.removeUpdates(locationListenerPassivePendingIntent);
 
@@ -396,6 +387,13 @@ public aspect IgnitedLocationManager {
 
     public boolean isLocationUpdatesDisabled() {
         return locationUpdatesDisabled;
+    }
+
+    public Criteria lowBatteryConsumptionCriteria() {
+        Criteria criteria = new Criteria();
+        criteria.setPowerRequirement(Criteria.POWER_LOW);
+        criteria.setAccuracy(Criteria.NO_REQUIREMENT);
+        return criteria;
     }
 
     /**
