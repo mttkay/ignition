@@ -10,3 +10,4 @@ tmp/
 .settings
 .classpath
 target/
+local.properties
