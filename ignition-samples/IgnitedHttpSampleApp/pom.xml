@@ -13,6 +13,7 @@
     <dependency>
       <groupId>com.github.ignition</groupId>
       <artifactId>ignition-core</artifactId>
+      <version>${project.version}</version>
     </dependency>  
   </dependencies>
   

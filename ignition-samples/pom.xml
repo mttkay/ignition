@@ -34,6 +34,17 @@
         <groupId>com.github.ignition</groupId>
         <artifactId>ignition-core</artifactId>
         <version>${project.version}</version>
+        <type>apklib</type>
+        <exclusions>
+          <exclusion>
+            <groupId>commons-httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+          </exclusion>
+<!--           <exclusion>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava-collections</artifactId>
+          </exclusion> -->
+        </exclusions>        
       </dependency>
       <dependency>
         <groupId>com.github.ignition</groupId>
@@ -54,6 +65,10 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-eclipse-plugin</artifactId>
         <configuration>
+          <downloadSources>true</downloadSources>
+          <downloadJavadocs>true</downloadJavadocs>
+          <buildOutputDirectory>bin</buildOutputDirectory>
+          <useProjectReferences>false</useProjectReferences>
           <excludes>
             <exclude>android:android</exclude>
           </excludes>

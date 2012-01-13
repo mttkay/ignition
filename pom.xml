@@ -11,8 +11,9 @@
   <url>http://github.com/kaeppler/ignition</url>
 
   <modules>
-    <module>ignition-core</module>
     <module>ignition-support</module>
+    <module>ignition-core</module>
+    <module>ignition-samples</module>
   </modules>
 
   <properties>

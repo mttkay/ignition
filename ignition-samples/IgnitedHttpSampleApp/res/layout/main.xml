@@ -32,7 +32,7 @@
     
     <EditText
         android:id="@+id/text_cache_memory"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="@string/empty"
         android:inputType="textMultiLine" >
@@ -46,7 +46,7 @@
 
     <EditText
         android:id="@+id/text_cache_disk"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="@string/empty"
         android:inputType="textMultiLine" />
