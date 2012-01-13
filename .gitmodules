@@ -1,9 +1,0 @@
-[submodule "ignition-support"]
-	path = ignition-support
-	url = git@github.com:kaeppler/ignition-support.git
-[submodule "ignition-core"]
-	path = ignition-core
-	url = git@github.com:kaeppler/ignition-core.git
-[submodule "ignition-location"]
-	path = ignition-location
-	url = git@github.com:stefanodacchille/ignition-location.git
