@@ -15,7 +15,6 @@
     <module>ignition-core</module>
     <module>ignition-location</module>
     <module>ignition-samples</module>
-    <module>ignition-location</module>
   </modules>
 
   <properties>
