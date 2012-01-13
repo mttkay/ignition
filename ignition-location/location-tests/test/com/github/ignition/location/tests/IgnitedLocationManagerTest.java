@@ -229,6 +229,43 @@ public abstract class IgnitedLocationManagerTest {
 
         resume();
 
+        Map<PendingIntent, Criteria> locationPendingIntents = shadowLocationManager
+                .getRequestLocationUdpateCriteriaPendingIntents();
+        Criteria criteria = new Criteria();
+        criteria.setAccuracy(Criteria.ACCURACY_FINE);
+
+        assertThat("Updates from " + LocationManager.GPS_PROVIDER
+                + " provider shouldn't be requested when battery power is low!",
+                !locationPendingIntents.containsValue(criteria));
+    }
+
+    @Test
+    public void shouldRequestUpdatesFromNetworkIfBatteryLow() {
+        resume();
+
+        Map<PendingIntent, Criteria> locationPendingIntents = shadowLocationManager
+                .getRequestLocationUdpateCriteriaPendingIntents();
+        Criteria criteria = new Criteria();
+        criteria.setAccuracy(Criteria.ACCURACY_FINE);
+
+        sendBatteryLevelChangedBroadcast(10);
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_BATTERY_LOW);
+        shadowApp.sendBroadcast(intent);
+
+        sendBatteryLevelChangedBroadcast(100);
+
+        assertThat("Updates from " + LocationManager.GPS_PROVIDER
+                + " provider shouldn't be requested when battery power is low!",
+                !locationPendingIntents.containsValue(criteria));
+    }
+
+    @Test
+    public void shouldRequestUpdatesFromGpsIfBatteryOkay() {
+        sendBatteryLevelChangedBroadcast(10);
+
+        resume();
+
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_BATTERY_LOW);
         shadowApp.sendBroadcast(intent);
@@ -239,10 +276,6 @@ public abstract class IgnitedLocationManagerTest {
         criteria.setAccuracy(Criteria.ACCURACY_FINE);
 
         sendBatteryLevelChangedBroadcast(100);
-
-        assertThat("Updates from " + LocationManager.GPS_PROVIDER
-                + " provider shouldn't be requested when battery power is low!",
-                !locationPendingIntents.containsValue(criteria));
 
         intent.setAction(Intent.ACTION_BATTERY_OKAY);
         shadowApp.sendBroadcast(intent);
