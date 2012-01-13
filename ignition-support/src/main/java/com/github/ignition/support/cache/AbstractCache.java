@@ -436,9 +436,20 @@ public abstract class AbstractCache<KeyT, ValT> implements Map<KeyT, ValT> {
      * Clears the entire cache (memory and disk).
      */
     public synchronized void clear() {
+        clear(isDiskCacheEnabled);
+    }
+
+    /**
+     * Clears the memory cache, as well as the disk cache if it's enabled and
+     * <code>removeFromDisk</code> is <code>true</code>.
+     * 
+     * @param removeFromDisk
+     *            whether or not to wipe the disk cache, too
+     */
+    public synchronized void clear(boolean removeFromDisk) {
         cache.clear();
 
-        if (isDiskCacheEnabled) {
+        if (removeFromDisk && isDiskCacheEnabled) {
             File[] cachedFiles = new File(diskCacheDirectory).listFiles();
             if (cachedFiles == null) {
                 return;
