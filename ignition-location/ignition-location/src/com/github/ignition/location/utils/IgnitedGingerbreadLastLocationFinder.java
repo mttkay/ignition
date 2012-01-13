@@ -127,7 +127,7 @@ public class IgnitedGingerbreadLastLocationFinder implements ILastLocationFinder
         // requesting regular
         // location updates every [minTime] and [minDistance].
         if ((bestTime < minTime) || (bestAccuracy > minDistance)) {
-            Log.d(LOG_TAG, "Last location is too old. Retrieving a new one...");
+            Log.d(LOG_TAG, "Last location is too old or too inaccurate. Retrieving a new one...");
             IntentFilter locIntentFilter = new IntentFilter(SINGLE_LOCATION_UPDATE_ACTION);
             context.registerReceiver(this.singleUpdateReceiver, locIntentFilter);
             this.locationManager.requestSingleUpdate(this.criteria, this.singleUpatePI);

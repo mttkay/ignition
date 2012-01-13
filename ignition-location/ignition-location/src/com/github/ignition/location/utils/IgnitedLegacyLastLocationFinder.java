@@ -116,11 +116,12 @@ public class IgnitedLegacyLastLocationFinder implements ILastLocationFinder {
         if ((bestTime > minTime) || (bestAccuracy > minDistance)) {
             String provider = this.locationManager.getBestProvider(this.criteria, true);
             if (provider != null) {
+                Log.d(LOG_TAG,
+                        "Last location is too old or too inaccurate. Retrieving a new one...");
                 this.locationManager.requestLocationUpdates(provider, 0, 0,
                         this.singeUpdateListener, context.getMainLooper());
+                bestResult.getExtras().putBoolean(LAST_LOCATION_TOO_OLD_EXTRA, true);
             }
-
-            bestResult.getExtras().putBoolean(LAST_LOCATION_TOO_OLD_EXTRA, true);
         }
 
         return bestResult;
@@ -140,9 +141,6 @@ public class IgnitedLegacyLastLocationFinder implements ILastLocationFinder {
                                 + " (lat, long): " + location.getLatitude() + ", "
                                 + location.getLongitude());
                 setCurrentLocation(location);
-                // if (context instanceof OnIgnitedLocationChangedListener) {
-                // ((OnIgnitedLocationChangedListener) context).onIgnitedLocationChanged(location);
-                // }
             }
             locationManager.removeUpdates(IgnitedLegacyLastLocationFinder.this.singeUpdateListener);
         }
