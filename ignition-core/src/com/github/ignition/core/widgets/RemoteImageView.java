@@ -23,9 +23,9 @@ import android.os.Message;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.ProgressBar;
 import android.widget.ViewSwitcher;
-import android.widget.ImageView.ScaleType;
 
 import com.github.ignition.core.Ignition;
 import com.github.ignition.support.images.remote.RemoteImageLoader;
@@ -38,6 +38,10 @@ import com.github.ignition.support.images.remote.RemoteImageLoaderHandler;
  * @author Matthias Kaeppler
  */
 public class RemoteImageView extends ViewSwitcher {
+
+    private static final String ATTR_PROGRESS_DRAWABLE = "progressDrawable";
+    private static final String ATTR_ERROR_DRAWABLE = "errorDrawable";
+    private static final int DEFAULT_ERROR_DRAWABLE_RES_ID = android.R.drawable.ic_dialog_alert;
 
     private String imageUrl;
 
@@ -109,18 +113,16 @@ public class RemoteImageView extends ViewSwitcher {
         super(context, attributes);
         // TypedArray styles = context.obtainStyledAttributes(attributes,
         // R.styleable.GalleryItem);
-        int progressDrawableId = attributes.getAttributeIntValue(Ignition.XMLNS,
-                "progressDrawable", 0);
-        int errorDrawableId = attributes.getAttributeIntValue(Ignition.XMLNS, "errorDrawable",
-                0);
+        int progressDrawableId = attributes.getAttributeResourceValue(Ignition.XMLNS,
+                ATTR_PROGRESS_DRAWABLE, 0);
+        int errorDrawableId = attributes.getAttributeResourceValue(Ignition.XMLNS,
+                ATTR_ERROR_DRAWABLE,
+                DEFAULT_ERROR_DRAWABLE_RES_ID);
         Drawable progressDrawable = null;
         if (progressDrawableId > 0) {
             progressDrawable = context.getResources().getDrawable(progressDrawableId);
         }
-        Drawable errorDrawable = null;
-        if (errorDrawableId > 0) {
-            errorDrawable = context.getResources().getDrawable(errorDrawableId);
-        }
+        Drawable errorDrawable = context.getResources().getDrawable(errorDrawableId);
         initialize(context, attributes.getAttributeValue(Ignition.XMLNS, "imageUrl"),
                 progressDrawable, errorDrawable, attributes.getAttributeBooleanValue(
                         Ignition.XMLNS, "autoLoad",
