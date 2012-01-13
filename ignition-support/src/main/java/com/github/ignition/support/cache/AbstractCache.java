@@ -319,9 +319,8 @@ public abstract class AbstractCache<KeyT, ValT> implements Map<KeyT, ValT> {
      *            the cache key
      * @return true if the value is cached in memory or on disk, false otherwise
      */
-    @SuppressWarnings("unchecked")
     public synchronized boolean containsKey(Object key) {
-        return cache.containsKey(key) || (isDiskCacheEnabled && getFileForKey((KeyT) key).exists());
+        return cache.containsKey(key) || containsKeyOnDisk(key);
     }
 
     /**
@@ -336,7 +335,21 @@ public abstract class AbstractCache<KeyT, ValT> implements Map<KeyT, ValT> {
     }
 
     /**
-     * Checks if the given value is currently hold in memory.
+     * Checks if a value is present in the disk cache. This method ignores the memory cache.
+     * 
+     * @param key
+     *            the cache key
+     * @return true if the value is currently hold on disk, false otherwise. Always false if disk
+     *         cache is disabled.
+     */
+    @SuppressWarnings("unchecked")
+    public synchronized boolean containsKeyOnDisk(Object key) {
+        return isDiskCacheEnabled && getFileForKey((KeyT) key).exists();
+    }
+
+    /**
+     * Checks if the given value is currently held in memory. For performance reasons, this method
+     * does NOT probe the disk cache.
      */
     public synchronized boolean containsValue(Object value) {
         return cache.containsValue(value);
