@@ -151,6 +151,9 @@ public class RemoteImageView extends ViewSwitcher {
 
         if (autoLoad && imageUrl != null) {
             loadImage();
+        } else {
+            // if we don't have anything to load yet, don't show the progress element
+            setDisplayedChild(1);
         }
     }
 
@@ -189,6 +192,7 @@ public class RemoteImageView extends ViewSwitcher {
             throw new IllegalStateException(
                     "image URL is null; did you forget to set it for this view?");
         }
+        setDisplayedChild(0);
         imageLoader.loadImage(imageUrl, imageView, new DefaultImageLoaderHandler());
     }
 
