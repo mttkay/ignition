@@ -8,10 +8,11 @@ import static org.hamcrest.core.IsNull.notNullValue;
 import java.util.List;
 import java.util.Map;
 
+import junit.framework.Assert;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import android.app.PendingIntent;
 import android.content.Context;
@@ -24,20 +25,18 @@ import android.location.LocationManager;
 import android.os.BatteryManager;
 
 import com.github.ignition.location.IgnitedLocationConstants;
-import com.github.ignition.location.IgnitedLocationManager;
 import com.github.ignition.samples.ui.IgnitedLocationSampleActivity;
-import com.github.ignition.support.IgnitedDiagnostics;
 import com.xtremelabs.robolectric.Robolectric;
 import com.xtremelabs.robolectric.shadows.ShadowActivity;
 import com.xtremelabs.robolectric.shadows.ShadowApplication;
 import com.xtremelabs.robolectric.shadows.ShadowApplication.Wrapper;
 import com.xtremelabs.robolectric.shadows.ShadowLocationManager;
 
-@RunWith(LocationTestsRobolectricTestRunner.class)
-public class IgnitedLocationManagerTest {
+public abstract class IgnitedLocationManagerTest {
     private IgnitedLocationSampleActivity activity;
     private ShadowApplication shadowApp;
     private ShadowLocationManager shadowLocationManager;
+    private Location lastKnownLocation;
 
     @Before
     public void setUp() throws Exception {
@@ -46,17 +45,15 @@ public class IgnitedLocationManagerTest {
         shadowApp = Robolectric.getShadowApplication();
         shadowLocationManager = Robolectric.shadowOf((LocationManager) activity
                 .getSystemService(Context.LOCATION_SERVICE));
-        Location lastKnownLocation = getMockLocation();
+
         shadowLocationManager.setProviderEnabled(LocationManager.GPS_PROVIDER, true);
+        shadowLocationManager.setBestProvider(LocationManager.GPS_PROVIDER, true);
         shadowLocationManager.setProviderEnabled(LocationManager.NETWORK_PROVIDER, true);
+
+        lastKnownLocation = getMockLocation();
         shadowLocationManager.setLastKnownLocation(LocationManager.GPS_PROVIDER, lastKnownLocation);
 
-        Intent intent = new Intent(Intent.ACTION_BATTERY_CHANGED);
-        intent.putExtra(BatteryManager.EXTRA_LEVEL, 100);
-        intent.putExtra(BatteryManager.EXTRA_SCALE, 100);
-        shadowApp.sendStickyBroadcast(intent);
-
-        IgnitedDiagnostics.setTestApiLevel(IgnitedDiagnostics.GINGERBREAD);
+        sendBatteryLevelChangedBroadcast(100);
 
         activity.onCreate(null);
     }
@@ -72,7 +69,7 @@ public class IgnitedLocationManagerTest {
         Location location = new Location(LocationManager.GPS_PROVIDER);
         location.setLatitude(1.0);
         location.setLongitude(1.0);
-        location.setAccuracy(1000);
+        location.setAccuracy(50);
         return location;
     }
 
@@ -92,11 +89,18 @@ public class IgnitedLocationManagerTest {
         return location;
     }
 
+    private void sendBatteryLevelChangedBroadcast(int level) {
+        Intent intent = new Intent(Intent.ACTION_BATTERY_CHANGED);
+        intent.putExtra(BatteryManager.EXTRA_LEVEL, level);
+        intent.putExtra(BatteryManager.EXTRA_SCALE, 100);
+        shadowApp.sendStickyBroadcast(intent);
+    }
+
     @Test
     public void ignitedLocationIsCurrentLocation() {
         resume();
 
-        assertThat(getMockLocation(), equalTo(activity.getCurrentLocation()));
+        assertThat(lastKnownLocation, equalTo(activity.getCurrentLocation()));
         Location newLocation = sendMockLocationBroadcast(LocationManager.GPS_PROVIDER);
         assertThat(newLocation, equalTo(activity.getCurrentLocation()));
     }
@@ -182,14 +186,14 @@ public class IgnitedLocationManagerTest {
     @Test
     public void shouldRegisterListenerIfBestProviderDisabled() throws Exception {
         shadowLocationManager.setProviderEnabled(LocationManager.GPS_PROVIDER, false);
+        shadowLocationManager.setBestProvider(LocationManager.GPS_PROVIDER, false);
         shadowLocationManager.setBestProvider(LocationManager.NETWORK_PROVIDER, true);
 
         resume();
 
         List<LocationListener> listeners = shadowLocationManager
                 .getRequestLocationUpdateListeners();
-        assertThat("A listener should be registers if best provider is disabled",
-                !listeners.isEmpty());
+        Assert.assertFalse(listeners.isEmpty());
     }
 
     @Test
@@ -201,7 +205,8 @@ public class IgnitedLocationManagerTest {
 
         List<LocationListener> listeners = shadowLocationManager
                 .getRequestLocationUpdateListeners();
-        assertThat("No listeners registered, the best provider is enabled!", listeners.isEmpty());
+        assertThat("No listener must be registered, the best provider is enabled!",
+                listeners.isEmpty());
     }
 
     @Test
@@ -222,32 +227,9 @@ public class IgnitedLocationManagerTest {
     }
 
     @Test
-    public void shouldNotRequestUpdatesFromGpsIfBatteryLowLegacy() {
-        IgnitedDiagnostics.setTestApiLevel(IgnitedDiagnostics.DONUT);
+    public void shouldNotRequestUpdatesFromGpsIfBatteryLow() {
+        sendBatteryLevelChangedBroadcast(10);
 
-        resume();
-
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_BATTERY_LOW);
-        shadowApp.sendBroadcast(intent);
-
-        Map<PendingIntent, String> locationPendingIntents = shadowLocationManager
-                .getRequestLocationUdpateProviderPendingIntents();
-
-        assertThat("Updates from " + LocationManager.GPS_PROVIDER
-                + " provider shouldn't be requested when battery power is low!",
-                !locationPendingIntents.containsValue(LocationManager.GPS_PROVIDER));
-
-        intent.setAction(Intent.ACTION_BATTERY_OKAY);
-        shadowApp.sendBroadcast(intent);
-
-        assertThat("Updates from " + LocationManager.GPS_PROVIDER
-                + " provider should be requested when battery power is okay!",
-                locationPendingIntents.containsValue(LocationManager.GPS_PROVIDER));
-    }
-
-    @Test
-    public void shouldNotRequestUpdatesFromGpsIfBatteryLowGingerbread() {
         resume();
 
         Intent intent = new Intent();
@@ -256,9 +238,11 @@ public class IgnitedLocationManagerTest {
 
         Map<PendingIntent, Criteria> locationPendingIntents = shadowLocationManager
                 .getRequestLocationUdpateCriteriaPendingIntents();
-
         Criteria criteria = new Criteria();
         criteria.setAccuracy(Criteria.ACCURACY_FINE);
+
+        sendBatteryLevelChangedBroadcast(100);
+
         assertThat("Updates from " + LocationManager.GPS_PROVIDER
                 + " provider shouldn't be requested when battery power is low!",
                 !locationPendingIntents.containsValue(criteria));
@@ -271,18 +255,18 @@ public class IgnitedLocationManagerTest {
                 locationPendingIntents.containsValue(criteria));
     }
 
-    @Test
-    public void shouldDisableLocationUpdatesIfOnIgnitedLocationChangedReturnsFalse() {
-        resume();
-
-        assertThat("Location updates shouldn't be disabled at this point", !IgnitedLocationManager
-                .aspectOf().isLocationUpdatesDisabled());
-
-        sendMockLocationBroadcast(LocationManager.GPS_PROVIDER, 10f);
-
-        assertThat("Location updates should be disabled at this point", IgnitedLocationManager
-                .aspectOf().isLocationUpdatesDisabled());
-    }
+    // @Test
+    // public void shouldDisableLocationUpdatesIfOnIgnitedLocationChangedReturnsFalse() {
+    // resume();
+    //
+    // assertThat("Location updates shouldn't be disabled at this point", !IgnitedLocationManager
+    // .aspectOf().isLocationUpdatesDisabled());
+    //
+    // sendMockLocationBroadcast(LocationManager.GPS_PROVIDER, 10f);
+    //
+    // assertThat("Location updates should be disabled at this point", IgnitedLocationManager
+    // .aspectOf().isLocationUpdatesDisabled());
+    // }
 
     // @Test
     // public void requestLocationUpdatesFromAnotherProviderIfCurrentOneIsDisabled() {
