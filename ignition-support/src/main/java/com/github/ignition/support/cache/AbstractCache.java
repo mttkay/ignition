@@ -18,8 +18,11 @@ package com.github.ignition.support.cache;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
@@ -103,10 +106,7 @@ public abstract class AbstractCache<KeyT, ValT> implements Map<KeyT, ValT> {
      * Sanitize disk cache. Remove files which are older than expirationInMinutes.
      */
     private void sanitizeDiskCache() {
-        File[] cachedFiles = new File(diskCacheDirectory).listFiles();
-        if (cachedFiles == null) {
-            return;
-        }
+        List<File> cachedFiles = getCachedFiles();
         for (File f : cachedFiles) {
         	// if file older than expirationInMinutes, remove it
         	long lastModified = f.lastModified();
@@ -379,6 +379,21 @@ public abstract class AbstractCache<KeyT, ValT> implements Map<KeyT, ValT> {
 
     public boolean isDiskCacheEnabled() {
         return isDiskCacheEnabled;
+    }
+
+    /**
+     * Retrieves the list of files that are currently cached to disk. Guarantees to never return
+     * null.
+     * 
+     * @return the list of files on disk
+     */
+    public List<File> getCachedFiles() {
+        File[] cachedFiles = new File(diskCacheDirectory).listFiles();
+        if (cachedFiles == null) {
+            return Collections.emptyList();
+        } else {
+            return Arrays.asList(cachedFiles);
+        }
     }
 
     /**
