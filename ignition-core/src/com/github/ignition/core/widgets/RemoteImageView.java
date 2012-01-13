@@ -39,9 +39,11 @@ import com.github.ignition.support.images.remote.RemoteImageLoaderHandler;
  */
 public class RemoteImageView extends ViewSwitcher {
 
+    private static final String ATTR_DEFAULT_DRAWABLE = "defaultDrawable";
     private static final String ATTR_PROGRESS_DRAWABLE = "progressDrawable";
     private static final String ATTR_ERROR_DRAWABLE = "errorDrawable";
     private static final int DEFAULT_ERROR_DRAWABLE_RES_ID = android.R.drawable.ic_dialog_alert;
+    private static final int DEFAULT_DRAWABLE_RES_ID = android.R.drawable.gallery_thumb;
 
     private String imageUrl;
 
@@ -53,7 +55,7 @@ public class RemoteImageView extends ViewSwitcher {
 
     private ScaleType scaleType = ScaleType.CENTER_CROP;
 
-    private Drawable progressDrawable, errorDrawable;
+    private Drawable progressDrawable, errorDrawable, defaultDrawable;
 
     private RemoteImageLoader imageLoader;
 
@@ -68,7 +70,7 @@ public class RemoteImageView extends ViewSwitcher {
      */
     public RemoteImageView(Context context, String imageUrl, boolean autoLoad) {
         super(context);
-        initialize(context, imageUrl, null, null, autoLoad);
+        initialize(context, imageUrl, null, null, null, autoLoad);
     }
 
     /**
@@ -86,7 +88,7 @@ public class RemoteImageView extends ViewSwitcher {
     public RemoteImageView(Context context, String imageUrl, Drawable progressDrawable,
             boolean autoLoad) {
         super(context);
-        initialize(context, imageUrl, progressDrawable, null, autoLoad);
+        initialize(context, imageUrl, progressDrawable, null, null, autoLoad);
     }
 
     /**
@@ -106,7 +108,7 @@ public class RemoteImageView extends ViewSwitcher {
     public RemoteImageView(Context context, String imageUrl, Drawable progressDrawable,
             Drawable errorDrawable, boolean autoLoad) {
         super(context);
-        initialize(context, imageUrl, progressDrawable, errorDrawable, autoLoad);
+        initialize(context, imageUrl, progressDrawable, errorDrawable, null, autoLoad);
     }
 
     public RemoteImageView(Context context, AttributeSet attributes) {
@@ -116,26 +118,30 @@ public class RemoteImageView extends ViewSwitcher {
         int progressDrawableId = attributes.getAttributeResourceValue(Ignition.XMLNS,
                 ATTR_PROGRESS_DRAWABLE, 0);
         int errorDrawableId = attributes.getAttributeResourceValue(Ignition.XMLNS,
-                ATTR_ERROR_DRAWABLE,
-                DEFAULT_ERROR_DRAWABLE_RES_ID);
+                ATTR_ERROR_DRAWABLE, DEFAULT_ERROR_DRAWABLE_RES_ID);
+        int defaultDrawableId = attributes.getAttributeResourceValue(Ignition.XMLNS,
+                ATTR_DEFAULT_DRAWABLE, DEFAULT_DRAWABLE_RES_ID);
+
+        Drawable defaultDrawable = context.getResources().getDrawable(defaultDrawableId);
+        Drawable errorDrawable = context.getResources().getDrawable(errorDrawableId);
+
         Drawable progressDrawable = null;
         if (progressDrawableId > 0) {
             progressDrawable = context.getResources().getDrawable(progressDrawableId);
         }
-        Drawable errorDrawable = context.getResources().getDrawable(errorDrawableId);
+
         initialize(context, attributes.getAttributeValue(Ignition.XMLNS, "imageUrl"),
-                progressDrawable, errorDrawable, attributes.getAttributeBooleanValue(
-                        Ignition.XMLNS, "autoLoad",
-                        true));
+                progressDrawable, errorDrawable, defaultDrawable,
+                attributes.getAttributeBooleanValue(Ignition.XMLNS, "autoLoad", true));
         // styles.recycle();
     }
 
     private void initialize(Context context, String imageUrl, Drawable progressDrawable,
-            Drawable errorDrawable,
-            boolean autoLoad) {
+            Drawable errorDrawable, Drawable defaultDrawable, boolean autoLoad) {
         this.imageUrl = imageUrl;
         this.progressDrawable = progressDrawable;
         this.errorDrawable = errorDrawable;
+        this.defaultDrawable = defaultDrawable;
         this.imageLoader = new RemoteImageLoader(context);
 
         // ScaleAnimation anim = new ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f,
@@ -169,8 +175,8 @@ public class RemoteImageView extends ViewSwitcher {
             }
         }
 
-        LayoutParams lp = new LayoutParams(progressDrawable.getIntrinsicWidth(), progressDrawable
-                .getIntrinsicHeight());
+        LayoutParams lp = new LayoutParams(progressDrawable.getIntrinsicWidth(),
+                progressDrawable.getIntrinsicHeight());
         lp.gravity = Gravity.CENTER;
 
         addView(loadingSpinner, 0, lp);
@@ -181,6 +187,9 @@ public class RemoteImageView extends ViewSwitcher {
         imageView.setScaleType(scaleType);
         LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         lp.gravity = Gravity.CENTER;
+        if (defaultDrawable != null) {
+            imageView.setImageDrawable(defaultDrawable);
+        }
         addView(imageView, 1, lp);
     }
 
@@ -242,9 +251,10 @@ public class RemoteImageView extends ViewSwitcher {
 
     /**
      * Returns the URL of the image to show
+     * 
      * @return
      */
-	public String getImageUrl() {
-		return imageUrl;
-	}
+    public String getImageUrl() {
+        return imageUrl;
+    }
 }
