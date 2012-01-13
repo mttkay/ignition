@@ -149,7 +149,7 @@ public class IgnitedHttp {
     /**
      * @return the response cache, if enabled, otherwise null
      */
-    public HttpResponseCache getResponseCache() {
+    public synchronized HttpResponseCache getResponseCache() {
         return responseCache;
     }
 
