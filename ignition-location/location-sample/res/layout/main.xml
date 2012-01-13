@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <ListView android:id="@android:id/list"
+        android:layout_width="fill_parent" android:layout_height="0dip"
+        android:layout_weight="1" 
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/ign_loc_btn_layout" />
+
+<!--     <LinearLayout android:id="@+id/ign_loc_btn_layout" -->
+<!--         android:layout_height="70dip" -->
+<!--         android:layout_width="fill_parent" -->
+<!--         android:gravity="center" -->
+<!--         android:padding="5dip" -->
+<!--         android:layout_alignParentBottom="true" -->
+<!--         android:background="#8b8989" > -->
+<!--         <ToggleButton android:layout_width="wrap_content" -->
+<!--             android:layout_height="fill_parent" android:id="@+id/ign_loc_button" -->
+<!--             android:background="@android:drawable/btn_default" -->
+<!--             android:layout_marginLeft="2dip" -->
+<!--             android:layout_marginRight="2dip" -->
+<!--             android:textOff="Start Ignited Location Service"  -->
+<!--             android:textOn="Stop Ignited Location Service" /> -->
+<!--     </LinearLayout> -->
+
+</LinearLayout>

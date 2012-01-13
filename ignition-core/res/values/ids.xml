@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <item type="id" name="ign_horizontal_pager" />
+  <item type="id" name="ign_horizontal_pager_control" />
+    
+</resources>

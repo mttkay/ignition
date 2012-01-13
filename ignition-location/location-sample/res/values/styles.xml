@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <!-- _WIDTH_HEIGHT -->
+  <style name="Fill">
+    <item name="android:layout_width">fill_parent</item>
+    <item name="android:layout_height">fill_parent</item>
+    <item name="android:orientation">vertical</item>
+  </style>
+
+  <style name="Wrap">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:orientation">vertical</item>
+  </style>
+
+  <style name="Fill.Height" parent="Fill">
+    <item name="android:layout_width">wrap_content</item>
+  </style>
+
+  <style name="Fill.Width" parent="Fill">
+    <item name="android:layout_height">wrap_content</item>
+  </style>
+
+  <style name="Fill.Width.Centre" parent="Fill.Width">
+    <item name="android:gravity">center</item>
+  </style>
+
+  <style name="Fill.Width.Horizontal" parent="Fill.Width">
+    <item name="android:orientation">horizontal</item>
+  </style>
+    
+  <style name="update_text" parent="Wrap">
+    <item name="android:textColor">@color/white</item>
+  </style>
+  
+  <style name="settings_text" parent="update_text">
+  </style>
+  
+  <style name="settings_text_right" parent="settings_text">
+    <item name="android:gravity">right</item>
+    <item name="android:layout_marginRight">@dimen/pad_small</item>
+  </style>
+    
+  <style name="update_bold" parent="update_text">
+    <item name="android:textStyle">bold</item>
+  </style>
+  
+  <style name="update_big" parent="update_bold">
+    <item name="android:textSize">@dimen/text_big</item>
+    <item name="android:layout_marginRight">@dimen/pad_small</item>
+  </style>
+  
+  <style name="padded" parent="Fill.Width">
+    <item name="android:padding">@dimen/pad</item>
+  </style>
+  
+  <style name="spacer" parent="Fill.Width">
+    <item name="android:layout_height">@dimen/pad_small</item>
+    <item name="android:background">@color/black</item>
+  </style>
+  
+  <style name="settings" parent="Fill.Width">
+    <item name="android:paddingTop">@dimen/pad_small</item>
+    <item name="android:paddingBottom">@dimen/pad_small</item>
+  </style>
+  
+  <style name="settings_table" parent="padded">
+    <item name="android:stretchColumns">0</item>
+    <item name="android:background">@color/settings</item>
+  </style>
+</resources>

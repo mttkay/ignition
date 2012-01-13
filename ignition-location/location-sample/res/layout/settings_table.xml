@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:id="@+id/settings_table"
+  style="@style/settings">
+  
+  <TableLayout
+    style="@style/settings_table">
+    <TableRow style="@style/Fill.Width">
+
+      <TextView
+        style="@style/settings_text"
+        android:text="@string/use_gps">
+      </TextView>
+
+      <TextView
+        android:id="@+id/val_use_gps"
+        style="@style/settings_text_right">
+      </TextView>
+    </TableRow>
+
+    <TableRow style="@style/Fill.Width">
+
+      <TextView
+        style="@style/settings_text"
+        android:text="@string/updates">
+      </TextView>
+
+      <TextView
+        android:id="@+id/val_updates"
+        style="@style/settings_text_right">
+      </TextView>
+    </TableRow>
+
+    <TableRow style="@style/Fill.Width">
+      <TextView
+        style="@style/settings_text"
+        android:text="@string/passive_updates">
+      </TextView>
+
+      <TextView
+        android:id="@+id/val_passive_updates"
+        style="@style/settings_text_right">
+      </TextView>
+    </TableRow>
+
+    <TableRow style="@style/Fill.Width">
+
+      <TextView
+        style="@style/settings_text"
+        android:text="@string/update_interval">
+      </TextView>
+
+      <TextView
+        android:id="@+id/val_update_interval"
+        style="@style/settings_text_right">
+      </TextView>
+    </TableRow>
+
+    <TableRow style="@style/Fill.Width">
+
+      <TextView
+        style="@style/settings_text"
+        android:text="@string/update_distance">
+      </TextView>
+
+      <TextView
+        android:id="@+id/val_update_distance"
+        style="@style/settings_text_right">
+      </TextView>
+    </TableRow>
+
+    <TableRow style="@style/Fill.Width">
+
+      <TextView
+        style="@style/settings_text"
+        android:text="@string/passive_interval">
+      </TextView>
+
+      <TextView
+        android:id="@+id/val_passive_interval"
+        style="@style/settings_text_right">
+      </TextView>
+    </TableRow>
+
+    <TableRow style="@style/Fill.Width">
+
+      <TextView
+        style="@style/settings_text"
+        android:text="@string/passive_distance">
+      </TextView>
+
+      <TextView
+        android:id="@+id/val_passive_distance"
+        style="@style/settings_text_right">
+      </TextView>
+    </TableRow>
+   
+    <TableRow style="@style/Fill.Width">
+
+      <TextView
+        style="@style/settings_text"
+        android:text="@string/wait_for_gps_fix">
+      </TextView>
+
+      <TextView
+        android:id="@+id/val_wait_for_gps_fix"
+        style="@style/settings_text_right">
+      </TextView>
+    </TableRow>
+    
+    <TableRow style="@style/Fill.Width">
+
+      <TextView
+        style="@style/settings_text"
+        android:text="@string/min_battery_level">
+      </TextView>
+
+      <TextView
+        android:id="@+id/val_min_battery_level"
+        style="@style/settings_text_right">
+      </TextView>
+    </TableRow>
+  </TableLayout>
+</LinearLayout>

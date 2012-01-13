@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+  xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.github.ignition</groupId>
+    <artifactId>ignition</artifactId>
+    <version>0.1-SNAPSHOT</version>
+  </parent>
+  <groupId>com.github.ignition</groupId>
+  <artifactId>ignition-core</artifactId>
+  <packaging>apklib</packaging>
+  <name>Ignition Core</name>
+  <url>http://github.com/kaeppler/ignition-core</url>
+
+  <dependencies>
+    <dependency>
+      <groupId>android</groupId>
+      <artifactId>android</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>ignition-support</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <sourceDirectory>src</sourceDirectory>
+    <plugins>
+      <plugin>
+        <groupId>com.jayway.maven.plugins.android.generation2</groupId>
+        <artifactId>android-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-eclipse-plugin</artifactId>
+        <configuration>
+          <excludes>
+            <exclude>android:android</exclude>
+          </excludes>
+          <buildOutputDirectory>bin</buildOutputDirectory>
+          <classpathContainers>
+            <classpathContainer>com.android.ide.eclipse.adt.ANDROID_FRAMEWORK</classpathContainer>
+          </classpathContainers>
+          <additionalProjectnatures>
+            <projectnature>com.android.ide.eclipse.adt.AndroidNature</projectnature>
+          </additionalProjectnatures>
+          <additionalBuildcommands>
+            <buildcommand>com.android.ide.eclipse.adt.ResourceManagerBuilder</buildcommand>
+            <buildcommand>com.android.ide.eclipse.adt.PreCompilerBuilder</buildcommand>
+            <buildcommand>com.android.ide.eclipse.adt.ApkBuilder</buildcommand>
+          </additionalBuildcommands>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

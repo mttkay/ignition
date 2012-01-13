@@ -1,0 +1,48 @@
+// gradle-android plugin configuration
+buildscript {
+    repositories {
+      mavenLocal()
+      mavenRepo urls: 'http://jvoegele.com/maven2/'
+    }
+    dependencies {
+      classpath 'com.jvoegele.gradle.plugins:gradle-android-plugin:1.1.0-SNAPSHOT'
+    }
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+
+apply plugin: 'android'
+apply plugin: 'eclipse'
+
+dependsOn(':ignition-support')
+
+sourceSets {
+  main {
+    java {
+      srcDir 'src'
+    }
+  }
+}
+
+dependencies {
+    compile(project(':ignition-support')) {
+        exclude module: 'android'
+    }
+    compile('org.aspectj:aspectjrt:1.6.11')
+//    ajc "org.aspectj:aspectjtools:1.6.11"
+}
+
+// this will convert the project to an AspectJ project
+eclipse {
+    project {
+        natures 'org.eclipse.ajdt.ui.ajnature'
+
+        buildCommands.clear()
+        buildCommand('com.android.ide.eclipse.adt.PreCompilerBuilder')
+        buildCommand('com.android.ide.eclipse.adt.ResourceManagerBuilder')
+        buildCommand('org.eclipse.ajdt.core.ajbuilder')
+        buildCommand('com.android.ide.eclipse.adt.ApkBuilder')
+    }
+
+    classpath { containers.removeAll { it == 'org.eclipse.ajdt.core.ASPECTJRT_CONTAINER'} }
+}

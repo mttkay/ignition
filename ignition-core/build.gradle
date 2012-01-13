@@ -1,0 +1,32 @@
+// gradle-android plugin configuration
+buildscript {
+    repositories {
+      mavenLocal()
+      mavenRepo(urls: 'http://jvoegele.com/maven2/')
+    }
+    dependencies {
+      //classpath 'com.jvoegele.gradle.plugins:android-plugin:1.0.0-SNAPSHOT'
+      classpath 'com.jvoegele.gradle.plugins:gradle-android-plugin:1.1.0-SNAPSHOT'
+    }
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+
+dependsOn(':ignition-support')
+
+apply plugin: 'android'
+apply plugin: 'eclipse'
+
+sourceSets {
+  main {
+    java {
+      srcDir 'src'
+    }
+  }
+}
+
+dependencies {
+    compile(project(':ignition-support')) {
+        exclude module: 'android'
+    }
+}

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+   
+  <color name="black">#000000</color>
+  <color name="white">#ffffff</color>
+  <color name="settings">#333333</color>
+  <color name="network">#555599</color>
+  <color name="gps">#559955</color>
+  
+</resources>

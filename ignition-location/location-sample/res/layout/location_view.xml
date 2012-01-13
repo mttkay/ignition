@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:id="@+id/location_table"
+  style="@style/Fill.Width">
+
+  <RelativeLayout
+    style="@style/padded"
+    android:id="@+id/values">
+
+    <TextView
+      android:id="@+id/val_time"
+      style="@style/update_bold" />
+
+    <TextView
+      android:id="@+id/val_prov"
+      style="@style/update_big"
+      android:layout_alignParentRight="true" />
+
+    <TextView
+      android:id="@+id/val_acc"
+      style="@style/update_big"
+      android:layout_alignParentRight="true"
+      android:layout_below="@id/val_prov" />
+
+    <TextView
+      android:id="@+id/val_lat"
+      style="@style/update_text"
+      android:layout_below="@id/val_time" />
+
+    <TextView
+      android:id="@+id/val_lon"
+      style="@style/update_text"
+      android:layout_below="@id/val_lat" />
+  </RelativeLayout>
+
+  <View
+    style="@style/spacer"
+    android:layout_below="@id/values" />
+
+</RelativeLayout>

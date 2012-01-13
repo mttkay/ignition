@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+  xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.github.ignition</groupId>
+    <artifactId>ignition</artifactId>
+    <version>0.1-SNAPSHOT</version>
+  </parent>
+  <groupId>com.github.ignition</groupId>
+  <artifactId>ignition-location-project</artifactId>
+  <packaging>pom</packaging>
+  <name>Ignition Location Project</name>
+  <url>http://github.com/stefanodacchille/ignition-location</url>
+
+  <modules>
+    <module>ignition-location</module>
+    <module>location-sample</module>
+    <!-- <module>location-tests</module> -->
+  </modules>
+
+  <properties>
+    <androidApiLevel>10</androidApiLevel>
+    <androidVersion>2.3.3</androidVersion>
+    <androidApiRevision>r2</androidApiRevision>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>android</groupId>
+        <artifactId>android</artifactId>
+        <version>${androidVersion}_${androidApiRevision}</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>com.google.android.maps</groupId>
+        <artifactId>maps</artifactId>
+        <version>${androidApiLevel}_${androidApiRevision}</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.aspectj</groupId>
+        <artifactId>aspectjrt</artifactId>
+        <version>1.6.11</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <build>
+    <sourceDirectory>src</sourceDirectory>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-eclipse-plugin</artifactId>
+          <configuration>
+            <sourceIncludes>
+              <sourceInclude>**/*.aj</sourceInclude>
+            </sourceIncludes>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>aspectj-maven-plugin</artifactId>
+          <version>1.4</version>
+          <configuration>
+            <source>${sourceCompatibility}</source>
+          </configuration>
+          <executions>
+            <execution>
+              <!-- phase need to be before compile, or the build will fail. 
+                More info here: http://stackoverflow.com/questions/2610633/maven-compile-aspectj-project-containing-java-1-6-source -->
+              <phase>process-sources</phase>
+              <goals>
+                <goal>compile</goal>
+                <!-- <goal>test-compile</goal> -->
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+</project>

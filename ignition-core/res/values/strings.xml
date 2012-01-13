@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="ign_error_report_email_subject">New error report: %s</string>
+  <string name="ign_error_report_send_button">Send Email</string>
+
+</resources>

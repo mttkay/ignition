@@ -1,0 +1,76 @@
+// gradle-android plugin configuration
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenRepo urls: 'http://jvoegele.com/maven2/'
+    }
+    dependencies { classpath 'com.jvoegele.gradle.plugins:gradle-android-plugin:1.1.0-SNAPSHOT' }
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+
+apply plugin: 'android'
+apply plugin: 'eclipse'
+
+sourceCompatibility = 1.6
+
+sourceSets.main.java.srcDirs = ['src', convention.plugins.android.genDir]
+
+configurations {
+    // exclude all libraries that are contained in the Android jar
+    all*.exclude group: 'commons-logging'
+    all*.exclude group: 'xerces'
+    all*.exclude group: 'xpp3'
+    ajc
+}
+
+dependencies {
+    compile('com.github.ignition:ignition-support:0.1') { 
+		exclude module: 'android'
+		changing = true
+	}
+    compile('com.github.ignition:ignition-location:0.1') {
+		changing = true
+	}
+    compile('org.aspectj:aspectjrt:1.6.11')
+
+	ajc "org.aspectj:aspectjtools:1.6.11"
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    mavenRepo urls: 'https://raw.github.com/stefanodacchille/m2/master'
+}
+
+// Override compileJava task to invoke AspectJ compiler instead
+task compileJava(dependsOn: compileJava.taskDependencies, overwrite: true) << {
+
+    ant.taskdef(resource: "org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties",
+        classpath: configurations.ajc.asPath)
+    ant.iajc(source: sourceCompatibility, target: targetCompatibility,
+        destDir: sourceSets.main.classesDir.absolutePath,
+        classpath: sourceSets.main.compileClasspath.asPath) {
+
+        sourceroots{
+            sourceSets.main.java.srcDirs.each {
+                pathelement(location: it.absolutePath)
+            }
+        }
+    }
+}
+
+// this will convert the project to an AspectJ project
+eclipse {
+    project {
+        natures 'org.eclipse.ajdt.ui.ajnature'
+
+        buildCommands.clear()
+        buildCommand('com.android.ide.eclipse.adt.PreCompilerBuilder')
+        buildCommand('com.android.ide.eclipse.adt.ResourceManagerBuilder')
+        buildCommand('org.eclipse.ajdt.core.ajbuilder')
+        buildCommand('com.android.ide.eclipse.adt.ApkBuilder')
+    }
+
+    classpath { containers.removeAll { it == 'org.eclipse.ajdt.core.ASPECTJRT_CONTAINER'} }
+}
