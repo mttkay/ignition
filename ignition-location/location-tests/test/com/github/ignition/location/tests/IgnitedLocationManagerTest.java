@@ -198,9 +198,6 @@ public abstract class IgnitedLocationManagerTest {
 
     @Test
     public void shouldNotRegisterListenerIfBestProviderEnabled() throws Exception {
-        shadowLocationManager.setBestProvider(LocationManager.GPS_PROVIDER, true);
-        shadowLocationManager.setBestProvider(LocationManager.GPS_PROVIDER, false);
-
         resume();
 
         List<LocationListener> listeners = shadowLocationManager
