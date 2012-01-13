@@ -244,8 +244,8 @@ public abstract class AbstractCache<KeyT, ValT> implements Map<KeyT, ValT> {
     }
 
     /**
-     * Reads a value from the cache by probing the in-memory cache, and if enabled and the in-memory
-     * probe was a miss, the disk cache.
+     * Reads a value from the cache by first probing the in-memory cache. If not found, the the disk
+     * cache will be probed. If it's a hit, the entry is written back to memory and returned.
      * 
      * @param elementKey
      *            the cache key
@@ -342,6 +342,9 @@ public abstract class AbstractCache<KeyT, ValT> implements Map<KeyT, ValT> {
         return cache.containsValue(value);
     }
 
+    /**
+     * Removes an entry from both memory and disk.
+     */
     @SuppressWarnings("unchecked")
     public synchronized ValT remove(Object key) {
         ValT value = removeKey(key);
@@ -356,7 +359,13 @@ public abstract class AbstractCache<KeyT, ValT> implements Map<KeyT, ValT> {
         return value;
     }
 
-    // Forced key expiration
+    /**
+     * Removes an entry from memory.
+     * 
+     * @param key
+     *            the cache key
+     * @return the element removed or null
+     */
     public ValT removeKey(Object key) {
         return cache.remove(key);
     }
@@ -410,6 +419,9 @@ public abstract class AbstractCache<KeyT, ValT> implements Map<KeyT, ValT> {
         }
     }
 
+    /**
+     * Clears the entire cache (memory and disk).
+     */
     public synchronized void clear() {
         cache.clear();
 
