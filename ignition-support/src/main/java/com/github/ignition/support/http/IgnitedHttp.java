@@ -147,6 +147,17 @@ public class IgnitedHttp {
     }
 
     /**
+     * Disables caching of HTTP responses. You may also choose to wipe any files that may have been
+     * written to disk.
+     */
+    public void disableResponseCache(boolean wipe) {
+        if (responseCache != null && wipe) {
+            responseCache.clear();
+        }
+        responseCache = null;
+    }
+
+    /**
      * @return the response cache, if enabled, otherwise null
      */
     public synchronized HttpResponseCache getResponseCache() {
