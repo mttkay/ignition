@@ -5,24 +5,35 @@
     android:orientation="vertical" >
 
     <TextView
-        android:id="@+id/status"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+      android:id="@+id/status"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:textStyle="bold"
+      android:textColor="#0F0"
+      android:text="No data. Click below to start." />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="onDownloadButtonClicked"
-        android:text="Click to download image into view" />
+    <LinearLayout
+      android:id="@+id/linearLayout2"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content" >
 
-    <ImageView
-        android:id="@+id/image"
-        android:layout_width="150dip"
-        android:layout_height="150dip"
-        android:layout_gravity="center"
-        android:scaleType="fitXY"
-        android:background="#FFF" />
+        <Button
+          android:id="@+id/btn_send_request"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:onClick="onDownloadButtonClicked"
+          android:text="@string/btn_request" />
+
+        <CheckBox
+          android:id="@+id/chk_use_cache"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:checked="true"
+          android:text="@string/chk_use_cache" />
+
+    </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
@@ -35,6 +46,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="@string/empty"
+        android:minLines="3"
+        android:gravity="top"
         android:inputType="textMultiLine" >
     </EditText>
 
@@ -49,6 +62,31 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="@string/empty"
+        android:minLines="3"
+        android:gravity="top"
         android:inputType="textMultiLine" />
+
+    <LinearLayout
+      android:id="@+id/linearLayout1"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content" >
+
+        <Button
+          android:id="@+id/btn_clear_all"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:text="@string/btn_clear_all"
+          android:onClick="onClearAll" />
+
+        <Button
+          android:id="@+id/btn_clear_mem"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:text="@string/btn_clear_mem"
+          android:onClick="onClearMemory" />
+
+    </LinearLayout>
 
 </LinearLayout>
