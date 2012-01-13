@@ -13,7 +13,8 @@
   <packaging>pom</packaging>
 
   <modules>
-    <module>IgnitedHttpSampleApp</module>
+    <module>../ignition-support/samples/IgnitedHttpSampleApp</module>
+    <module>../ignition-location/location-sample</module>
   </modules>
 
   <properties>
