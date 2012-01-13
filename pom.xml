@@ -30,7 +30,7 @@
     <sourceCompatibility>1.6</sourceCompatibility>
 
     <!-- repository settings -->
-    <qypeRepositoryUrl>http://gandalf.qype.hamburg:8081/nexus/content/repositories</qypeRepositoryUrl>
+    <qypeRepositoryUrl>http://smith.qype.com:8080/nexus/content/repositories</qypeRepositoryUrl>
   </properties>
 
   <dependencyManagement>
