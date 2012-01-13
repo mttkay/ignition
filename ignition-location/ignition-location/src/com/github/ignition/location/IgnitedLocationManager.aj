@@ -101,7 +101,8 @@ public aspect IgnitedLocationManager {
             // Re-register the location listeners using the best available
             // Location Provider.
             if (providerDisabled) {
-                requestLocationUpdates(context);
+                disableLocationUpdates(false);
+                requestLocationUpdates(context, null);
             }
         }
     };
@@ -113,9 +114,14 @@ public aspect IgnitedLocationManager {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (isBatteryOk()) {
-                requestPassiveLocationUpdates();
+                disableLocationUpdates(false);
+                requestLocationUpdates(context, null);
             } else {
-                locationManager.removeUpdates(locationListenerPassivePendingIntent);
+                Criteria criteria = new Criteria();
+                criteria.setPowerRequirement(Criteria.POWER_LOW);
+
+                disableLocationUpdates(false);
+                requestLocationUpdates(context, criteria);
             }
         }
     };
@@ -421,7 +427,8 @@ public aspect IgnitedLocationManager {
         public void onProviderEnabled(String provider) {
             // Re-register the location listeners using the better Location
             // Provider.
-            requestLocationUpdates(context);
+            disableLocationUpdates(false);
+            requestLocationUpdates(context, null);
         }
     }
 
