@@ -16,8 +16,8 @@
 
   <modules>
     <module>ignition-location</module>
-    <module>location-sample</module>
-    <!-- <module>location-tests</module> -->
+<!--     <module>location-sample</module>
+ -->    <!-- <module>location-tests</module> -->
   </modules>
 
   <properties>
