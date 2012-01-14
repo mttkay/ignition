@@ -7,7 +7,7 @@
     <relativePath>.../ignition-samples</relativePath>
   </parent>
   <groupId>com.github.ignition</groupId>
-  <artifactId>IgnitedHttpSampleApp</artifactId>
+  <artifactId>RemoteImageViewSampleApp</artifactId>
   <packaging>apk</packaging>
   
   <dependencies>

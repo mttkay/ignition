@@ -14,6 +14,7 @@
 
   <modules>
     <module>../ignition-support/samples/IgnitedHttpSampleApp</module>
+    <module>../ignition-core/samples/RemoteImageViewSampleApp</module>
     <module>../ignition-location/location-sample</module>
   </modules>
 
