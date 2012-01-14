@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry including="**/*.java" kind="src" path="src"/>
+	<classpathentry kind="var" path="M2_REPO/com/google/guava/guava-annotations/r03/guava-annotations-r03.jar" sourcepath="M2_REPO/com/google/guava/guava-annotations/r03/guava-annotations-r03-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/Users/matthias/.m2/repository/com/google/guava/guava-annotations/r03/guava-annotations-r03-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="var" path="M2_REPO/com/google/guava/guava-base/r03/guava-base-r03.jar" sourcepath="M2_REPO/com/google/guava/guava-base/r03/guava-base-r03-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/Users/matthias/.m2/repository/com/google/guava/guava-base/r03/guava-base-r03-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="var" path="M2_REPO/com/google/guava/guava-collections/r03/guava-collections-r03.jar" sourcepath="M2_REPO/com/google/guava/guava-collections/r03/guava-collections-r03-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/Users/matthias/.m2/repository/com/google/guava/guava-collections/r03/guava-collections-r03-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="var" path="M2_REPO/com/google/guava/guava-primitives/r03/guava-primitives-r03.jar" sourcepath="M2_REPO/com/google/guava/guava-primitives/r03/guava-primitives-r03-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/Users/matthias/.m2/repository/com/google/guava/guava-primitives/r03/guava-primitives-r03-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
+	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
+	<classpathentry kind="src" path="gen"/>
+	<classpathentry kind="output" path="bin/classes"/>
+</classpath>
