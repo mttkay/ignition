@@ -14,7 +14,7 @@
 
     <LinearLayout
       android:id="@+id/linearLayout2"
-      android:layout_width="match_parent"
+      android:layout_width="fill_parent"
       android:layout_height="wrap_content" >
 
         <Button
@@ -68,7 +68,7 @@
 
     <LinearLayout
       android:id="@+id/linearLayout1"
-      android:layout_width="match_parent"
+      android:layout_width="fill_parent"
       android:layout_height="wrap_content" >
 
         <Button

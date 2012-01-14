@@ -18,7 +18,6 @@
   </modules>
 
   <properties>
-    <apiLevelForSamples>8</apiLevelForSamples>
   </properties>
 
   <dependencies>
@@ -62,11 +61,6 @@
       <plugin>
         <groupId>com.jayway.maven.plugins.android.generation2</groupId>
         <artifactId>android-maven-plugin</artifactId>
-        <configuration>
-          <sdk>
-            <platform>${apiLevelForSamples}</platform>
-          </sdk>
-        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
