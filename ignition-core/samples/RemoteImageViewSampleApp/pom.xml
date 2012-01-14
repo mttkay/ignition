@@ -4,7 +4,7 @@
     <groupId>com.github.ignition</groupId>
     <artifactId>ignition-samples</artifactId>
     <version>0.1-SNAPSHOT</version>
-    <relativePath>../../ignition-samples</relativePath>
+    <relativePath>.../ignition-samples</relativePath>
   </parent>
   <groupId>com.github.ignition</groupId>
   <artifactId>IgnitedHttpSampleApp</artifactId>
@@ -14,7 +14,7 @@
     <dependency>
       <groupId>com.github.ignition</groupId>
       <artifactId>ignition-core</artifactId>
-      <version>${project.version}</version>
+      <type>apklib</type>
     </dependency>  
   </dependencies>
   
