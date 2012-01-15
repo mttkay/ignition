@@ -5,16 +5,17 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.github.ignition</groupId>
-    <artifactId>ignition</artifactId>
+    <artifactId>ignition-core-tests</artifactId>
     <version>0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>ignition-core-project</artifactId>
-  <packaging>pom</packaging>
+  <artifactId>remote-image-view-test</artifactId>
 
-  <modules>
-    <module>ignition-core-lib</module>
-    <module>ignition-core-samples</module>
-    <module>ignition-core-tests</module>
-  </modules>
+  <dependencies>
+    <dependency>
+      <groupId>com.github.ignition</groupId>
+      <artifactId>RemoteImageViewSampleApp</artifactId>
+      <version>0.1-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
 
 </project>

@@ -7,57 +7,26 @@
     <groupId>com.github.ignition</groupId>
     <artifactId>ignition</artifactId>
     <version>0.1-SNAPSHOT</version>
-  </parent>  
+  </parent>
   <groupId>com.github.ignition</groupId>
-  <artifactId>ignition-samples</artifactId>
-  <packaging>pom</packaging>
-
-  <modules>
-    <module>../ignition-support/samples/IgnitedHttpSampleApp</module>
-    <module>../ignition-core/samples/RemoteImageViewSampleApp</module>
-    <module>../ignition-location/location-sample</module>
-  </modules>
-
-  <properties>
-  </properties>
+  <artifactId>ignition-core</artifactId>
+  <packaging>apklib</packaging>
 
   <dependencies>
     <dependency>
       <groupId>android</groupId>
       <artifactId>android</artifactId>
-      <version>${androidVersion}_${androidApiRevision}</version>
-      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>ignition-support</artifactId>
+      <version>${project.version}</version>
     </dependency>
   </dependencies>
 
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>com.github.ignition</groupId>
-        <artifactId>ignition-core</artifactId>
-        <version>${project.version}</version>
-        <type>apklib</type>
-        <exclusions>
-          <exclusion>
-            <groupId>commons-httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-          </exclusion>
-<!--           <exclusion>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava-collections</artifactId>
-          </exclusion> -->
-        </exclusions>        
-      </dependency>
-      <dependency>
-        <groupId>com.github.ignition</groupId>
-        <artifactId>ignition-support</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
-
   <build>
     <sourceDirectory>src</sourceDirectory>
+    <testSourceDirectory>test</testSourceDirectory>
     <plugins>
       <plugin>
         <groupId>com.jayway.maven.plugins.android.generation2</groupId>
@@ -67,10 +36,6 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-eclipse-plugin</artifactId>
         <configuration>
-          <downloadSources>true</downloadSources>
-          <downloadJavadocs>true</downloadJavadocs>
-          <buildOutputDirectory>bin</buildOutputDirectory>
-          <useProjectReferences>false</useProjectReferences>
           <excludes>
             <exclude>android:android</exclude>
           </excludes>
@@ -90,5 +55,4 @@
       </plugin>
     </plugins>
   </build>
-
 </project>
