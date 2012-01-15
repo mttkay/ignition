@@ -39,6 +39,8 @@ import com.github.ignition.support.images.remote.RemoteImageLoaderHandler;
  */
 public class RemoteImageView extends ViewSwitcher {
 
+    private static final String ATTR_AUTO_LOAD = "autoLoad";
+    private static final String ATTR_IMAGE_URL = "imageUrl";
     private static final String ATTR_DEFAULT_DRAWABLE = "defaultDrawable";
     private static final String ATTR_PROGRESS_DRAWABLE = "progressDrawable";
     private static final String ATTR_ERROR_DRAWABLE = "errorDrawable";
@@ -47,7 +49,7 @@ public class RemoteImageView extends ViewSwitcher {
 
     private String imageUrl;
 
-    private boolean isLoaded;
+    private boolean autoLoad, isLoaded;
 
     private ProgressBar loadingSpinner;
 
@@ -130,15 +132,18 @@ public class RemoteImageView extends ViewSwitcher {
             progressDrawable = context.getResources().getDrawable(progressDrawableId);
         }
 
-        initialize(context, attributes.getAttributeValue(Ignition.XMLNS, "imageUrl"),
-                progressDrawable, errorDrawable, defaultDrawable,
-                attributes.getAttributeBooleanValue(Ignition.XMLNS, "autoLoad", true));
+        String imageUrl = attributes.getAttributeValue(Ignition.XMLNS, ATTR_IMAGE_URL);
+        boolean autoLoad = attributes
+                .getAttributeBooleanValue(Ignition.XMLNS, ATTR_AUTO_LOAD, true);
+
+        initialize(context, imageUrl, progressDrawable, errorDrawable, defaultDrawable, autoLoad);
         // styles.recycle();
     }
 
     private void initialize(Context context, String imageUrl, Drawable progressDrawable,
             Drawable errorDrawable, Drawable defaultDrawable, boolean autoLoad) {
         this.imageUrl = imageUrl;
+        this.autoLoad = autoLoad;
         this.progressDrawable = progressDrawable;
         this.errorDrawable = errorDrawable;
         this.defaultDrawable = defaultDrawable;
@@ -250,11 +255,55 @@ public class RemoteImageView extends ViewSwitcher {
     }
 
     /**
-     * Returns the URL of the image to show
+     * Returns the URL of the image to show. Corresponds to the view attribute ignition:imageUrl.
      * 
-     * @return
+     * @return the image URL
      */
     public String getImageUrl() {
         return imageUrl;
+    }
+
+    /**
+     * Whether or not the image should be downloaded immediately after view inflation. Corresponds
+     * to the view attribute ignition:autoLoad (default: true).
+     * 
+     * @return true if auto downloading of the image is enabled
+     */
+    public boolean isAutoLoad() {
+        return autoLoad;
+    }
+
+    /**
+     * The drawable that is shown in place of the downloaded image. It will be replaces once the
+     * image has been downloaded. This can be used to display a placeholder image while the download
+     * is in progress. Corresponds to the view attribute ignition:defaultDrawable. If left blank, no
+     * placeholder image will be used.
+     * 
+     * @return the placeholder (default) image
+     */
+    public Drawable getDefaultDrawable() {
+        return defaultDrawable;
+    }
+
+    /**
+     * The drawable that should be used to indicate progress while downloading the image.
+     * Corresponds to the view attribute ignition:progressDrawable. If left blank, the platform's
+     * standard indeterminate progress drawable will be used.
+     * 
+     * @return the progress drawable
+     */
+    public Drawable getProgressDrawable() {
+        return progressDrawable;
+    }
+
+    /**
+     * The drawable that will be shown when the image download fails. Corresponds to the view
+     * attribute ignition:errorDrawable. If left blank, a stock alert icon from the Android platform
+     * will be used.
+     * 
+     * @return the error drawable
+     */
+    public Drawable getErrorDrawable() {
+        return errorDrawable;
     }
 }
