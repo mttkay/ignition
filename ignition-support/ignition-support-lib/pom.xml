@@ -5,21 +5,17 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.github.ignition</groupId>
-    <artifactId>ignition</artifactId>
+    <artifactId>ignition-support-project</artifactId>
     <version>0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>ignition-support-project</artifactId>
-  <packaging>pom</packaging>
-
-  <modules>
-    <module>ignition-support-lib</module>
-    <module>ignition-support-samples</module>
-  </modules>
+  <groupId>com.github.ignition</groupId>
+  <artifactId>ignition-support</artifactId>
 
   <dependencies>
     <dependency>
-      <groupId>android</groupId>
-      <artifactId>android</artifactId>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava-collections</artifactId>
+      <version>r03</version>
     </dependency>
   </dependencies>
 </project>

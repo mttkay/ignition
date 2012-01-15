@@ -7,7 +7,6 @@
   <artifactId>ignition</artifactId>
   <version>0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <name>Ignition</name>
   <url>http://github.com/kaeppler/ignition</url>
 
   <modules>
