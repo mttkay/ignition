@@ -131,10 +131,11 @@ public class IgnitedGingerbreadLastLocationFinder implements ILastLocationFinder
             IntentFilter locIntentFilter = new IntentFilter(SINGLE_LOCATION_UPDATE_ACTION);
             context.registerReceiver(this.singleUpdateReceiver, locIntentFilter);
             this.locationManager.requestSingleUpdate(this.criteria, this.singleUpatePI);
-
-            bestResult.getExtras().putBoolean(LAST_LOCATION_TOO_OLD_EXTRA, true);
         }
 
+        if (bestResult != null) {
+            bestResult.getExtras().putBoolean(LAST_LOCATION_TOO_OLD_EXTRA, true);
+        }
         return bestResult;
     }
 

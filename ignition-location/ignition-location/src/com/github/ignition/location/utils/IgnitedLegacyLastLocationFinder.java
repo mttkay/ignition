@@ -120,10 +120,12 @@ public class IgnitedLegacyLastLocationFinder implements ILastLocationFinder {
                         "Last location is too old or too inaccurate. Retrieving a new one...");
                 this.locationManager.requestLocationUpdates(provider, 0, 0,
                         this.singeUpdateListener, context.getMainLooper());
-                bestResult.getExtras().putBoolean(LAST_LOCATION_TOO_OLD_EXTRA, true);
             }
         }
 
+        if (bestResult != null) {
+            bestResult.getExtras().putBoolean(LAST_LOCATION_TOO_OLD_EXTRA, true);
+        }
         return bestResult;
     }
 
