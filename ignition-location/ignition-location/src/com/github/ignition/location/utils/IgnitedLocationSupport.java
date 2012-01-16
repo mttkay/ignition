@@ -3,6 +3,7 @@ package com.github.ignition.location.utils;
 import java.util.List;
 
 import android.content.Context;
+import android.location.Location;
 import android.location.LocationManager;
 
 import com.github.ignition.support.IgnitedDiagnostics;
@@ -21,5 +22,23 @@ public class IgnitedLocationSupport {
         }
 
         return providers;
+    }
+
+    public static boolean isFromGps(Location location) {
+        return location.getProvider().equals(LocationManager.GPS_PROVIDER);
+    }
+
+    public static boolean isFromNetwork(Location location) {
+        return location.getProvider().equals(LocationManager.NETWORK_PROVIDER);
+    }
+
+    public static boolean isGpsProviderEnabled(Context context) {
+        return getEnabledProviders(context.getApplicationContext()).contains(
+                LocationManager.GPS_PROVIDER);
+    }
+
+    public static boolean isNetworkProviderEnabled(Context context) {
+        return getEnabledProviders(context.getApplicationContext()).contains(
+                LocationManager.NETWORK_PROVIDER);
     }
 }
