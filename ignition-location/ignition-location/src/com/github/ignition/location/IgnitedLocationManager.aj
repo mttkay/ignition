@@ -79,10 +79,8 @@ public aspect IgnitedLocationManager {
             Log.d(LOG_TAG,
                     "It looks like GPS isn't available at this time (i.e.: maybe you're indoors). Removing GPS location updates and requesting network updates.");
 
-            Criteria criteria = lowBatteryConsumptionCriteria();
-
             disableLocationUpdates(false);
-            requestLocationUpdates(context, criteria);
+            requestLocationUpdates(context);
         }
     };
 
@@ -100,7 +98,7 @@ public aspect IgnitedLocationManager {
             // Location Provider.
             if (providerDisabled) {
                 disableLocationUpdates(false);
-                requestLocationUpdates(context, null);
+                requestLocationUpdates(context);
             }
         }
     };
@@ -111,13 +109,8 @@ public aspect IgnitedLocationManager {
     protected BroadcastReceiver refreshLocationUpdatesReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (isBatteryOk()) {
-                disableLocationUpdates(false);
-                requestLocationUpdates(context, null);
-            } else {
-                disableLocationUpdates(false);
-                requestLocationUpdates(context, lowBatteryConsumptionCriteria());
-            }
+            disableLocationUpdates(false);
+            requestLocationUpdates(context);
         }
     };
 
@@ -281,7 +274,7 @@ public aspect IgnitedLocationManager {
                     && !freshLocation.getExtras().getBoolean(
                             ILastLocationFinder.LAST_LOCATION_TOO_OLD_EXTRA)) {
                 // If we have requested location updates, turn them on here.
-                requestLocationUpdates(context, isBatteryOk()? defaultCriteria : lowBatteryConsumptionCriteria());
+                requestLocationUpdates(context);
             }
         }
 
@@ -297,8 +290,13 @@ public aspect IgnitedLocationManager {
     /**
      * Start listening for location updates.
      */
-    protected void requestLocationUpdates(Context context, Criteria locationUpdatesCriteria) {
-        Criteria criteria = locationUpdatesCriteria == null? defaultCriteria : locationUpdatesCriteria;
+    protected void requestLocationUpdates(Context context) {
+        Criteria locationUpdateCriteria;
+        if (isBatteryOk()) {
+            locationUpdateCriteria = defaultCriteria;
+        } else {
+            locationUpdateCriteria = lowBatteryConsumptionCriteria();
+        }
 
         Log.d(LOG_TAG, "Disabling passive location updates");
         locationManager.removeUpdates(locationListenerPassivePendingIntent);
@@ -306,7 +304,7 @@ public aspect IgnitedLocationManager {
         Log.d(LOG_TAG, "Requesting location updates");
         // Normal updates while activity is visible.
         locationUpdateRequester.requestLocationUpdates(locationUpdatesInterval,
-                locationUpdatesDistanceDiff, criteria, locationListenerPendingIntent);
+                locationUpdatesDistanceDiff, locationUpdateCriteria, locationListenerPendingIntent);
 
         // Register a receiver that listens for when the provider I'm using has
         // been disabled.
@@ -321,8 +319,8 @@ public aspect IgnitedLocationManager {
 
         // Register a receiver that listens for when a better provider than I'm
         // using becomes available.
-        String bestProvider = locationManager.getBestProvider(criteria, false);
-        String bestAvailableProvider = locationManager.getBestProvider(criteria, true);
+        String bestProvider = locationManager.getBestProvider(locationUpdateCriteria, false);
+        String bestAvailableProvider = locationManager.getBestProvider(locationUpdateCriteria, true);
         if (bestProvider != null && !bestProvider.equals(bestAvailableProvider)) {
             bestInactiveLocationProviderListener = new IgnitedLocationListener(context);
             locationManager.requestLocationUpdates(bestProvider, 0, 0,
@@ -426,7 +424,7 @@ public aspect IgnitedLocationManager {
             // Re-register the location listeners using the better Location
             // Provider.
             disableLocationUpdates(false);
-            requestLocationUpdates(context, null);
+            requestLocationUpdates(context);
         }
     }
 
