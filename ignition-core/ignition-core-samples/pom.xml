@@ -12,6 +12,7 @@
   <packaging>pom</packaging>
 
   <modules>
+    <module>IgnitedAsyncTaskSampleApp</module>
     <module>RemoteImageViewSampleApp</module>
   </modules>
 
