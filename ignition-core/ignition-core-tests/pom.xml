@@ -16,11 +16,6 @@
   </modules>
 
   <dependencies>
-    <dependency>
-      <groupId>android</groupId>
-      <artifactId>android</artifactId>
-    </dependency>
-
     <!-- test dependencies -->
     <dependency>
       <groupId>junit</groupId>

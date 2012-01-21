@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.github.ignition</groupId>
-    <artifactId>ignition</artifactId>
+    <artifactId>ignition-core-project</artifactId>
     <version>0.1-SNAPSHOT</version>
   </parent>
   <groupId>com.github.ignition</groupId>
@@ -13,10 +13,6 @@
   <packaging>apklib</packaging>
 
   <dependencies>
-    <dependency>
-      <groupId>android</groupId>
-      <artifactId>android</artifactId>
-    </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>ignition-support</artifactId>
