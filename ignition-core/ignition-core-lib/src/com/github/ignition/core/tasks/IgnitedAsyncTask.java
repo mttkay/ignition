@@ -1,5 +1,7 @@
 package com.github.ignition.core.tasks;
 
+import java.util.concurrent.Callable;
+
 import android.content.Context;
 import android.os.AsyncTask;
 
@@ -13,11 +15,17 @@ import android.os.AsyncTask;
  * <li>allows re-using a task as a skeleton that delegates to different worker implementations via
  * {@link IgnitedAsyncTaskCallable}</li>
  * </ul>
- * 
+ * <p>
  * Since this class keeps a reference to a Context, you MUST ensure that this reference is cleared
  * when the Context gets destroyed. You can handle Context connection and disconnection using the
  * {@link #connect(Context)} and {@link #disconnect()} methods. For Activities, a good place to call
  * them is onRestoreInstanceState and onDestroy respectively.
+ * </p>
+ * <p>
+ * Please note that the callbacks added by this class will ONLY be called if the context reference
+ * is valid. You can still receive AsyncTask's callbacks by overriding the callbacks defined in that
+ * class.
+ * </p>
  * 
  * @author Matthias Kaeppler
  * 
@@ -57,8 +65,11 @@ public abstract class IgnitedAsyncTask<ContextT extends Context, ParameterT, Pro
         return context;
     }
 
+    /**
+     * If you rely on a valid context reference, override {@link #onStart(Context)} instead.
+     */
     @Override
-    protected final void onPreExecute() {
+    protected void onPreExecute() {
         if (context != null) {
             onStart(context);
         }
@@ -67,17 +78,49 @@ public abstract class IgnitedAsyncTask<ContextT extends Context, ParameterT, Pro
     /**
      * Override this method to prepare task execution. The default implementation does nothing.
      * 
+     * @see {@link AsyncTask#onPreExecute}
      * @param context
      *            The most recent instance of the Context that executed this IgnitedAsyncTask
      */
     protected void onStart(ContextT context) {
     }
 
+    /**
+     * If you rely on a valid context reference, override {@link #onProgress} instead.
+     */
+    @Override
+    protected void onProgressUpdate(ProgressT... values) {
+        if (context != null) {
+            onProgress(context, values);
+        }
+    }
+
+    /**
+     * Override this method to update progress elements on the UI thread. The default implementation
+     * does nothing.
+     * 
+     * @see {@link AsyncTask#publishProgress}
+     * @see {@link AsyncTask#onProgressUpdate}
+     * @param context
+     *            The most recent instance of the Context that executed this IgnitedAsyncTask
+     * @param progress
+     *            the progress values
+     */
+    protected void onProgress(ContextT context, ProgressT... progress) {
+    }
+
+    /**
+     * No, you want to override {@link #run(Object...)} instead.
+     */
     @Override
     protected final ReturnT doInBackground(ParameterT... params) {
         ReturnT result = null;
         try {
-            result = run(params);
+            if (callable != null) {
+                result = callable.call(this);
+            } else {
+                result = run(params);
+            }
         } catch (Exception e) {
             this.error = e;
         }
@@ -85,21 +128,26 @@ public abstract class IgnitedAsyncTask<ContextT extends Context, ParameterT, Pro
     }
 
     /**
-     * Override this method to implement your task execution.
+     * Implement this method to define your task execution. If your task logic is pluggable, but
+     * shares progress reporting or pre/post execute hooks, you can also set a {@link Callable} via
+     * {@link #setCallable(IgnitedAsyncTaskCallable)}
      * 
+     * @see {@link AsyncTask#doInBackground}
      * @param params
-     * @return
+     *            the parameters for your task
+     * @return the result of your task
      * @throws Exception
      */
     protected ReturnT run(ParameterT... params) throws Exception {
-        if (callable != null) {
-            return callable.call(this);
-        }
         return null;
     }
 
+    /**
+     * If you rely on a valid context reference, override {@link #onCompleted}, {@link #onSuccess},
+     * and {@link #onError} instead.
+     */
     @Override
-    protected final void onPostExecute(ReturnT result) {
+    protected void onPostExecute(ReturnT result) {
         if (context != null) {
             onCompleted(context, result);
             if (failed()) {
@@ -114,6 +162,7 @@ public abstract class IgnitedAsyncTask<ContextT extends Context, ParameterT, Pro
      * Implement this method to handle a completed task execution, regardless of outcome. The
      * default implementation does nothing.
      * 
+     * @see {@link AsyncTask#onPostExecute}
      * @param context
      *            The most recent instance of the Context that executed this IgnitedAsyncTask
      * @param result
