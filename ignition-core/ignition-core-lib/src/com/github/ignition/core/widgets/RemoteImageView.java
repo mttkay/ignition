@@ -39,13 +39,14 @@ import com.github.ignition.support.images.remote.RemoteImageLoaderHandler;
  */
 public class RemoteImageView extends ViewSwitcher {
 
+    public static final int DEFAULT_ERROR_DRAWABLE_RES_ID = android.R.drawable.ic_dialog_alert;
+    public static final int DEFAULT_DRAWABLE_RES_ID = android.R.drawable.gallery_thumb;
+    
     private static final String ATTR_AUTO_LOAD = "autoLoad";
     private static final String ATTR_IMAGE_URL = "imageUrl";
     private static final String ATTR_DEFAULT_DRAWABLE = "defaultDrawable";
     private static final String ATTR_PROGRESS_DRAWABLE = "progressDrawable";
     private static final String ATTR_ERROR_DRAWABLE = "errorDrawable";
-    private static final int DEFAULT_ERROR_DRAWABLE_RES_ID = android.R.drawable.ic_dialog_alert;
-    private static final int DEFAULT_DRAWABLE_RES_ID = android.R.drawable.gallery_thumb;
 
     private String imageUrl;
 
@@ -60,6 +61,20 @@ public class RemoteImageView extends ViewSwitcher {
     private Drawable progressDrawable, errorDrawable, defaultDrawable;
 
     private RemoteImageLoader imageLoader;
+
+    private static RemoteImageLoader sharedImageLoader;
+
+    /**
+     * Use this method to inject an image loader that will be shared across all instances of this
+     * class. If the shared reference is null, a new {@link RemoteImageLoader} will be instantiated
+     * for every instance of this class.
+     * 
+     * @param imageLoader
+     *            the shared image loader
+     */
+    public static void setSharedImageLoader(RemoteImageLoader imageLoader) {
+        sharedImageLoader = imageLoader;
+    }
 
     /**
      * @param context
@@ -147,7 +162,11 @@ public class RemoteImageView extends ViewSwitcher {
         this.progressDrawable = progressDrawable;
         this.errorDrawable = errorDrawable;
         this.defaultDrawable = defaultDrawable;
-        this.imageLoader = new RemoteImageLoader(context);
+        if (sharedImageLoader == null) {
+            this.imageLoader = new RemoteImageLoader(context);
+        } else {
+            this.imageLoader = sharedImageLoader;
+        }
 
         // ScaleAnimation anim = new ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f,
         // 125.0f, preferredItemHeight / 2.0f);
