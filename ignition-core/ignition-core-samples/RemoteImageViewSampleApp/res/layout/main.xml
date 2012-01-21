@@ -47,7 +47,7 @@
     android:layout_height="150dip"
     android:layout_below="@id/image3"
     ignition:autoLoad="false"
-    ignition:defaultDrawable="@android:drawable/gallery_thumb"
+    ignition:defaultDrawable="@android:drawable/dialog_frame"
     ignition:imageUrl="http://developer.android.com/images/home/android-design.png" />  
   
   <Button 
@@ -56,7 +56,6 @@
     android:layout_alignBottom="@id/image5"
     android:layout_toRightOf="@id/image5"
     android:onClick="loadImage"
-    android:text="Load image"
-    ignition:autoLoad="false"/>
+    android:text="Load image"/>
   
 </RelativeLayout>
