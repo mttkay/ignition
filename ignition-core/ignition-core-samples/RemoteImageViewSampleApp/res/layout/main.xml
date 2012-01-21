@@ -50,7 +50,7 @@
     ignition:defaultDrawable="@android:drawable/dialog_frame"
     ignition:imageUrl="http://developer.android.com/images/home/android-design.png" />  
   
-  <Button 
+  <Button android:id="@+id/load_image_button"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_alignBottom="@id/image5"
