@@ -11,29 +11,17 @@ Ignition helps you getting your Android applications off the ground quickly, by 
  * API level backwards compatibility helpers
  * A friendlier and more robust implementation of AsyncTask
 
-Ignition is split up into two projects:
+Ignition is split up into three sub-projects. Click on one to see what's inside.
 
- * [ignition-core](https://github.com/kaeppler/ignition-core). This is an Android library project that is compiled straight into your apps. This allows you to re-use views and shared resources right in your own code.
- * [ignition-support](https://github.com/kaeppler/ignition-support). This is a standard Java library project, deployed as an ordinary JAR. It contains most of the utility classes. You can use this independently of the core module.
- * [ignition-location](https://github.com/stefanodacchille/ignition-location). This is an Android AspectJ library project that is compiled straight into your apps. It allows your location-aware applications to always have the most recent location without the need to handle location updates within your Activity.
+ * [ignition-core](https://github.com/kaeppler/ignition/wiki/Core-module-features). This is an Android library project that is compiled straight into your apps. This allows you to re-use views and shared resources right in your own code.
+ * [ignition-support](https://github.com/kaeppler/ignition/wiki/Support-module-features). This is a standard Java library project, deployed as an ordinary JAR. It contains most of the utility classes. You can use this independently of the core module.
+ * [ignition-location](https://github.com/kaeppler/ignition/wiki/Location-module-features). This is an Android AspectJ library project that is compiled straight into your apps. It allows your location-aware applications to always have the most recent location without the need to handle location updates within your Activity.
+
+## Documentation
+We decided to not write exhaustive documentation, since it would get outdated frequently. Instead, the project is documented both via [sample applications](https://github.com/kaeppler/ignition/wiki/Sample-applications) that are part of the build, as well as online JavaDoc (TODO).
 
 ## Installation
- For installation instructions, refer to the individual documentation of the sub-projects.
-
- If you want to checkout the entire project, do this:
-
-```
-$git clone git://github.com/kaeppler/ignition.git
-$cd ignition
-$git submodule init
-$git submodule update
-```
-
-If on top of that you're working with Eclipse, you may want to generate Eclipse project files. Ignition is built using the wonderful [Gradle build system](http://www.gradle.org), so install Gradle and run:
-```
-$gradle eclipse
-```
-This will take care of generating the necessary project files.
+Please refer to [Installation and setup](https://github.com/kaeppler/ignition/wiki/Installation-and-setup).
 
 ## License
 Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
