@@ -23,6 +23,12 @@ We decided to not write exhaustive documentation, since it would get outdated fr
 ## Installation
 Please refer to [Installation and setup](https://github.com/kaeppler/ignition/wiki/Installation-and-setup).
 
+## Getting help
+You can ask questions and get help by joining [ignition-users](https://groups.google.com/group/ignition-users) on Google Groups.
+
+## Contributing
+Feel like giving back? We'll happily take contributions via GitHub. For questions, please turn to [ignition-developers](https://groups.google.com/group/ignition-developers) on Google Groups.
+
 ## License
 Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
 
