@@ -9,6 +9,6 @@ import com.xtremelabs.robolectric.RobolectricTestRunner;
 public class LocationTestsRobolectricTestRunner extends RobolectricTestRunner {
 
     public LocationTestsRobolectricTestRunner(Class<?> testClass) throws InitializationError {
-        super(testClass, new File("../location-sample/"));
+        super(testClass, new File("../ignition-location-samples/"));
     }
 }
