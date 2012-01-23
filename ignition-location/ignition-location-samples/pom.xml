@@ -9,7 +9,7 @@
     <version>0.1-SNAPSHOT</version>
   </parent>
   <groupId>com.github.ignition</groupId>
-  <artifactId>location-sample</artifactId>
+  <artifactId>ignition-location-sample</artifactId>
   <packaging>apk</packaging>
   <name>Ignition Location Sample Application</name>
   <url>http://github.com/stefanodacchille/ignition-location</url>

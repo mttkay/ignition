@@ -9,7 +9,7 @@
     <version>0.1-SNAPSHOT</version>
   </parent>
   <groupId>com.github.ignition.location.tests</groupId>
-  <artifactId>location-tests</artifactId>
+  <artifactId>ignition-location-tests</artifactId>
   <packaging>jar</packaging>
   <name>Ignition Location Tests</name>
   <url>http://github.com/stefanodacchille/ignition-location</url>

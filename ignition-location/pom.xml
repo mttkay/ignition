@@ -15,9 +15,9 @@
   <url>http://github.com/stefanodacchille/ignition-location</url>
 
   <modules>
-    <module>ignition-location</module>
-<!--     <module>location-sample</module>
- -->    <!-- <module>location-tests</module> -->
+    <module>ignition-location-lib</module>
+    <module>ignition-location-samples</module>
+    <module>ignition-location-tests</module>
   </modules>
 
   <properties>
