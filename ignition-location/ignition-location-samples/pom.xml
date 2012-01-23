@@ -77,7 +77,6 @@
           <excludes>
             <exclude>android:android</exclude>
             <exclude>com.google.android.maps:maps</exclude>
-            <exclude>com.github.ignition:ignition-support</exclude>
           </excludes>
           <buildOutputDirectory>bin</buildOutputDirectory>
           <classpathContainers>
