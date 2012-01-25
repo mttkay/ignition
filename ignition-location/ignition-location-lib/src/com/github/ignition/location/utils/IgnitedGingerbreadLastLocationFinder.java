@@ -59,19 +59,18 @@ public class IgnitedGingerbreadLastLocationFinder implements ILastLocationFinder
      * @param Appc
      *            Context
      */
-    public IgnitedGingerbreadLastLocationFinder(Context appContext) {
-        this.locationManager = (LocationManager) appContext
-                .getSystemService(Context.LOCATION_SERVICE);
+    public IgnitedGingerbreadLastLocationFinder(Context context) {
+        locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         // Coarse accuracy is specified here to get the fastest possible result.
         // The calling Activity will likely (or have already) request ongoing
         // updates using the Fine location provider.
-        this.criteria = new Criteria();
-        this.criteria.setAccuracy(Criteria.ACCURACY_COARSE);
+        criteria = new Criteria();
+        criteria.setAccuracy(Criteria.ACCURACY_COARSE);
 
         // Construct the Pending Intent that will be broadcast by the oneshot
         // location update.
         Intent updateIntent = new Intent(SINGLE_LOCATION_UPDATE_ACTION);
-        this.singleUpatePI = PendingIntent.getBroadcast(appContext, 0, updateIntent,
+        singleUpatePI = PendingIntent.getBroadcast(context, 0, updateIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
@@ -95,9 +94,9 @@ public class IgnitedGingerbreadLastLocationFinder implements ILastLocationFinder
         // Iterate through all the providers on the system, keeping
         // note of the most accurate result within the acceptable time limit.
         // If no result is found within maxTime, return the newest Location.
-        List<String> matchingProviders = this.locationManager.getAllProviders();
+        List<String> matchingProviders = locationManager.getAllProviders();
         for (String provider : matchingProviders) {
-            Location location = this.locationManager.getLastKnownLocation(provider);
+            Location location = locationManager.getLastKnownLocation(provider);
             if (location != null) {
                 float accuracy = location.getAccuracy();
                 long time = location.getTime();
@@ -129,8 +128,8 @@ public class IgnitedGingerbreadLastLocationFinder implements ILastLocationFinder
         if ((bestTime < minTime) || (bestAccuracy > minDistance)) {
             Log.d(LOG_TAG, "Last location is too old or too inaccurate. Retrieving a new one...");
             IntentFilter locIntentFilter = new IntentFilter(SINGLE_LOCATION_UPDATE_ACTION);
-            context.registerReceiver(this.singleUpdateReceiver, locIntentFilter);
-            this.locationManager.requestSingleUpdate(this.criteria, this.singleUpatePI);
+            context.registerReceiver(singleUpdateReceiver, locIntentFilter);
+            locationManager.requestSingleUpdate(criteria, singleUpatePI);
         }
 
         if (bestResult != null) {
@@ -170,7 +169,7 @@ public class IgnitedGingerbreadLastLocationFinder implements ILastLocationFinder
      */
     @Override
     public void cancel() {
-        this.locationManager.removeUpdates(this.singleUpatePI);
+        locationManager.removeUpdates(singleUpatePI);
     }
 
     public void setCurrentLocation(Location currentLocation) {

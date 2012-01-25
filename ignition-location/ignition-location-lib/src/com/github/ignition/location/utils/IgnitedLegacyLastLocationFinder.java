@@ -55,15 +55,14 @@ public class IgnitedLegacyLastLocationFinder implements ILastLocationFinder {
      * @param context
      *            Context
      */
-    public IgnitedLegacyLastLocationFinder(Context appContext) {
-        this.context = appContext;
-        this.locationManager = (LocationManager) appContext
-                .getSystemService(Context.LOCATION_SERVICE);
-        this.criteria = new Criteria();
+    public IgnitedLegacyLastLocationFinder(Context context) {
+        this.context = context;
+        locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        criteria = new Criteria();
         // Coarse accuracy is specified here to get the fastest possible result.
         // The calling Activity will likely (or have already) request ongoing
         // updates using the Fine location provider.
-        this.criteria.setAccuracy(Criteria.ACCURACY_COARSE);
+        criteria.setAccuracy(Criteria.ACCURACY_COARSE);
     }
 
     /**
@@ -86,9 +85,9 @@ public class IgnitedLegacyLastLocationFinder implements ILastLocationFinder {
         // Iterate through all the providers on the system, keeping
         // note of the most accurate result within the acceptable time limit.
         // If no result is found within maxTime, return the newest Location.
-        List<String> matchingProviders = this.locationManager.getAllProviders();
+        List<String> matchingProviders = locationManager.getAllProviders();
         for (String provider : matchingProviders) {
-            Location location = this.locationManager.getLastKnownLocation(provider);
+            Location location = locationManager.getLastKnownLocation(provider);
             if (location != null) {
                 float accuracy = location.getAccuracy();
                 long time = location.getTime();
@@ -113,13 +112,13 @@ public class IgnitedLegacyLastLocationFinder implements ILastLocationFinder {
         // [minDistance].
         // Prior to Gingerbread "one-shot" updates weren't available, so we need
         // to implement this manually.
-            String provider = this.locationManager.getBestProvider(this.criteria, true);
         if ((bestTime < minTime) || (bestAccuracy > minDistance)) {
+            String provider = locationManager.getBestProvider(criteria, true);
             if (provider != null) {
                 Log.d(LOG_TAG,
                         "Last location is too old or too inaccurate. Retrieving a new one...");
-                this.locationManager.requestLocationUpdates(provider, 0, 0,
-                        this.singeUpdateListener, context.getMainLooper());
+                locationManager.requestLocationUpdates(provider, 0, 0, singeUpdateListener,
+                        context.getMainLooper());
             }
         }
 
@@ -165,7 +164,7 @@ public class IgnitedLegacyLastLocationFinder implements ILastLocationFinder {
      */
     @Override
     public void cancel() {
-        locationManager.removeUpdates(this.singeUpdateListener);
+        locationManager.removeUpdates(singeUpdateListener);
     }
 
     public void setCurrentLocation(Location currentLocation) {
