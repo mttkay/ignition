@@ -44,8 +44,8 @@ public class IgnitedLastKnownLocationAsyncTask extends AsyncTask<Void, Void, Loc
         if (lastKnownLocation != null) {
             lastKnownLocation.getExtras().putBoolean(
                     IgnitedLocationConstants.IGNITED_LAST_LOCATION_EXTRA, true);
-            currentLocation = lastKnownLocation;
         }
+        currentLocation = lastKnownLocation;
     }
 
     /**

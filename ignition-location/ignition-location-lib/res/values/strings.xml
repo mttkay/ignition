@@ -1,3 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+  <string name="ign_loc_dialog_wait_for_fix">Please wait while we try to determine your location. You can hit the back button to cancel anytime.</string>
+
 </resources>

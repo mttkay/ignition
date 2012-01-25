@@ -180,8 +180,7 @@ public aspect IgnitedLocationManager {
         // Get the last known location. This isn't directly affecting the UI, so put it on a
         // worker thread.
         ignitedLastKnownLocationTask = new IgnitedLastKnownLocationAsyncTask(
-                context.getApplicationContext(), locationUpdatesDistanceDiff,
-                locationUpdatesInterval);
+                context, locationUpdatesDistanceDiff, locationUpdatesInterval);
         ignitedLastKnownLocationTask.execute();
     }
 
@@ -234,6 +233,12 @@ public aspect IgnitedLocationManager {
 
         boolean finishing = activity.isFinishing();
         if (finishing) {
+            if (ignitedLastKnownLocationTask != null && ignitedLastKnownLocationTask.getStatus() != AsyncTask.Status.FINISHED) {
+                ignitedLastKnownLocationTask.cancel(true);
+            } else {
+                PlatformSpecificImplementationFactory.getLastLocationFinder(context).cancel();
+            }
+
             context = null;
         }
     }
@@ -252,30 +257,38 @@ public aspect IgnitedLocationManager {
         currentLocation = freshLocation;
         Log.d(LOG_TAG, "New location from " + currentLocation.getProvider() + " (lat, long): "
                 + currentLocation.getLatitude() + ", " + currentLocation.getLongitude());
-//        if (context != null) {
-//            ((OnIgnitedLocationChangedListener) context).onIgnitedLocationChanged(currentLocation);
-//        }
     }
 
     void around(Location freshLocation) : set(@IgnitedLocation Location *) && args(freshLocation) 
         && (within(IgnitedLocationChangedReceiver) || within(com.github.ignition.location.utils.*)
                 || within(IgnitedLastKnownLocationAsyncTask)) && !adviceexecution() {
 
+        if (context == null) {
+            return;
+        }
+        final Activity activity = (Activity) context;
+        if (freshLocation == null) {
+            activity.showDialog(R.id.ign_loc_dialog_wait_for_fix);
+            return;
+        }
+
         currentLocation = freshLocation;
         Log.d(LOG_TAG, "New location from " + currentLocation.getProvider() + " (lat, long): "
                 + currentLocation.getLatitude() + ", " + currentLocation.getLongitude());
-        if (context != null) {
-            boolean keepRequestingLocationUpdates = ((OnIgnitedLocationChangedListener) context)
-                    .onIgnitedLocationChanged(currentLocation);
-            if (!keepRequestingLocationUpdates && !locationUpdatesDisabled) {
+        boolean keepRequestingLocationUpdates = ((OnIgnitedLocationChangedListener) context)
+                .onIgnitedLocationChanged(currentLocation);
+        if (!keepRequestingLocationUpdates) {
+            if (!locationUpdatesDisabled) {
                 disableLocationUpdates(true);
-            } else if (enableLocationUpdates
-                    && locationUpdatesDisabled
-                    && !freshLocation.getExtras().getBoolean(
-                            ILastLocationFinder.LAST_LOCATION_TOO_OLD_EXTRA)) {
-                // If we have requested location updates, turn them on here.
-                requestLocationUpdates(context);
             }
+            PlatformSpecificImplementationFactory.getLastLocationFinder(context).cancel();
+            return;
+        } else if (enableLocationUpdates
+                && locationUpdatesDisabled
+                && !freshLocation.getExtras().getBoolean(
+                        ILastLocationFinder.LAST_LOCATION_TOO_OLD_EXTRA)) {
+            // If we have requested location updates, turn them on here.
+            requestLocationUpdates(context);
         }
 
         // If gps is enabled location comes from gps, remove runnable that removes gps updates
@@ -359,9 +372,6 @@ public aspect IgnitedLocationManager {
         }
 
         boolean finishing = ((Activity) context).isFinishing();
-        if (finishing && ignitedLastKnownLocationTask != null) {
-            ignitedLastKnownLocationTask.cancel(true);
-        }
 
         if (requestPassiveLocationUpdates && !finishing) {
             requestPassiveLocationUpdates();

@@ -42,9 +42,8 @@ public class PlatformSpecificImplementationFactory {
      * @return LastLocationFinder
      */
     public static ILastLocationFinder getLastLocationFinder(Context context) {
-        Context appContext = context.getApplicationContext();
         return IgnitedDiagnostics.supportsApiLevel(GINGERBREAD) ? new IgnitedGingerbreadLastLocationFinder(
-                appContext) : new IgnitedLegacyLastLocationFinder(appContext);
+                context) : new IgnitedLegacyLastLocationFinder(context);
     }
 
     /**

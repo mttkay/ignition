@@ -2,10 +2,15 @@ package com.github.ignition.location.utils;
 
 import java.util.List;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.location.Location;
 import android.location.LocationManager;
 
+import com.github.ignition.location.R;
 import com.github.ignition.support.IgnitedDiagnostics;
 
 public class IgnitedLocationSupport {
@@ -40,5 +45,19 @@ public class IgnitedLocationSupport {
     public static boolean isNetworkProviderEnabled(Context context) {
         return getEnabledProviders(context.getApplicationContext()).contains(
                 LocationManager.NETWORK_PROVIDER);
+    }
+
+    public static Dialog createWaitForLocationDialog(final Context context) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        AlertDialog dialog = builder.create();
+        dialog.setCancelable(true);
+        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                ((Activity) context).finish();
+            }
+        });
+        dialog.setMessage(context.getString(R.string.ign_loc_dialog_wait_for_fix));
+        return dialog;
     }
 }
