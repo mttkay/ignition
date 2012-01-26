@@ -65,7 +65,7 @@ public aspect IgnitedLocationManager {
     private volatile Location currentLocation;
     private long locationUpdatesInterval, passiveLocationUpdatesInterval;
     private int locationUpdatesDistanceDiff, passiveLocationUpdatesDistanceDiff;
-    private boolean enableLocationUpdates;
+    private boolean requestLocationUpdates;
     private boolean locationUpdatesDisabled = true;
 
     private AsyncTask<Void, Void, Location> ignitedLastKnownLocationTask;
@@ -191,7 +191,7 @@ public aspect IgnitedLocationManager {
      * @param locationAnnotation
      */
     private void saveToPreferences(Context context, IgnitedLocationActivity locationAnnotation) {
-        enableLocationUpdates = locationAnnotation.requestLocationUpdates();
+        requestLocationUpdates = locationAnnotation.requestLocationUpdates();
         locationUpdatesDistanceDiff = locationAnnotation.locationUpdatesDistanceDiff();
         locationUpdatesInterval = locationAnnotation.locationUpdatesInterval();
         passiveLocationUpdatesDistanceDiff = locationAnnotation
@@ -202,7 +202,7 @@ public aspect IgnitedLocationManager {
 
         Editor editor = prefs.edit();
         editor.putBoolean(IgnitedLocationConstants.SP_KEY_ENABLE_LOCATION_UPDATES,
-                enableLocationUpdates);
+                requestLocationUpdates);
         editor.putBoolean(IgnitedLocationConstants.SP_KEY_ENABLE_PASSIVE_LOCATION_UPDATES,
                 enablePassiveLocationUpdates);
         editor.putBoolean(IgnitedLocationConstants.SP_KEY_LOCATION_UPDATES_USE_GPS, useGps);
@@ -283,11 +283,11 @@ public aspect IgnitedLocationManager {
             }
             PlatformSpecificImplementationFactory.getLastLocationFinder(context).cancel();
             return;
-        } else if (enableLocationUpdates
                 && locationUpdatesDisabled
+        } else if (requestLocationUpdates
                 && !freshLocation.getExtras().getBoolean(
                         ILastLocationFinder.LAST_LOCATION_TOO_OLD_EXTRA)) {
-            // If we have requested location updates, turn them on here.
+            // If we requested location updates, turn them on here.
             requestLocationUpdates(context);
         }
 
