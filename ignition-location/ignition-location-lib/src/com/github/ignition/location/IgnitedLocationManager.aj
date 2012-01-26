@@ -55,7 +55,7 @@ public aspect IgnitedLocationManager {
 
     declare parents : (@IgnitedLocationActivity *) implements OnIgnitedLocationChangedListener;
 
-    private Criteria defaultCriteria;
+    private Criteria defaultCriteria, lowPowerCriteria;
     protected LocationUpdateRequester locationUpdateRequester;
     protected PendingIntent locationListenerPendingIntent, locationListenerPassivePendingIntent;
     protected LocationManager locationManager;
@@ -129,7 +129,9 @@ public aspect IgnitedLocationManager {
 
         // Specify the Criteria to use when requesting location updates while
         // the application is Active
-        defaultCriteria = new Criteria();
+        if (defaultCriteria == null) {
+            defaultCriteria = new Criteria();
+        }
         // Use gps if it's enabled and if battery level is at least 15%
         boolean useGps = prefs.getBoolean(IgnitedLocationConstants.SP_KEY_LOCATION_UPDATES_USE_GPS,
                 IgnitedLocationConstants.USE_GPS_DEFAULT);
@@ -308,7 +310,7 @@ public aspect IgnitedLocationManager {
         if (isBatteryOk()) {
             locationUpdateCriteria = defaultCriteria;
         } else {
-            locationUpdateCriteria = lowBatteryConsumptionCriteria();
+            locationUpdateCriteria = lowPowerCriteria();
         }
 
         Log.d(LOG_TAG, "Disabling passive location updates");
@@ -397,11 +399,13 @@ public aspect IgnitedLocationManager {
         return locationUpdatesDisabled;
     }
 
-    public Criteria lowBatteryConsumptionCriteria() {
-        Criteria criteria = new Criteria();
-        criteria.setPowerRequirement(Criteria.POWER_LOW);
-        criteria.setAccuracy(Criteria.NO_REQUIREMENT);
-        return criteria;
+    public Criteria lowPowerCriteria() {
+        if (lowPowerCriteria == null) {
+            lowPowerCriteria = new Criteria();
+            lowPowerCriteria.setPowerRequirement(Criteria.POWER_LOW);
+            lowPowerCriteria.setAccuracy(Criteria.NO_REQUIREMENT);
+        }
+        return lowPowerCriteria;
     }
 
     /**
