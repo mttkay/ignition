@@ -284,7 +284,7 @@ public aspect IgnitedLocationManager {
             PlatformSpecificImplementationFactory.getLastLocationFinder(context).cancel();
             return;
         } else if (requestLocationUpdates
-                && !freshLocation.getExtras().getBoolean(
+                && !freshLocation.getExtras().containsKey(
                         ILastLocationFinder.LAST_LOCATION_TOO_OLD_EXTRA)) {
             // If we requested location updates, turn them on here.
             requestLocationUpdates(context);

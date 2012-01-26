@@ -33,9 +33,10 @@ import com.xtremelabs.robolectric.shadows.ShadowApplication.Wrapper;
 import com.xtremelabs.robolectric.shadows.ShadowLocationManager;
 
 public abstract class IgnitedLocationManagerTest {
+    protected ShadowApplication shadowApp;
+    protected ShadowLocationManager shadowLocationManager;
+
     private IgnitedLocationSampleActivity activity;
-    private ShadowApplication shadowApp;
-    private ShadowLocationManager shadowLocationManager;
     private Location lastKnownLocation;
 
     @Before
@@ -65,7 +66,7 @@ public abstract class IgnitedLocationManagerTest {
         }
     }
 
-    private Location getMockLocation() {
+    protected Location getMockLocation() {
         Location location = new Location(LocationManager.GPS_PROVIDER);
         location.setLatitude(1.0);
         location.setLongitude(1.0);
@@ -73,11 +74,11 @@ public abstract class IgnitedLocationManagerTest {
         return location;
     }
 
-    private Location sendMockLocationBroadcast(String provider) {
+    protected Location sendMockLocationBroadcast(String provider) {
         return sendMockLocationBroadcast(provider, 50f);
     }
 
-    private Location sendMockLocationBroadcast(String provider, float accuracy) {
+    protected Location sendMockLocationBroadcast(String provider, float accuracy) {
         Intent intent = new Intent(IgnitedLocationConstants.ACTIVE_LOCATION_UPDATE_ACTION);
         Location location = new Location(provider);
         location.setLatitude(2.0);
@@ -89,7 +90,7 @@ public abstract class IgnitedLocationManagerTest {
         return location;
     }
 
-    private void sendBatteryLevelChangedBroadcast(int level) {
+    protected void sendBatteryLevelChangedBroadcast(int level) {
         Intent intent = new Intent(Intent.ACTION_BATTERY_CHANGED);
         intent.putExtra(BatteryManager.EXTRA_LEVEL, level);
         intent.putExtra(BatteryManager.EXTRA_SCALE, 100);
@@ -261,29 +262,7 @@ public abstract class IgnitedLocationManagerTest {
     }
 
     @Test
-    public void shouldRequestUpdatesFromGpsIfBatteryOkay() {
-        sendBatteryLevelChangedBroadcast(10);
-
-        resume();
-
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_BATTERY_LOW);
-        shadowApp.sendBroadcast(intent);
-
-        Map<PendingIntent, Criteria> locationPendingIntents = shadowLocationManager
-                .getRequestLocationUdpateCriteriaPendingIntents();
-        Criteria criteria = new Criteria();
-        criteria.setAccuracy(Criteria.ACCURACY_FINE);
-
-        sendBatteryLevelChangedBroadcast(100);
-
-        intent.setAction(Intent.ACTION_BATTERY_OKAY);
-        shadowApp.sendBroadcast(intent);
-
-        assertThat("Updates from " + LocationManager.GPS_PROVIDER
-                + " provider should be requested when battery power is okay!",
-                locationPendingIntents.containsValue(criteria));
-    }
+    public abstract void shouldRequestUpdatesFromGpsIfBatteryOkay();
 
     // @Test
     // public void shouldDisableLocationUpdatesIfOnIgnitedLocationChangedReturnsFalse() {
@@ -314,14 +293,14 @@ public abstract class IgnitedLocationManagerTest {
     }
 
     // Helper methods
-    private void finish() {
+    protected void finish() {
         activity.finish();
         activity.onPause();
         activity.onStop();
         activity.onDestroy();
     }
 
-    private void resume() {
+    protected void resume() {
         activity.onStart();
         activity.onResume();
     }
