@@ -15,8 +15,7 @@
     <dependency>
       <groupId>com.google.android</groupId>
       <artifactId>android</artifactId>
-      <version>2.3.3</version>
-      <scope>test</scope>
+      <version>4.0.1.2</version>
     </dependency>
     <dependency>
       <groupId>com.google.android.maps</groupId>
@@ -26,7 +25,6 @@
       <groupId>com.github.ignition</groupId>
       <artifactId>ignition-location-samples</artifactId>
       <version>${project.version}</version>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.pivotallabs</groupId>
@@ -37,8 +35,6 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.8.2</version>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.hamcrest</groupId>

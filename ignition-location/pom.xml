@@ -20,9 +20,10 @@
   </modules>
 
   <properties>
-    <androidApiLevel>10</androidApiLevel>
-    <androidVersion>2.3.3</androidVersion>
+    <androidApiLevel>15</androidApiLevel>
+    <androidVersion>4.0.3</androidVersion>
     <androidApiRevision>r2</androidApiRevision>
+    <googleMapsApiRevision>r1</googleMapsApiRevision>
   </properties>
 
   <dependencyManagement>
@@ -36,7 +37,7 @@
       <dependency>
         <groupId>com.google.android.maps</groupId>
         <artifactId>maps</artifactId>
-        <version>${androidApiLevel}_${androidApiRevision}</version>
+        <version>${androidApiLevel}_${googleMapsApiRevision}</version>
         <scope>provided</scope>
       </dependency>
       <dependency>
