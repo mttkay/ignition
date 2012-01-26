@@ -278,12 +278,9 @@ public aspect IgnitedLocationManager {
         boolean keepRequestingLocationUpdates = ((OnIgnitedLocationChangedListener) context)
                 .onIgnitedLocationChanged(currentLocation);
         if (!keepRequestingLocationUpdates) {
-            if (!locationUpdatesDisabled) {
-                disableLocationUpdates(true);
-            }
+            disableLocationUpdates(true);
             PlatformSpecificImplementationFactory.getLastLocationFinder(context).cancel();
             return;
-                && locationUpdatesDisabled
         } else if (requestLocationUpdates
                 && !freshLocation.getExtras().getBoolean(
                         ILastLocationFinder.LAST_LOCATION_TOO_OLD_EXTRA)) {
@@ -304,6 +301,9 @@ public aspect IgnitedLocationManager {
      * Start listening for location updates.
      */
     protected void requestLocationUpdates(Context context) {
+        if (!locationUpdatesDisabled) {
+            return;
+        }
         Criteria locationUpdateCriteria;
         if (isBatteryOk()) {
             locationUpdateCriteria = defaultCriteria;
