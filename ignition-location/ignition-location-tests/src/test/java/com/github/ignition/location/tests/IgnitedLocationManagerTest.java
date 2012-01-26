@@ -241,7 +241,7 @@ public abstract class IgnitedLocationManagerTest {
     }
 
     @Test
-    public void shouldRequestUpdatesFromNetworkIfBatteryLow() {
+    public void shouldSwitchToNetworkProviderIfBatteryLow() {
         resume();
 
         Map<PendingIntent, Criteria> locationPendingIntents = shadowLocationManager
