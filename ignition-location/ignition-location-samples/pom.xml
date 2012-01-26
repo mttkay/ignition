@@ -9,10 +9,9 @@
     <version>0.1-SNAPSHOT</version>
   </parent>
   <groupId>com.github.ignition</groupId>
-  <artifactId>ignition-location-sample</artifactId>
+  <artifactId>ignition-location-samples</artifactId>
   <packaging>apk</packaging>
-  <name>Ignition Location Sample Application</name>
-  <url>http://github.com/stefanodacchille/ignition-location</url>
+  <name>ignition-location-samples</name>
 
   <dependencies>
     <dependency>

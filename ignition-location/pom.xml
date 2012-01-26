@@ -11,8 +11,7 @@
   <groupId>com.github.ignition</groupId>
   <artifactId>ignition-location-project</artifactId>
   <packaging>pom</packaging>
-  <name>Ignition Location Project</name>
-  <url>http://github.com/stefanodacchille/ignition-location</url>
+  <name>ignition-location-project</name>
 
   <modules>
     <module>ignition-location-lib</module>

@@ -8,11 +8,8 @@
     <artifactId>ignition-location-project</artifactId>
     <version>0.1-SNAPSHOT</version>
   </parent>
-  <groupId>com.github.ignition.location.tests</groupId>
   <artifactId>ignition-location-tests</artifactId>
-  <packaging>jar</packaging>
-  <name>Ignition Location Tests</name>
-  <url>http://github.com/stefanodacchille/ignition-location</url>
+  <name>ignition-location-tests</name>
 
   <dependencies>
     <dependency>
@@ -27,7 +24,7 @@
     </dependency>
     <dependency>
       <groupId>com.github.ignition</groupId>
-      <artifactId>location-sample</artifactId>
+      <artifactId>ignition-location-samples</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
     </dependency>

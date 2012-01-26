@@ -9,8 +9,7 @@
   <groupId>com.github.ignition</groupId>
   <artifactId>ignition-location</artifactId>
   <packaging>apklib</packaging>
-  <url>http://github.com/stefanodacchille/ignition-location</url>
-  <name>Ignition Location</name>
+  <name>ignition-location-lib</name>
 
   <dependencies>
     <dependency>
