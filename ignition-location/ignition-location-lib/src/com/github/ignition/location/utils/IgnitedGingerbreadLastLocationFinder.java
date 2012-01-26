@@ -85,6 +85,7 @@ public class IgnitedGingerbreadLastLocationFinder implements ILastLocationFinder
      *            Minimum time required between location updates.
      * @return The most accurate and / or timely previously detected location.
      */
+    // TODO: refactor this (not DRY at all atm)
     @Override
     public Location getLastBestLocation(Context context, int minDistance, long minTime) {
         Location bestResult = null;
@@ -130,11 +131,10 @@ public class IgnitedGingerbreadLastLocationFinder implements ILastLocationFinder
             IntentFilter locIntentFilter = new IntentFilter(SINGLE_LOCATION_UPDATE_ACTION);
             context.registerReceiver(singleUpdateReceiver, locIntentFilter);
             locationManager.requestSingleUpdate(criteria, singleUpatePI);
-        }
 
-        if (bestResult != null) {
             bestResult.getExtras().putBoolean(LAST_LOCATION_TOO_OLD_EXTRA, true);
         }
+
         return bestResult;
     }
 

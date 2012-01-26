@@ -76,6 +76,7 @@ public class IgnitedLegacyLastLocationFinder implements ILastLocationFinder {
      *            Minimum time required between location updates.
      * @return The most accurate and / or timely previously detected location.
      */
+    // TODO: refactor this (not DRY at all atm)
     @Override
     public Location getLastBestLocation(Context context, int minDistance, long minTime) {
         Location bestResult = null;
@@ -92,12 +93,12 @@ public class IgnitedLegacyLastLocationFinder implements ILastLocationFinder {
                 float accuracy = location.getAccuracy();
                 long time = location.getTime();
 
-                if (((time < minTime) && (accuracy < bestAccuracy))) {
+                if (((time > minTime) && (accuracy < bestAccuracy))) {
                     bestResult = location;
                     bestAccuracy = accuracy;
                     bestTime = time;
-                } else if ((time > minTime) && (bestAccuracy == Float.MAX_VALUE)
-                        && (time < bestTime)) {
+                } else if ((time < minTime) && (bestAccuracy == Float.MAX_VALUE)
+                        && (time > bestTime)) {
                     bestResult = location;
                     bestTime = time;
                 }
@@ -120,11 +121,9 @@ public class IgnitedLegacyLastLocationFinder implements ILastLocationFinder {
                 locationManager.requestLocationUpdates(provider, 0, 0, singeUpdateListener,
                         context.getMainLooper());
             }
-        }
-
-        if (bestResult != null) {
             bestResult.getExtras().putBoolean(LAST_LOCATION_TOO_OLD_EXTRA, true);
         }
+
         return bestResult;
     }
 
