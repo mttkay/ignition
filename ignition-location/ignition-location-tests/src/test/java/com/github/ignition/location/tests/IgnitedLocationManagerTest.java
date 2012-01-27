@@ -32,7 +32,7 @@ import com.xtremelabs.robolectric.shadows.ShadowApplication;
 import com.xtremelabs.robolectric.shadows.ShadowApplication.Wrapper;
 import com.xtremelabs.robolectric.shadows.ShadowLocationManager;
 
-public abstract class IgnitedLocationManagerTest {
+@RunWith(IgnitedLocationSampleActivityRobolectricTestRunner.class)
     protected ShadowApplication shadowApp;
     protected ShadowLocationManager shadowLocationManager;
 

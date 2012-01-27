@@ -13,7 +13,7 @@ import android.location.LocationManager;
 
 import com.github.ignition.support.IgnitedDiagnostics;
 
-@RunWith(LocationTestsRobolectricTestRunner.class)
+@RunWith(IgnitedLocationSampleActivityRobolectricTestRunner.class)
 public class IgnitedLocationManagerTestGingerbread extends IgnitedLocationManagerTest {
 
     @Override
