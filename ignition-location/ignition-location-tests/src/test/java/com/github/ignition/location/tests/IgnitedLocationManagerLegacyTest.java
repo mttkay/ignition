@@ -15,7 +15,7 @@ import android.location.LocationManager;
 import com.github.ignition.support.IgnitedDiagnostics;
 
 @RunWith(IgnitedLocationSampleActivityRobolectricTestRunner.class)
-public class IgnitedLocationManagerLegacyTest extends TestIgnitedLocationManager {
+public class IgnitedLocationManagerLegacyTest extends AbstractIgnitedLocationManagerTest {
 
     @Override
     @Before
