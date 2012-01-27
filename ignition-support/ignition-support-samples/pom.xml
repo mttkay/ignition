@@ -12,7 +12,7 @@
   <packaging>pom</packaging>
 
   <modules>
-    <module>IgnitedHttpSampleApp</module>
+    <module>ignited-http-sample</module>
   </modules>
 
   <dependencyManagement>

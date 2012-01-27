@@ -6,7 +6,7 @@
     <version>0.1-SNAPSHOT</version>
   </parent>
   <groupId>com.github.ignition</groupId>
-  <artifactId>IgnitedHttpSampleApp</artifactId>
+  <artifactId>ignited-http-sample</artifactId>
   <packaging>apk</packaging>
   
   <dependencies>
