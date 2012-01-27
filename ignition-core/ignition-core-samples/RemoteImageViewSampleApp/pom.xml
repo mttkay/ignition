@@ -2,9 +2,8 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.github.ignition</groupId>
-    <artifactId>ignition-samples</artifactId>
+    <artifactId>ignition-core-samples</artifactId>
     <version>0.1-SNAPSHOT</version>
-    <relativePath>.../ignition-core</relativePath>
   </parent>
   <groupId>com.github.ignition</groupId>
   <artifactId>RemoteImageViewSampleApp</artifactId>

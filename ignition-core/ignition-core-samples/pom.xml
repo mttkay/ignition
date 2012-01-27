@@ -16,4 +16,19 @@
     <module>RemoteImageViewSampleApp</module>
   </modules>
 
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>com.github.ignition</groupId>
+        <artifactId>ignition-core</artifactId>
+        <type>apklib</type>
+        <version>${project.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <build>
+    <sourceDirectory>src</sourceDirectory>
+  </build>
+
 </project>
