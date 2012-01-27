@@ -1,0 +1,24 @@
+<projectDescription>
+  <name>ignition-location-sample</name>
+  <comment>Kick-starts Android application development. NO_M2ECLIPSE_SUPPORT: Project files created with the maven-eclipse-plugin are not supported in M2Eclipse.</comment>
+  <projects/>
+  <buildSpec>
+    <buildCommand>
+      <name>com.android.ide.eclipse.adt.ResourceManagerBuilder</name>
+    </buildCommand>
+    <buildCommand>
+      <name>com.android.ide.eclipse.adt.PreCompilerBuilder</name>
+    </buildCommand>
+    <buildCommand>
+      <name>org.eclipse.ajdt.core.ajbuilder</name>
+    </buildCommand>
+    <buildCommand>
+      <name>com.android.ide.eclipse.adt.ApkBuilder</name>
+    </buildCommand>
+  </buildSpec>
+  <natures>
+    <nature>org.eclipse.jdt.core.javanature</nature>
+    <nature>com.android.ide.eclipse.adt.AndroidNature</nature>
+    <nature>org.eclipse.ajdt.ui.ajnature</nature>
+  </natures>
+</projectDescription>
