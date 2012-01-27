@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
   xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <parent>
@@ -8,24 +7,14 @@
     <artifactId>ignition-location-project</artifactId>
     <version>0.1-SNAPSHOT</version>
   </parent>
-  <groupId>com.github.ignition</groupId>
   <artifactId>ignition-location-samples</artifactId>
-  <packaging>apk</packaging>
-  <name>ignition-location-samples</name>
+  <packaging>pom</packaging>
+
+  <modules>
+    <module>IgnitedLocationSampleActivity</module>
+  </modules>
 
   <dependencies>
-    <dependency>
-      <groupId>com.google.android</groupId>
-      <artifactId>android</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.google.android.maps</groupId>
-      <artifactId>maps</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.aspectj</groupId>
-      <artifactId>aspectjrt</artifactId>
-    </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>ignition-location</artifactId>
@@ -42,59 +31,15 @@
         </exclusion>
       </exclusions>
     </dependency>
-    <dependency>
-      <groupId>com.bugsense</groupId>
-      <artifactId>bugsense-trace</artifactId>
-      <version>1.1.2</version>
-    </dependency>
   </dependencies>
 
   <build>
-    <sourceDirectory>src</sourceDirectory>
     <plugins>
       <plugin>
         <groupId>com.jayway.maven.plugins.android.generation2</groupId>
         <artifactId>android-maven-plugin</artifactId>
-        <extensions>true</extensions>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>aspectj-maven-plugin</artifactId>
-        <configuration>
-          <aspectLibraries>
-            <aspectLibrary>
-              <groupId>${project.groupId}</groupId>
-              <artifactId>ignition-location</artifactId>
-              <type>apklib</type>
-            </aspectLibrary>
-          </aspectLibraries>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-eclipse-plugin</artifactId>
-        <configuration>
-          <excludes>
-            <exclude>android:android</exclude>
-            <exclude>com.google.android.maps:maps</exclude>
-          </excludes>
-          <buildOutputDirectory>bin</buildOutputDirectory>
-          <classpathContainers>
-            <classpathContainer>com.android.ide.eclipse.adt.ANDROID_FRAMEWORK</classpathContainer>
-          </classpathContainers>
-          <additionalProjectnatures>
-            <projectnature>com.android.ide.eclipse.adt.AndroidNature</projectnature>
-            <projectnature>org.eclipse.ajdt.ui.ajnature</projectnature>
-          </additionalProjectnatures>
-          <buildcommands>
-            <buildcommand>com.android.ide.eclipse.adt.ResourceManagerBuilder</buildcommand>
-            <buildcommand>com.android.ide.eclipse.adt.PreCompilerBuilder</buildcommand>
-            <buildcommand>org.eclipse.ajdt.core.ajbuilder</buildcommand>
-            <buildcommand>com.android.ide.eclipse.adt.ApkBuilder</buildcommand>
-          </buildcommands>
-          <useProjectReferences>false</useProjectReferences>
-        </configuration>
       </plugin>
     </plugins>
   </build>
+
 </project>
