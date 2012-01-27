@@ -8,6 +8,56 @@
   <version>0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <url>http://github.com/kaeppler/ignition</url>
+  <description>
+    Kick-starts Android application development.
+  </description>
+
+  <issueManagement>
+    <system>GitHub</system>
+    <url>https://github.com/kaeppler/ignition/issues</url>
+  </issueManagement>
+
+  <developers>
+    <developer>
+      <id>mkaeppler</id>
+      <name>Matthias Käppler</name>
+      <email>m.kaeppler@gmail.com</email>
+      <url>http://androitism.posterous.com</url>
+      <organization>Qype GmbH</organization>
+      <organizationUrl>http://www.qype.com</organizationUrl>
+      <timezone>+1</timezone>
+    </developer>
+    <developer>
+      <id>sdacchille</id>
+      <name>Stefano Dacchille</name>
+      <email>stefano.dacchille@gmail.com</email>
+      <organization>Qype GmbH</organization>
+      <organizationUrl>http://www.qype.com</organizationUrl>
+      <timezone>+1</timezone>
+    </developer>
+    <developer>
+      <id>mgengland</id>
+      <name>Michael G. England</name>
+      <email>mg.england@gmail.com</email>
+      <organization>Qype GmbH</organization>
+      <organizationUrl>http://www.qype.com</organizationUrl>
+      <timezone>+1</timezone>
+    </developer>
+  </developers>
+
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <scm>
+    <url>https://github.com/kaeppler/ignition</url>
+    <connection>scm:git:git://github.com/kaeppler/ignition.git</connection>
+    <developerConnection>scm:git:git@github.com:kaeppler/ignition.git</developerConnection>
+  </scm>
 
   <modules>
     <module>ignition-support</module>
@@ -56,6 +106,13 @@
   </dependencyManagement>
 
   <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>2.2.1</version>
+      </plugin>
+    </plugins>
     <pluginManagement>
       <plugins>
         <!-- compiler settings -->
