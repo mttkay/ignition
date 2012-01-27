@@ -6,7 +6,7 @@
     <version>0.1-SNAPSHOT</version>
   </parent>
   <groupId>com.github.ignition</groupId>
-  <artifactId>IgnitedAsyncTaskSampleApp</artifactId>
+  <artifactId>ignited-async-task-sample</artifactId>
   <packaging>apk</packaging>
   
   <dependencies>

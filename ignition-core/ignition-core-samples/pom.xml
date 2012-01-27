@@ -12,8 +12,8 @@
   <packaging>pom</packaging>
 
   <modules>
-    <module>IgnitedAsyncTaskSampleApp</module>
-    <module>RemoteImageViewSampleApp</module>
+    <module>ignited-async-task-sample</module>
+    <module>remote-image-view-sample</module>
   </modules>
 
   <dependencyManagement>

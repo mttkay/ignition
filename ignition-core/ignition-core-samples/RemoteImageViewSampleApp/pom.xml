@@ -6,7 +6,7 @@
     <version>0.1-SNAPSHOT</version>
   </parent>
   <groupId>com.github.ignition</groupId>
-  <artifactId>RemoteImageViewSampleApp</artifactId>
+  <artifactId>remote-image-view-sample</artifactId>
   <packaging>apk</packaging>
   
   <dependencies>
