@@ -32,7 +32,7 @@ import com.xtremelabs.robolectric.shadows.ShadowApplication;
 import com.xtremelabs.robolectric.shadows.ShadowApplication.Wrapper;
 import com.xtremelabs.robolectric.shadows.ShadowLocationManager;
 
-@RunWith(IgnitedLocationSampleActivityRobolectricTestRunner.class)
+public abstract class TestIgnitedLocationManager {
     protected ShadowApplication shadowApp;
     protected ShadowLocationManager shadowLocationManager;
 
@@ -260,9 +260,6 @@ import com.xtremelabs.robolectric.shadows.ShadowLocationManager;
                 + " provider shouldn't be requested when battery power is low!",
                 !locationPendingIntents.containsValue(criteria));
     }
-
-    @Test
-    public abstract void shouldRequestUpdatesFromGpsIfBatteryOkay();
 
     // @Test
     // public void shouldDisableLocationUpdatesIfOnIgnitedLocationChangedReturnsFalse() {

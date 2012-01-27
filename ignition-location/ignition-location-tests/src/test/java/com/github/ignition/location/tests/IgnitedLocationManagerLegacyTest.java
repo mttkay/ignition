@@ -4,35 +4,35 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.util.Map;
 
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.location.Criteria;
 import android.location.LocationManager;
 
 import com.github.ignition.support.IgnitedDiagnostics;
 
 @RunWith(IgnitedLocationSampleActivityRobolectricTestRunner.class)
-public class IgnitedLocationManagerTestGingerbread extends IgnitedLocationManagerTest {
+public class IgnitedLocationManagerLegacyTest extends TestIgnitedLocationManager {
 
     @Override
+    @Before
     public void setUp() throws Exception {
-        IgnitedDiagnostics.setTestApiLevel(IgnitedDiagnostics.GINGERBREAD);
+        IgnitedDiagnostics.setTestApiLevel(IgnitedDiagnostics.DONUT);
 
         super.setUp();
     }
 
-    @Override
+    @Test
     public void shouldRequestUpdatesFromGpsIfBatteryOkay() {
         sendBatteryLevelChangedBroadcast(10);
 
         resume();
 
-        Map<PendingIntent, Criteria> locationPendingIntents = shadowLocationManager
-                .getRequestLocationUdpateCriteriaPendingIntents();
-        Criteria criteria = new Criteria();
-        criteria.setAccuracy(Criteria.ACCURACY_FINE);
+        Map<PendingIntent, String> locationPendingIntents = shadowLocationManager
+                .getRequestLocationUdpateProviderPendingIntents();
 
         sendBatteryLevelChangedBroadcast(100);
 
@@ -41,6 +41,6 @@ public class IgnitedLocationManagerTestGingerbread extends IgnitedLocationManage
 
         assertThat("Updates from " + LocationManager.GPS_PROVIDER
                 + " provider should be requested when battery power is okay!",
-                locationPendingIntents.containsValue(criteria));
+                locationPendingIntents.containsValue(LocationManager.GPS_PROVIDER));
     }
 }
