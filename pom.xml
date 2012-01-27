@@ -44,12 +44,12 @@
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
         <version>4.10</version>
-        <scope>test</scope>
+        <scope>test</scope> 
       </dependency>
       <dependency>
         <groupId>com.pivotallabs</groupId>
         <artifactId>robolectric</artifactId>
-        <version>1.0</version>
+        <version>1.1-qype</version>
         <scope>test</scope>
       </dependency>
     </dependencies>
