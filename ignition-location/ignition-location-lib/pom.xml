@@ -13,14 +13,6 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.google.android</groupId>
-      <artifactId>android</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.aspectj</groupId>
-      <artifactId>aspectjrt</artifactId>
-    </dependency>
-    <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>ignition-support</artifactId>
       <version>${project.version}</version>
@@ -44,7 +36,7 @@
         <artifactId>maven-eclipse-plugin</artifactId>
         <configuration>
           <excludes>
-            <exclude>android:android</exclude>
+            <exclude>com.google.android:android</exclude>
           </excludes>
           <classpathContainers>
             <classpathContainer>com.android.ide.eclipse.adt.ANDROID_FRAMEWORK</classpathContainer>

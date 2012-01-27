@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
   xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <parent>
@@ -20,32 +19,22 @@
   </modules>
 
   <properties>
-    <androidApiLevel>15</androidApiLevel>
     <androidVersion>2.3.3</androidVersion>
-    <androidApiRevision>r1</androidApiRevision>
   </properties>
 
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>com.google.android</groupId>
-        <artifactId>android</artifactId>
-        <version>${androidVersion}</version>
-        <scope>provided</scope>
-      </dependency>
-      <dependency>
-        <groupId>com.google.android.maps</groupId>
-        <artifactId>maps</artifactId>
-        <version>${androidApiLevel}_${androidApiRevision}</version>
-        <scope>provided</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.aspectj</groupId>
-        <artifactId>aspectjrt</artifactId>
-        <version>1.6.11</version>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
+  <dependencies>
+    <dependency>
+      <groupId>com.google.android</groupId>
+      <artifactId>android</artifactId>
+      <version>${androidVersion}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.aspectj</groupId>
+      <artifactId>aspectjrt</artifactId>
+      <version>1.6.11</version>
+    </dependency>
+  </dependencies>
 
   <build>
     <pluginManagement>
@@ -68,8 +57,7 @@
           </configuration>
           <executions>
             <execution>
-              <!-- phase need to be before compile, or the build will fail. 
-                More info here: http://stackoverflow.com/questions/2610633/maven-compile-aspectj-project-containing-java-1-6-source -->
+              <!-- phase need to be before compile, or the build will fail. More info here: http://stackoverflow.com/questions/2610633/maven-compile-aspectj-project-containing-java-1-6-source -->
               <phase>process-sources</phase>
               <goals>
                 <goal>compile</goal>

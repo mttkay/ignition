@@ -13,27 +13,18 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.google.android</groupId>
-      <artifactId>android</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.google.android.maps</groupId>
-      <artifactId>maps</artifactId>
-    </dependency>
-    <dependency>
       <groupId>com.github.ignition</groupId>
-      <artifactId>ignition-location-samples</artifactId>
+      <artifactId>IgnitedLocationSampleActivity</artifactId>
       <version>${project.version}</version>
+    </dependency>
+    <!-- test dependencies -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
     </dependency>
     <dependency>
       <groupId>com.pivotallabs</groupId>
       <artifactId>robolectric</artifactId>
-      <version>1.1-SNAPSHOT</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
     </dependency>
     <dependency>
       <groupId>org.hamcrest</groupId>
