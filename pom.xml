@@ -27,7 +27,7 @@
     <sourceCompatibility>1.6</sourceCompatibility>
 
     <!-- repository settings -->
-    <qypeRepositoryUrl>http://smith.qype.com:8080/nexus/content/repositories</qypeRepositoryUrl>
+    <qypeRepositoryUrl>http://nexus.qype.com/content/repositories</qypeRepositoryUrl>
   </properties>
 
   <dependencyManagement>
