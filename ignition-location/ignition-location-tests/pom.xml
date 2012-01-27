@@ -14,7 +14,7 @@
   <dependencies>
     <dependency>
       <groupId>com.github.ignition</groupId>
-      <artifactId>IgnitedLocationSampleActivity</artifactId>
+      <artifactId>ignition-location-sample</artifactId>
       <version>${project.version}</version>
     </dependency>
     <!-- test dependencies -->
