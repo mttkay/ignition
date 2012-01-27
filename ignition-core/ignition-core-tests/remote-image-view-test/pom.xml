@@ -13,7 +13,7 @@
   <dependencies>
     <dependency>
       <groupId>com.github.ignition</groupId>
-      <artifactId>RemoteImageViewSampleApp</artifactId>
+      <artifactId>remote-image-view-sample</artifactId>
       <version>${project.version}</version>
     </dependency>
   </dependencies>
