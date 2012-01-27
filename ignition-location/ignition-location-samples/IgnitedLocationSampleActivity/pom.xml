@@ -8,7 +8,7 @@
     <version>0.1-SNAPSHOT</version>
   </parent>
   <groupId>com.github.ignition</groupId>
-  <artifactId>IgnitedLocationSampleActivity</artifactId>
+  <artifactId>ignition-location-sample</artifactId>
   <packaging>apk</packaging>
 
   <dependencies>

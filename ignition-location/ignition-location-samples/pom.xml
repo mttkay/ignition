@@ -11,7 +11,7 @@
   <packaging>pom</packaging>
 
   <modules>
-    <module>IgnitedLocationSampleActivity</module>
+    <module>ignition-location-sample</module>
   </modules>
 
   <dependencies>
