@@ -21,23 +21,22 @@
 
   <properties>
     <androidApiLevel>15</androidApiLevel>
-    <androidVersion>4.0.3</androidVersion>
-    <androidApiRevision>r2</androidApiRevision>
-    <googleMapsApiRevision>r1</googleMapsApiRevision>
+    <androidVersion>2.3.3</androidVersion>
+    <androidApiRevision>r1</androidApiRevision>
   </properties>
 
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>android</groupId>
+        <groupId>com.google.android</groupId>
         <artifactId>android</artifactId>
-        <version>${androidVersion}_${androidApiRevision}</version>
+        <version>${androidVersion}</version>
         <scope>provided</scope>
       </dependency>
       <dependency>
         <groupId>com.google.android.maps</groupId>
         <artifactId>maps</artifactId>
-        <version>${androidApiLevel}_${googleMapsApiRevision}</version>
+        <version>${androidApiLevel}_${androidApiRevision}</version>
         <scope>provided</scope>
       </dependency>
       <dependency>
