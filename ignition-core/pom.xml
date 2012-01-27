@@ -10,10 +10,6 @@
   </parent>
   <artifactId>ignition-core-project</artifactId>
   <packaging>pom</packaging>
-  
-  <properties>
-    <androidApiRevision>r3</androidApiRevision>
-  </properties>
 
   <modules>
     <module>ignition-core-lib</module>
