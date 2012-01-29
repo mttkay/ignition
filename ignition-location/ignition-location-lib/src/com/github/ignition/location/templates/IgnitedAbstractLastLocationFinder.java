@@ -72,7 +72,9 @@ public abstract class IgnitedAbstractLastLocationFinder implements ILastLocation
         if ((bestTime < minTime) || (bestAccuracy > minDistance)) {
             Log.d(LOG_TAG, "Last location is too old or too inaccurate. Retrieving a new one...");
             retrieveSingleLocationUpdate();
-            bestResult.getExtras().putBoolean(LAST_LOCATION_TOO_OLD_EXTRA, true);
+            if (bestResult != null) {
+                bestResult.getExtras().putBoolean(LAST_LOCATION_TOO_OLD_EXTRA, true);
+            }
         }
 
         return bestResult;
