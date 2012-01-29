@@ -28,9 +28,9 @@ import com.github.ignition.location.templates.ILastLocationFinder;
 import com.github.ignition.location.templates.IgnitedAbstractLocationUpdateRequester;
 import com.github.ignition.location.utils.lastlocationfinders.IgnitedGingerbreadLastLocationFinder;
 import com.github.ignition.location.utils.lastlocationfinders.IgnitedLegacyLastLocationFinder;
-import com.github.ignition.location.utils.locationupdatedrequesters.IgnitedFroyoLocationUpdateRequester;
-import com.github.ignition.location.utils.locationupdatedrequesters.IgnitedGingerbreadLocationUpdateRequester;
-import com.github.ignition.location.utils.locationupdatedrequesters.IgnitedLegacyLocationUpdateRequester;
+import com.github.ignition.location.utils.locationupdaterequesters.IgnitedFroyoLocationUpdateRequester;
+import com.github.ignition.location.utils.locationupdaterequesters.IgnitedGingerbreadLocationUpdateRequester;
+import com.github.ignition.location.utils.locationupdaterequesters.IgnitedLegacyLocationUpdateRequester;
 import com.github.ignition.support.IgnitedDiagnostics;
 
 /**

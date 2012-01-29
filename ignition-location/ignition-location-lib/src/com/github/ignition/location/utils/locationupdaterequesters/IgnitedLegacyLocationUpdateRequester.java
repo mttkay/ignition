@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.ignition.location.utils.locationupdatedrequesters;
+package com.github.ignition.location.utils.locationupdaterequesters;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
