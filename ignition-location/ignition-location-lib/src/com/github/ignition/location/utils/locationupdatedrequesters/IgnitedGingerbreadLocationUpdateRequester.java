@@ -14,20 +14,21 @@
  * limitations under the License.
  */
 
-package com.github.ignition.location.utils;
+package com.github.ignition.location.utils.locationupdatedrequesters;
 
 import android.app.PendingIntent;
+import android.location.Criteria;
 import android.location.LocationManager;
 
 /**
- * Provides support for initiating active and passive location updates optimized for the Froyo
+ * Provides support for initiating active and passive location updates optimized for the Gingerbread
  * release. Includes use of the Passive Location Provider.
- * <p/>
+ * 
  * Uses broadcast Intents to notify the app of location changes.
  */
-public class FroyoLocationUpdateRequester extends LegacyLocationUpdateRequester {
+public class IgnitedGingerbreadLocationUpdateRequester extends IgnitedFroyoLocationUpdateRequester {
 
-    public FroyoLocationUpdateRequester(LocationManager locationManager) {
+    public IgnitedGingerbreadLocationUpdateRequester(LocationManager locationManager) {
         super(locationManager);
     }
 
@@ -35,11 +36,13 @@ public class FroyoLocationUpdateRequester extends LegacyLocationUpdateRequester 
      * {@inheritDoc}
      */
     @Override
-    public void requestPassiveLocationUpdates(long minTime, long minDistance,
+    public void requestLocationUpdates(long minTime, long minDistance, Criteria criteria,
             PendingIntent pendingIntent) {
-        // Froyo introduced the Passive Location Provider, which receives updates whenever a 3rd
-        // party app receives location updates.
-        this.locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, minTime,
-                minDistance, pendingIntent);
+        super.requestLocationUpdates(minTime, minDistance, criteria, pendingIntent);
+        // Gingerbread supports a location update request that accepts criteria
+        // directly.
+        // Note that we aren't monitoring this provider to check if it becomes
+        // disabled - this is handled by the calling Activity.
+        this.locationManager.requestLocationUpdates(minTime, minDistance, criteria, pendingIntent);
     }
 }

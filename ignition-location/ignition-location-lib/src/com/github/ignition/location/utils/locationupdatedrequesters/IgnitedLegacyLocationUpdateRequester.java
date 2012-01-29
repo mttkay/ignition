@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package com.github.ignition.location.utils;
+package com.github.ignition.location.utils.locationupdatedrequesters;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.location.Criteria;
 import android.location.LocationManager;
 
-import com.github.ignition.location.templates.LocationUpdateRequester;
+import com.github.ignition.location.templates.IgnitedAbstractLocationUpdateRequester;
 
 /**
  * Provides support for initiating active and passive location updates for all Android platforms
@@ -29,15 +29,15 @@ import com.github.ignition.location.templates.LocationUpdateRequester;
  * <p/>
  * Uses broadcast Intents to notify the app of location changes.
  */
-public class LegacyLocationUpdateRequester extends LocationUpdateRequester {
+public class IgnitedLegacyLocationUpdateRequester extends IgnitedAbstractLocationUpdateRequester {
 
     protected AlarmManager alarmManager;
 
-    protected LegacyLocationUpdateRequester(LocationManager locationManager) {
+    public IgnitedLegacyLocationUpdateRequester(LocationManager locationManager) {
         super(locationManager);
     }
 
-    protected LegacyLocationUpdateRequester(LocationManager locationManager,
+    public IgnitedLegacyLocationUpdateRequester(LocationManager locationManager,
             AlarmManager alarmManager) {
         super(locationManager);
         this.alarmManager = alarmManager;

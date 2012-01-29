@@ -44,7 +44,7 @@ import com.github.ignition.location.receivers.IgnitedLocationChangedReceiver;
 import com.github.ignition.location.receivers.IgnitedPassiveLocationChangedReceiver;
 import com.github.ignition.location.tasks.IgnitedLastKnownLocationAsyncTask;
 import com.github.ignition.location.templates.ILastLocationFinder;
-import com.github.ignition.location.templates.LocationUpdateRequester;
+import com.github.ignition.location.templates.IgnitedAbstractLocationUpdateRequester;
 import com.github.ignition.location.templates.OnIgnitedLocationChangedListener;
 import com.github.ignition.location.utils.PlatformSpecificImplementationFactory;
 import com.github.ignition.support.IgnitedDiagnostics;

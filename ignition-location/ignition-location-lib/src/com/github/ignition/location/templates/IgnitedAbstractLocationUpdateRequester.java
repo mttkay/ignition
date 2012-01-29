@@ -26,14 +26,14 @@ import android.location.LocationManager;
  * 
  * Uses broadcast Intents to notify the app of location changes.
  */
-public abstract class LocationUpdateRequester {
+public abstract class IgnitedAbstractLocationUpdateRequester {
     protected static final String TAG = "IgnitedLocationUpdateRequester";
 
     protected LocationManager locationManager;
 
     private PendingIntent locationUpdatesPendingIntent;
 
-    protected LocationUpdateRequester(LocationManager locationManager) {
+    protected IgnitedAbstractLocationUpdateRequester(LocationManager locationManager) {
         this.locationManager = locationManager;
     }
 
