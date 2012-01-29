@@ -46,7 +46,7 @@ import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 
-@IgnitedLocationActivity
+@IgnitedLocationActivity()
 public class IgnitedLocationSampleActivity extends MapActivity {
 
     private TextView useGps;
@@ -190,7 +190,7 @@ public class IgnitedLocationSampleActivity extends MapActivity {
                 IgnitedLocationConstants.USE_GPS_DEFAULT)));
         updates.setText(getBooleanText(settings.getBoolean(
                 IgnitedLocationConstants.SP_KEY_ENABLE_LOCATION_UPDATES,
-                IgnitedLocationConstants.ENABLE_LOCATION_UPDATES_DEFAULT)));
+                IgnitedLocationConstants.REQUEST_LOCATION_UPDATES_DEFAULT)));
         passive.setText(getBooleanText(settings.getBoolean(
                 IgnitedLocationConstants.SP_KEY_ENABLE_PASSIVE_LOCATION_UPDATES,
                 IgnitedLocationConstants.ENABLE_PASSIVE_LOCATION_UPDATES_DEFAULT)));

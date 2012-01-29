@@ -63,15 +63,17 @@ public aspect IgnitedLocationManager {
 
     private Context context;
     private volatile Location currentLocation;
-    private long locationUpdatesInterval, passiveLocationUpdatesInterval;
-    private int locationUpdatesDistanceDiff, passiveLocationUpdatesDistanceDiff;
-    private boolean requestLocationUpdates;
-    private boolean locationUpdatesDisabled = true;
 
     private AsyncTask<Void, Void, Location> ignitedLastKnownLocationTask;
     private SharedPreferences prefs;
     private Handler handler;
 
+    private long locationUpdatesInterval, passiveLocationUpdatesInterval;
+    private int locationUpdatesDistanceDiff;
+    private int passiveLocationUpdatesDistanceDiff;
+    private boolean requestLocationUpdates;
+    private boolean locationUpdatesDisabled = true;
+    
     // Switch to another provider if gps doesn't return a location quickly enough.
     private Runnable removeGpsUpdates = new Runnable() {
         @Override

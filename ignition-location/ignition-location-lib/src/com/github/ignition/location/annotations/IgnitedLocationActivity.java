@@ -28,7 +28,7 @@ public @interface IgnitedLocationActivity {
 
     boolean useGps() default IgnitedLocationConstants.USE_GPS_DEFAULT;
 
-    boolean requestLocationUpdates() default IgnitedLocationConstants.ENABLE_LOCATION_UPDATES_DEFAULT;
+    boolean requestLocationUpdates() default IgnitedLocationConstants.REQUEST_LOCATION_UPDATES_DEFAULT;
 
     int locationUpdatesDistanceDiff() default IgnitedLocationConstants.LOCATION_UPDATES_DISTANCE_DIFF_DEFAULT;
 

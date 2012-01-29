@@ -18,7 +18,7 @@ package com.github.ignition.location;
 
 public class IgnitedLocationConstants {
     public static final boolean USE_GPS_DEFAULT = true;
-    public static final boolean ENABLE_LOCATION_UPDATES_DEFAULT = true;
+    public static final boolean REQUEST_LOCATION_UPDATES_DEFAULT = true;
     // The maximum distance the user should travel between location updates.
     public static final int LOCATION_UPDATES_DISTANCE_DIFF_DEFAULT = 100; // meters
     // The maximum time that should pass before the user gets a location update.
