@@ -27,7 +27,7 @@ import android.util.Log;
 
 import com.github.ignition.location.IgnitedLocationConstants;
 import com.github.ignition.location.annotations.IgnitedLocation;
-import com.github.ignition.location.utils.IgnitedLegacyLastLocationFinder;
+import com.github.ignition.location.utils.lastlocationfinders.IgnitedLegacyLastLocationFinder;
 
 /**
  * This Receiver class is used to listen for Broadcast Intents that announce that a location change

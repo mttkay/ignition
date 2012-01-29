@@ -22,10 +22,10 @@ import android.location.LocationListener;
 
 /**
  * Interface definition for a Last Location Finder.
- * 
+ *
  * Classes that implement this interface must provide methods to find the "best" (most accurate and
  * timely) previously detected location using whatever providers are available.
- * 
+ *
  * Where a timely / accurate previous location is not detected, classes should return the last
  * location and create a one-shot update to find the current location. The one-shot update should be
  * returned via the Location Listener passed in through setChangedLocationListener.
@@ -39,7 +39,7 @@ public interface ILastLocationFinder {
      * providers. Where the last result is beyond the acceptable maximum distance or latency create
      * a one-shot update of the current location to be returned using the {@link LocationListener}
      * passed in through {@link setChangedLocationListener}
-     * 
+     *
      * @param appContext
      *            Application context.
      * @param minDistance
@@ -48,10 +48,15 @@ public interface ILastLocationFinder {
      *            Minimum time required between location updates.
      * @return The most accurate and / or timely previously detected location.
      */
-    public Location getLastBestLocation(Context appContext, int minDistance, long minTime);
+    Location getLastBestLocation(Context appContext, int minDistance, long minTime);
 
     /**
      * Cancel the one-shot current location update.
      */
-    public void cancel();
+    void cancel();
+
+    /**
+     * Retrieve a one-shot location update.
+     */
+    void retrieveSingleLocationUpdate();
 }

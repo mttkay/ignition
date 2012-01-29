@@ -26,7 +26,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 
 import com.github.ignition.location.IgnitedLocationConstants;
-import com.github.ignition.location.templates.LocationUpdateRequester;
+import com.github.ignition.location.templates.IgnitedAbstractLocationUpdateRequester;
 import com.github.ignition.location.utils.PlatformSpecificImplementationFactory;
 import com.github.ignition.support.IgnitedDiagnostics;
 
@@ -60,7 +60,7 @@ public class BootReceiver extends BroadcastReceiver {
                 // Instantiate a Location Update Requester class based on the
                 // available platform version.
                 // This will be used to request location updates.
-                LocationUpdateRequester locationUpdateRequester = PlatformSpecificImplementationFactory
+                IgnitedAbstractLocationUpdateRequester locationUpdateRequester = PlatformSpecificImplementationFactory
                         .getLocationUpdateRequester(context.getApplicationContext());
                 long passiveLocationUpdateInterval = prefs.getLong(
                         IgnitedLocationConstants.SP_KEY_PASSIVE_LOCATION_UPDATES_INTERVAL,

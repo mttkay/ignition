@@ -26,6 +26,8 @@ import android.location.LocationManager;
 
 import com.github.ignition.location.templates.ILastLocationFinder;
 import com.github.ignition.location.templates.LocationUpdateRequester;
+import com.github.ignition.location.utils.lastlocationfinders.IgnitedGingerbreadLastLocationFinder;
+import com.github.ignition.location.utils.lastlocationfinders.IgnitedLegacyLastLocationFinder;
 import com.github.ignition.support.IgnitedDiagnostics;
 
 /**

@@ -56,7 +56,7 @@ public aspect IgnitedLocationManager {
     declare parents : (@IgnitedLocationActivity *) implements OnIgnitedLocationChangedListener;
 
     private Criteria defaultCriteria, lowPowerCriteria;
-    protected LocationUpdateRequester locationUpdateRequester;
+    protected IgnitedAbstractLocationUpdateRequester locationUpdateRequester;
     protected PendingIntent locationListenerPendingIntent, locationListenerPassivePendingIntent;
     protected LocationManager locationManager;
     protected IgnitedLocationListener bestInactiveLocationProviderListener;
