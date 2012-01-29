@@ -43,6 +43,7 @@ public class IgnitedLocationConstants {
     public static final String SP_KEY_PASSIVE_LOCATION_UPDATES_INTERVAL = "sp_key_passive_location_updates_interval";
     public static final String SP_KEY_MIN_BATTERY_LEVEL = "sp_key_min_battery_level";
     public static final String SP_KEY_WAIT_FOR_GPS_FIX_INTERVAL = "sp_key_wait_for_gps_fix_interval";
+    public static final String SP_KEY_SHOW_WAIT_FOR_LOCATION_DIALOG = "sp_key_show_wait_for_location_dialog";
 
     public static final String ACTIVE_LOCATION_UPDATE_PROVIDER_DISABLED_ACTION = "com.github.ignition.location.ACTIVE_LOCATION_UPDATE_PROVIDER_DISABLED_ACTION";
     public static final String ACTIVE_LOCATION_UPDATE_ACTION = "com.github.ignition.location.ACTIVE_LOCATION_UPDATE_ACTION";
@@ -54,4 +55,6 @@ public class IgnitedLocationConstants {
     public static final int MIN_BATTERY_LEVEL_DEFAULT = 15;
 
     public static final long WAIT_FOR_GPS_FIX_INTERVAL_DEFAULT = 30000; // 30s
+
+    public static final boolean SHOW_WAIT_FOR_LOCATION_DIALOG_DEFAULT = true;
 }

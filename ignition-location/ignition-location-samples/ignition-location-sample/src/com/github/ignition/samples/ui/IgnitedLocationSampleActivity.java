@@ -12,7 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  * Ignition-ized by Stefano Dacchille
  */
 
@@ -21,6 +21,7 @@ package com.github.ignition.samples.ui;
 import java.util.Date;
 import java.util.List;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.location.Location;
@@ -36,6 +37,7 @@ import com.bugsense.trace.BugSenseHandler;
 import com.github.ignition.location.IgnitedLocationConstants;
 import com.github.ignition.location.annotations.IgnitedLocation;
 import com.github.ignition.location.annotations.IgnitedLocationActivity;
+import com.github.ignition.location.utils.IgnitedLocationSupport;
 import com.github.ignition.samples.R;
 import com.github.ignition.samples.overlays.AccuracyCircleOverlay;
 import com.google.android.maps.GeoPoint;
@@ -263,5 +265,14 @@ public class IgnitedLocationSampleActivity extends MapActivity {
 
     public int getLocationCount() {
         return viewGroup.getChildCount();
+    }
+
+    // If location is still to be determined, show a "wait for location" dialog
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        if (id == R.id.ign_loc_dialog_wait_for_fix) {
+            return IgnitedLocationSupport.createWaitForLocationDialog(this);
+        }
+        return super.onCreateDialog(id);
     }
 }

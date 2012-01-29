@@ -43,4 +43,6 @@ public @interface IgnitedLocationActivity {
     long waitForGpsFix() default IgnitedLocationConstants.WAIT_FOR_GPS_FIX_INTERVAL_DEFAULT;
 
     int minBatteryLevel() default IgnitedLocationConstants.MIN_BATTERY_LEVEL_DEFAULT;
+
+    boolean showWaitForLocationDialog() default IgnitedLocationConstants.SHOW_WAIT_FOR_LOCATION_DIALOG_DEFAULT;
 }
