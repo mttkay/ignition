@@ -153,27 +153,38 @@ public abstract class AbstractIgnitedLocationManagerTest {
         SharedPreferences pref = activity.getSharedPreferences(
                 IgnitedLocationConstants.SHARED_PREFERENCE_FILE, Context.MODE_PRIVATE);
         boolean followLocationChanges = pref.getBoolean(
-                IgnitedLocationConstants.SP_KEY_ENABLE_PASSIVE_LOCATION_UPDATES, true);
+                IgnitedLocationConstants.SP_KEY_ENABLE_PASSIVE_LOCATION_UPDATES, false);
         boolean useGps = pref.getBoolean(IgnitedLocationConstants.SP_KEY_LOCATION_UPDATES_USE_GPS,
-                IgnitedLocationConstants.USE_GPS_DEFAULT);
-        boolean runOnce = pref.getBoolean(IgnitedLocationConstants.SP_KEY_RUN_ONCE, true);
+                !IgnitedLocationConstants.USE_GPS_DEFAULT);
+        boolean runOnce = pref.getBoolean(IgnitedLocationConstants.SP_KEY_RUN_ONCE, false);
         int locUpdatesDistDiff = pref.getInt(
                 IgnitedLocationConstants.SP_KEY_LOCATION_UPDATES_DISTANCE_DIFF,
-                IgnitedLocationConstants.LOCATION_UPDATES_DISTANCE_DIFF_DEFAULT);
+                IgnitedLocationConstants.LOCATION_UPDATES_DISTANCE_DIFF_DEFAULT + 1);
         long locUpdatesInterval = pref.getLong(
                 IgnitedLocationConstants.SP_KEY_LOCATION_UPDATES_INTERVAL,
-                IgnitedLocationConstants.PASSIVE_LOCATION_UPDATES_INTERVAL_DEFAULT);
+                IgnitedLocationConstants.PASSIVE_LOCATION_UPDATES_INTERVAL_DEFAULT + 1);
         int passiveLocUpdatesDistDiff = pref.getInt(
                 IgnitedLocationConstants.SP_KEY_PASSIVE_LOCATION_UPDATES_DISTANCE_DIFF,
-                IgnitedLocationConstants.PASSIVE_LOCATION_UPDATES_DISTANCE_DIFF_DEFAULT);
+                IgnitedLocationConstants.PASSIVE_LOCATION_UPDATES_DISTANCE_DIFF_DEFAULT + 1);
         long passiveLocUpdatesInterval = pref.getLong(
                 IgnitedLocationConstants.SP_KEY_PASSIVE_LOCATION_UPDATES_INTERVAL,
-                IgnitedLocationConstants.PASSIVE_LOCATION_UPDATES_INTERVAL_DEFAULT);
+                IgnitedLocationConstants.PASSIVE_LOCATION_UPDATES_INTERVAL_DEFAULT + 1);
+        long waitForGpsFixInterval = pref.getLong(
+                IgnitedLocationConstants.SP_KEY_WAIT_FOR_GPS_FIX_INTERVAL,
+                IgnitedLocationConstants.WAIT_FOR_GPS_FIX_INTERVAL_DEFAULT + 1);
+        int minBatteryLevelToUseGps = pref.getInt(
+                IgnitedLocationConstants.SP_KEY_MIN_BATTERY_LEVEL,
+                IgnitedLocationConstants.MIN_BATTERY_LEVEL_DEFAULT + 1);
+        boolean showWaitForLocationDialog = pref.getBoolean(
+                IgnitedLocationConstants.SP_KEY_SHOW_WAIT_FOR_LOCATION_DIALOG,
+                !IgnitedLocationConstants.SHOW_WAIT_FOR_LOCATION_DIALOG_DEFAULT);
 
         assertThat(followLocationChanges, is(true));
         assertThat(useGps, is(true));
         assertThat(runOnce, is(true));
-
+        assertThat(showWaitForLocationDialog, is(true));
+        assertThat(minBatteryLevelToUseGps, equalTo(IgnitedLocationConstants.MIN_BATTERY_LEVEL_DEFAULT));
+        assertThat(waitForGpsFixInterval, equalTo(IgnitedLocationConstants.WAIT_FOR_GPS_FIX_INTERVAL_DEFAULT));
         assertThat(IgnitedLocationConstants.LOCATION_UPDATES_DISTANCE_DIFF_DEFAULT,
                 equalTo(locUpdatesDistDiff));
         assertThat(IgnitedLocationConstants.LOCATION_UPDATES_INTERVAL_DEFAULT,
