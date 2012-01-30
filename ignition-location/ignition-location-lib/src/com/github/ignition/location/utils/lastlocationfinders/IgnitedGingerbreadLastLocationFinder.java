@@ -16,8 +16,6 @@
 
 package com.github.ignition.location.utils.lastlocationfinders;
 
-import com.github.ignition.location.templates.IgnitedAbstractLastLocationFinder;
-
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -27,6 +25,8 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.util.Log;
+
+import com.github.ignition.location.templates.IgnitedAbstractLastLocationFinder;
 
 /**
  * Optimized implementation of Last Location Finder for devices running Gingerbread and above.
@@ -42,10 +42,13 @@ public class IgnitedGingerbreadLastLocationFinder extends IgnitedAbstractLastLoc
 
     private PendingIntent singleUpatePI;
 
+    private boolean singleUpdateReceiverRegistered = false;
+
     /**
      * Construct a new Gingerbread Last Location Finder.
-     *
-     * @param context Context
+     * 
+     * @param context
+     *            Context
      */
     public IgnitedGingerbreadLastLocationFinder(Context context) {
         super(context);
@@ -64,6 +67,7 @@ public class IgnitedGingerbreadLastLocationFinder extends IgnitedAbstractLastLoc
     public void retrieveSingleLocationUpdate() {
         IntentFilter locIntentFilter = new IntentFilter(SINGLE_LOCATION_UPDATE_ACTION);
         context.registerReceiver(singleUpdateReceiver, locIntentFilter);
+        singleUpdateReceiverRegistered = true;
         locationManager.requestSingleUpdate(criteria, singleUpatePI);
     }
 
@@ -75,7 +79,7 @@ public class IgnitedGingerbreadLastLocationFinder extends IgnitedAbstractLastLoc
     protected BroadcastReceiver singleUpdateReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            context.unregisterReceiver(IgnitedGingerbreadLastLocationFinder.this.singleUpdateReceiver);
+            unregisterSingleUpdateReceiver();
 
             String key = LocationManager.KEY_LOCATION_CHANGED;
             Location location = (Location) intent.getExtras().get(key);
@@ -98,5 +102,13 @@ public class IgnitedGingerbreadLastLocationFinder extends IgnitedAbstractLastLoc
     @Override
     public void cancel() {
         locationManager.removeUpdates(singleUpatePI);
+        if (singleUpdateReceiverRegistered) {
+            unregisterSingleUpdateReceiver();
+        }
+    }
+
+    private void unregisterSingleUpdateReceiver() {
+        context.unregisterReceiver(singleUpdateReceiver);
+        singleUpdateReceiverRegistered = false;
     }
 }
