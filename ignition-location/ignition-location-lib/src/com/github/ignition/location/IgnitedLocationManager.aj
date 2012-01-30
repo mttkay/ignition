@@ -286,20 +286,19 @@ public aspect IgnitedLocationManager {
                 + currentLocation.getLatitude() + ", " + currentLocation.getLongitude());
         boolean keepRequestingLocationUpdates = ((OnIgnitedLocationChangedListener) context)
                 .onIgnitedLocationChanged(currentLocation);
+        Bundle extras = freshLocation.getExtras();
         if (!keepRequestingLocationUpdates) {
             disableLocationUpdates(true);
             PlatformSpecificImplementationFactory.getLastLocationFinder(context).cancel();
             return;
         } else if (requestLocationUpdates
-                && !freshLocation.getExtras().containsKey(
-                        ILastLocationFinder.LAST_LOCATION_TOO_OLD_EXTRA)) {
+                && !extras.containsKey(ILastLocationFinder.LAST_LOCATION_TOO_OLD_EXTRA)) {
             // If we requested location updates, turn them on here.
             requestLocationUpdates(context);
         }
 
         // If gps is enabled location comes from gps, remove runnable that removes gps updates
-        boolean lastLocation = freshLocation.getExtras().getBoolean(
-                IgnitedLocationConstants.IGNITED_LAST_LOCATION_EXTRA);
+        boolean lastLocation = extras.containsKey(IgnitedLocationConstants.IGNITED_LAST_LOCATION_EXTRA);
         if (!lastLocation && defaultCriteria.getAccuracy() == Criteria.ACCURACY_FINE
                 && currentLocation.getProvider().equals(LocationManager.GPS_PROVIDER)) {
             handler.removeCallbacks(removeGpsUpdates);
