@@ -83,7 +83,7 @@ public aspect IgnitedLocationManager {
                     "It looks like GPS isn't available at this time (i.e.: maybe you're indoors). Removing GPS location updates and requesting network updates.");
 
             disableLocationUpdates(false);
-            requestLocationUpdates(context);
+            requestLocationUpdates(context, lowPowerCriteria());
         }
     };
 
@@ -101,7 +101,7 @@ public aspect IgnitedLocationManager {
             // Location Provider.
             if (providerDisabled) {
                 disableLocationUpdates(false);
-                requestLocationUpdates(context);
+                requestLocationUpdates(context, null);
             }
         }
     };
@@ -113,7 +113,7 @@ public aspect IgnitedLocationManager {
         @Override
         public void onReceive(Context context, Intent intent) {
             disableLocationUpdates(false);
-            requestLocationUpdates(context);
+            requestLocationUpdates(context, lowPowerCriteria());
         }
     };
 
@@ -295,7 +295,7 @@ public aspect IgnitedLocationManager {
         } else if (requestLocationUpdates
                 && !extras.containsKey(ILastLocationFinder.LAST_LOCATION_TOO_OLD_EXTRA)) {
             // If we requested location updates, turn them on here.
-            requestLocationUpdates(context);
+            requestLocationUpdates(context, null);
         }
 
         // If gps is enabled location comes from gps, remove runnable that removes gps updates
@@ -309,17 +309,18 @@ public aspect IgnitedLocationManager {
     /**
      * Start listening for location updates.
      */
-    protected void requestLocationUpdates(Context context) {
+    protected void requestLocationUpdates(Context context, Criteria criteria) {
         if (!locationUpdatesDisabled) {
             return;
         }
-        Criteria locationUpdateCriteria;
-        if (isBatteryOk()) {
-            locationUpdateCriteria = defaultCriteria;
-        } else {
-            locationUpdateCriteria = lowPowerCriteria();
+        Criteria locationUpdateCriteria = criteria;
+        if (criteria == null) {
+            if (isBatteryOk()) {
+                locationUpdateCriteria = defaultCriteria;
+            } else {
+                locationUpdateCriteria = lowPowerCriteria();
+            }
         }
-
         Log.d(LOG_TAG, "Disabling passive location updates");
         locationManager.removeUpdates(locationListenerPassivePendingIntent);
 
@@ -445,7 +446,7 @@ public aspect IgnitedLocationManager {
             // Re-register the location listeners using the better Location
             // Provider.
             disableLocationUpdates(false);
-            requestLocationUpdates(context);
+            requestLocationUpdates(context, null);
         }
     }
 
