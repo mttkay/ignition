@@ -44,6 +44,7 @@ import com.github.ignition.location.receivers.IgnitedLocationChangedReceiver;
 import com.github.ignition.location.receivers.IgnitedPassiveLocationChangedReceiver;
 import com.github.ignition.location.tasks.IgnitedLastKnownLocationAsyncTask;
 import com.github.ignition.location.templates.ILastLocationFinder;
+import com.github.ignition.location.templates.IgnitedAbstractLastLocationFinder;
 import com.github.ignition.location.templates.IgnitedAbstractLocationUpdateRequester;
 import com.github.ignition.location.templates.OnIgnitedLocationChangedListener;
 import com.github.ignition.location.utils.PlatformSpecificImplementationFactory;
@@ -266,7 +267,7 @@ public aspect IgnitedLocationManager {
     }
 
     void around(Location freshLocation) : set(@IgnitedLocation Location *) && args(freshLocation) 
-        && (within(IgnitedLocationChangedReceiver) || within(com.github.ignition.location.utils.*)
+        && (within(IgnitedLocationChangedReceiver) || within(IgnitedAbstractLastLocationFinder)
                 || within(IgnitedLastKnownLocationAsyncTask)) && !adviceexecution() {
 
         if (context == null) {
