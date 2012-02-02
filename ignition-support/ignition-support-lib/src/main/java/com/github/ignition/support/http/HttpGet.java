@@ -16,14 +16,15 @@
 package com.github.ignition.support.http;
 
 import java.util.HashMap;
+import java.util.Map;
 
 class HttpGet extends IgnitedHttpRequestBase {
 
     HttpGet(IgnitedHttp ignitedHttp, String url, HashMap<String, String> defaultHeaders) {
         super(ignitedHttp);
         request = new org.apache.http.client.methods.HttpGet(url);
-        for (String header : defaultHeaders.keySet()) {
-            request.setHeader(header, defaultHeaders.get(header));
+        for (Map.Entry<String, String> entry : defaultHeaders.entrySet()){
+            request.setHeader(entry.getKey(), entry.getValue());
         }
     }
 
