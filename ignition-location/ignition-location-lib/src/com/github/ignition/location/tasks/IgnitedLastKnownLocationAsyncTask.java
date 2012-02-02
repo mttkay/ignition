@@ -3,7 +3,6 @@ package com.github.ignition.location.tasks;
 import android.content.Context;
 import android.location.Location;
 import android.os.AsyncTask;
-
 import com.github.ignition.location.IgnitedLocationConstants;
 import com.github.ignition.location.annotations.IgnitedLocation;
 import com.github.ignition.location.templates.ILastLocationFinder;

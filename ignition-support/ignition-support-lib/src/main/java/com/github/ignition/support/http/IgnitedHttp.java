@@ -14,8 +14,17 @@
  */
 package com.github.ignition.support.http;
 
-import java.util.HashMap;
-
+import android.content.Context;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.Proxy;
+import android.util.Log;
+import com.github.ignition.support.IgnitedDiagnostics;
+import com.github.ignition.support.cache.AbstractCache;
+import com.github.ignition.support.http.cache.CachedHttpRequest;
+import com.github.ignition.support.http.cache.HttpResponseCache;
+import com.github.ignition.support.http.ssl.EasySSLSocketFactory;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpVersion;
@@ -29,24 +38,9 @@ import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.impl.client.AbstractHttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.CoreConnectionPNames;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.params.HttpProtocolParams;
+import org.apache.http.params.*;
 
-import android.content.Context;
-import android.content.IntentFilter;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.net.Proxy;
-import android.util.Log;
-
-import com.github.ignition.support.IgnitedDiagnostics;
-import com.github.ignition.support.cache.AbstractCache;
-import com.github.ignition.support.http.cache.CachedHttpRequest;
-import com.github.ignition.support.http.cache.HttpResponseCache;
-import com.github.ignition.support.http.ssl.EasySSLSocketFactory;
+import java.util.HashMap;
 
 public class IgnitedHttp {
 

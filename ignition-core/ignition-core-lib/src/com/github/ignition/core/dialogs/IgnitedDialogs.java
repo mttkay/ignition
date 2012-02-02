@@ -15,8 +15,6 @@
 
 package com.github.ignition.core.dialogs;
 
-import java.util.List;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -28,11 +26,12 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.DialogInterface.OnKeyListener;
 import android.content.Intent;
 import android.view.KeyEvent;
-
 import com.github.ignition.core.R;
 import com.github.ignition.core.exceptions.ResourceMessageException;
 import com.github.ignition.support.IgnitedDiagnostics;
 import com.github.ignition.support.IgnitedIntents;
+
+import java.util.List;
 
 public class IgnitedDialogs {
 
@@ -233,7 +232,7 @@ public class IgnitedDialogs {
 
     private static AlertDialog.Builder createErrorDialog(final Activity activity, Exception error,
             String dialogTitle) {
-        String screenMessage = "";
+        String screenMessage;
         if (error instanceof ResourceMessageException) {
             screenMessage = activity.getString(((ResourceMessageException) error)
                     .getClientMessageResourceId());

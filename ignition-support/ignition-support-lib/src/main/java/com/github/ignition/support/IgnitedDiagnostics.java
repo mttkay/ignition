@@ -15,10 +15,6 @@
 
 package com.github.ignition.support;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.Locale;
-
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -28,6 +24,10 @@ import android.os.Build;
 import android.provider.Settings;
 import android.provider.Settings.Secure;
 import android.provider.Settings.SettingNotFoundException;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.Locale;
 
 public class IgnitedDiagnostics {
     public static final int ANDROID_API_LEVEL;

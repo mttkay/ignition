@@ -1,13 +1,12 @@
 package com.github.ignition.core.test;
 
-import java.io.File;
-import java.lang.reflect.Method;
-
-import org.junit.runners.model.InitializationError;
-
 import com.github.ignition.core.test.shadows.TestShadowProgressBar;
 import com.xtremelabs.robolectric.Robolectric;
 import com.xtremelabs.robolectric.RobolectricTestRunner;
+import org.junit.runners.model.InitializationError;
+
+import java.io.File;
+import java.lang.reflect.Method;
 
 public class IgnitionCoreTestRunner extends RobolectricTestRunner {
 

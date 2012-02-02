@@ -3,7 +3,6 @@ package com.github.ignition.samples.remoteimageview;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
-
 import com.github.ignition.core.widgets.RemoteImageView;
 
 public class RemoteImageViewActivity extends Activity {

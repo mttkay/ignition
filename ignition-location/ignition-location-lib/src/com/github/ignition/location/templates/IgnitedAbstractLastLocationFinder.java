@@ -1,15 +1,14 @@
 package com.github.ignition.location.templates;
 
-import java.util.Date;
-import java.util.List;
-
 import android.content.Context;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.util.Log;
-
 import com.github.ignition.location.annotations.IgnitedLocation;
+
+import java.util.Date;
+import java.util.List;
 
 public abstract class IgnitedAbstractLastLocationFinder implements ILastLocationFinder {
     protected Context context;

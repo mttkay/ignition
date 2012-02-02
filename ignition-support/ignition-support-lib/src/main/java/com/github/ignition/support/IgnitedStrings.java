@@ -14,9 +14,9 @@
  */
 package com.github.ignition.support;
 
-import java.util.ArrayList;
-
 import android.text.TextUtils;
+
+import java.util.ArrayList;
 
 // contains code from the Apache Software foundation
 public class IgnitedStrings {

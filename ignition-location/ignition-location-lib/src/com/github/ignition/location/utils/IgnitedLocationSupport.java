@@ -1,7 +1,5 @@
 package com.github.ignition.location.utils;
 
-import java.util.List;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -9,9 +7,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.location.Location;
 import android.location.LocationManager;
-
 import com.github.ignition.location.R;
 import com.github.ignition.support.IgnitedDiagnostics;
+
+import java.util.List;
 
 public class IgnitedLocationSupport {
 

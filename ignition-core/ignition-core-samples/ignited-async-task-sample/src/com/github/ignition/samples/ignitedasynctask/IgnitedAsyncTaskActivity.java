@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-
 import com.github.ignition.core.tasks.IgnitedAsyncTask;
 
 public class IgnitedAsyncTaskActivity extends Activity {

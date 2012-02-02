@@ -15,8 +15,6 @@
 
 package com.github.ignition.core.adapters;
 
-import java.util.List;
-
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.view.Gravity;
@@ -26,8 +24,9 @@ import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.Gallery;
 import android.widget.Gallery.LayoutParams;
-
 import com.github.ignition.core.widgets.RemoteImageView;
+
+import java.util.List;
 
 /**
  * Can be used as an adapter for an Android {@link Gallery} view. This adapter loads the images to
@@ -137,8 +136,8 @@ public class WebGalleryAdapter extends BaseAdapter {
 
         String imageUrl = (String) getItem(position);
 
-        ViewHolder viewHolder = null;
-        RemoteImageView webImageView = null;
+        ViewHolder viewHolder;
+        RemoteImageView webImageView;
 
         if (convertView == null) {
             // create the image view

@@ -16,7 +16,6 @@
 
 package com.github.ignition.location.receivers;
 
-import static com.github.ignition.location.IgnitedLocationConstants.SHARED_PREFERENCE_FILE;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -24,10 +23,11 @@ import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationManager;
 import android.util.Log;
-
 import com.github.ignition.location.IgnitedLocationConstants;
 import com.github.ignition.location.annotations.IgnitedLocation;
 import com.github.ignition.location.utils.lastlocationfinders.IgnitedLegacyLastLocationFinder;
+
+import static com.github.ignition.location.IgnitedLocationConstants.SHARED_PREFERENCE_FILE;
 
 /**
  * This Receiver class is used to listen for Broadcast Intents that announce that a location change
@@ -36,7 +36,7 @@ import com.github.ignition.location.utils.lastlocationfinders.IgnitedLegacyLastL
  * Where possible, this is triggered by a Passive Location listener.
  */
 public class IgnitedPassiveLocationChangedReceiver extends BroadcastReceiver {
-    protected static String LOG_TAG = IgnitedPassiveLocationChangedReceiver.class.getSimpleName();
+    protected static final String LOG_TAG = IgnitedPassiveLocationChangedReceiver.class.getSimpleName();
 
     @IgnitedLocation
     private Location currentLocation;

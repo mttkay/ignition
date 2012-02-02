@@ -1,9 +1,8 @@
 package com.github.ignition.support.http.ssl;
 
+import javax.net.ssl.X509TrustManager;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-
-import javax.net.ssl.X509TrustManager;
 
 // used to work around a bug in Android 1.6:
 // http://code.google.com/p/android/issues/detail?id=1946

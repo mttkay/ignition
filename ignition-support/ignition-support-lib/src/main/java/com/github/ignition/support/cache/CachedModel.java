@@ -1,9 +1,9 @@
 package com.github.ignition.support.cache;
 
-import java.io.IOException;
-
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import java.io.IOException;
 
 /**
  * Superclass of all objects to be stored in {@link ModelCache}.

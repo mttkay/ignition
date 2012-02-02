@@ -1,9 +1,9 @@
 package com.github.ignition.core.tasks;
 
-import java.util.concurrent.Callable;
-
 import android.content.Context;
 import android.os.AsyncTask;
+
+import java.util.concurrent.Callable;
 
 /**
  * An extension to AsyncTask that removes some of the boilerplate that's typically involved. Some of

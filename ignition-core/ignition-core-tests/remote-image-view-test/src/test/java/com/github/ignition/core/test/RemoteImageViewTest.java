@@ -1,21 +1,18 @@
 package com.github.ignition.core.test;
 
-import static junit.framework.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import android.graphics.drawable.Drawable;
-
 import com.github.ignition.core.test.shadows.RemoteImageLoaderMock;
 import com.github.ignition.core.test.shadows.TestShadowProgressBar;
 import com.github.ignition.core.widgets.RemoteImageView;
 import com.github.ignition.samples.remoteimageview.R;
 import com.github.ignition.samples.remoteimageview.RemoteImageViewActivity;
 import com.xtremelabs.robolectric.Robolectric;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(IgnitionCoreTestRunner.class)
 public class RemoteImageViewTest {

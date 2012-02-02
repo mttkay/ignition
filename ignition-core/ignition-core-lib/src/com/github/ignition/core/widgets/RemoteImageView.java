@@ -26,7 +26,6 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.ProgressBar;
 import android.widget.ViewSwitcher;
-
 import com.github.ignition.core.Ignition;
 import com.github.ignition.support.images.remote.RemoteImageLoader;
 import com.github.ignition.support.images.remote.RemoteImageLoaderHandler;

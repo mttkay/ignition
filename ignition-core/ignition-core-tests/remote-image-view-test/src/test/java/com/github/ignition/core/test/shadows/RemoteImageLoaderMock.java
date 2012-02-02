@@ -1,15 +1,14 @@
 package com.github.ignition.core.test.shadows;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import android.view.View;
 import android.widget.ImageView;
-
 import com.github.ignition.core.widgets.RemoteImageView;
 import com.github.ignition.support.images.remote.RemoteImageLoader;
 import com.github.ignition.support.images.remote.RemoteImageLoaderHandler;
 import com.xtremelabs.robolectric.Robolectric;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public class RemoteImageLoaderMock extends RemoteImageLoader {
 

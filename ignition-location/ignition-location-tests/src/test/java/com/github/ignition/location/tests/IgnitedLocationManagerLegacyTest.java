@@ -1,18 +1,16 @@
 package com.github.ignition.location.tests;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-
-import java.util.Map;
-
+import android.app.PendingIntent;
+import android.content.Intent;
+import android.location.LocationManager;
+import com.github.ignition.support.IgnitedDiagnostics;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import android.app.PendingIntent;
-import android.content.Intent;
-import android.location.LocationManager;
+import java.util.Map;
 
-import com.github.ignition.support.IgnitedDiagnostics;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 @RunWith(IgnitedLocationSampleActivityRobolectricTestRunner.class)
 public class IgnitedLocationManagerLegacyTest extends AbstractIgnitedLocationManagerTest {

@@ -15,10 +15,10 @@
 
 package com.github.ignition.support.http;
 
+import org.apache.http.HttpResponse;
+
 import java.io.IOException;
 import java.io.InputStream;
-
-import org.apache.http.HttpResponse;
 
 public interface IgnitedHttpResponse {
 

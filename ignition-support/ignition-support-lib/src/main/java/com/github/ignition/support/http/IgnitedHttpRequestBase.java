@@ -15,12 +15,9 @@
 
 package com.github.ignition.support.http;
 
-import java.io.IOException;
-import java.net.ConnectException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
+import android.util.Log;
+import com.github.ignition.support.http.cache.CachedHttpResponse.ResponseData;
+import com.github.ignition.support.http.cache.HttpResponseCache;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.ResponseHandler;
@@ -30,10 +27,11 @@ import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 
-import android.util.Log;
-
-import com.github.ignition.support.http.cache.HttpResponseCache;
-import com.github.ignition.support.http.cache.CachedHttpResponse.ResponseData;
+import java.io.IOException;
+import java.net.ConnectException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public abstract class IgnitedHttpRequestBase implements IgnitedHttpRequest,
         ResponseHandler<IgnitedHttpResponse> {
