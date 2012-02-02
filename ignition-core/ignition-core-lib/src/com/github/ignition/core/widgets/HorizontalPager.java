@@ -34,10 +34,6 @@ package com.github.ignition.core.widgets;
  * limitations under the License.
  */
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
-
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -45,16 +41,14 @@ import android.graphics.Rect;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
-import android.view.VelocityTracker;
-import android.view.View;
-import android.view.ViewConfiguration;
-import android.view.ViewGroup;
-import android.view.ViewParent;
+import android.view.*;
 import android.widget.Scroller;
-
 import com.github.ignition.core.Ignition;
 import com.github.ignition.core.R;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * User: jeanguy@gmail.com Date: Aug 8, 2010

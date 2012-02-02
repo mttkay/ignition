@@ -15,18 +15,19 @@
 
 package com.github.ignition.support.http;
 
-import java.util.HashMap;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpEntityEnclosingRequest;
+
+import java.util.HashMap;
+import java.util.Map;
 
 class HttpPut extends IgnitedHttpRequestBase {
 
     HttpPut(IgnitedHttp ignitedHttp, String url, HashMap<String, String> defaultHeaders) {
         super(ignitedHttp);
         this.request = new org.apache.http.client.methods.HttpPut(url);
-        for (String header : defaultHeaders.keySet()) {
-            request.setHeader(header, defaultHeaders.get(header));
+        for (Map.Entry<String, String> entry : defaultHeaders.entrySet()){
+            request.setHeader(entry.getKey(), entry.getValue());
         }
     }
 
@@ -37,8 +38,8 @@ class HttpPut extends IgnitedHttpRequestBase {
         ((HttpEntityEnclosingRequest) request).setEntity(payload);
 
         request.setHeader(HTTP_CONTENT_TYPE_HEADER, payload.getContentType().getValue());
-        for (String header : defaultHeaders.keySet()) {
-            request.setHeader(header, defaultHeaders.get(header));
+        for (Map.Entry<String, String> entry : defaultHeaders.entrySet()){
+            request.setHeader(entry.getKey(), entry.getValue());
         }
     }
 

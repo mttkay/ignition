@@ -1,11 +1,10 @@
 package com.github.ignition.support.http.cache;
 
-import java.net.ConnectException;
-
-import org.apache.http.client.methods.HttpUriRequest;
-
 import com.github.ignition.support.http.IgnitedHttpRequest;
 import com.github.ignition.support.http.IgnitedHttpResponse;
+import org.apache.http.client.methods.HttpUriRequest;
+
+import java.net.ConnectException;
 
 public class CachedHttpRequest implements IgnitedHttpRequest {
 

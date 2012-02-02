@@ -15,10 +15,10 @@
 
 package com.github.ignition.support.http;
 
-import java.net.ConnectException;
-
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.methods.HttpUriRequest;
+
+import java.net.ConnectException;
 
 public interface IgnitedHttpRequest {
 

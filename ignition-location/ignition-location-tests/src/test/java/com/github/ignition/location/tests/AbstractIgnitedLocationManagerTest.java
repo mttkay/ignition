@@ -1,19 +1,5 @@
 package com.github.ignition.location.tests;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsEqual.equalTo;
-import static org.hamcrest.core.IsNull.notNullValue;
-
-import java.util.List;
-import java.util.Map;
-
-import junit.framework.Assert;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -23,7 +9,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.BatteryManager;
-
 import com.github.ignition.location.IgnitedLocationConstants;
 import com.github.ignition.samples.ui.IgnitedLocationSampleActivity;
 import com.xtremelabs.robolectric.Robolectric;
@@ -31,6 +16,18 @@ import com.xtremelabs.robolectric.shadows.ShadowActivity;
 import com.xtremelabs.robolectric.shadows.ShadowApplication;
 import com.xtremelabs.robolectric.shadows.ShadowApplication.Wrapper;
 import com.xtremelabs.robolectric.shadows.ShadowLocationManager;
+import junit.framework.Assert;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.List;
+import java.util.Map;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.hamcrest.core.IsNull.notNullValue;
 
 public abstract class AbstractIgnitedLocationManagerTest {
     protected ShadowApplication shadowApp;

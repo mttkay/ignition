@@ -1,15 +1,10 @@
 package com.github.ignition.support.http.cache;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
 import com.github.ignition.support.cache.AbstractCache;
 import com.github.ignition.support.cache.CacheHelper;
 import com.github.ignition.support.http.cache.CachedHttpResponse.ResponseData;
+
+import java.io.*;
 
 /**
  * Allows caching HTTP responses (only status code and payload at the moment) using the features

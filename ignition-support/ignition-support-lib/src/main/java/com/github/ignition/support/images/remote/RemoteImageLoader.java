@@ -15,14 +15,13 @@
 
 package com.github.ignition.support.images.remote;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
-
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
-
 import com.github.ignition.support.cache.ImageCache;
+
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * Realizes a background image loader that downloads an image from a URL, optionally backed by a

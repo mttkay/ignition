@@ -1,13 +1,8 @@
 package com.github.ignition.support.cache;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
 import android.os.Parcel;
+
+import java.io.*;
 
 /**
  * Allows caching Model objects using the features provided by {@link AbstractCache}. The key into

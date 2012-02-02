@@ -20,7 +20,6 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.location.Criteria;
 import android.location.LocationManager;
-
 import com.github.ignition.location.templates.IgnitedAbstractLocationUpdateRequester;
 
 /**

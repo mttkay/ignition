@@ -1,10 +1,10 @@
 package com.github.ignition.support.cache;
 
-import java.io.IOException;
-import java.util.ArrayList;
-
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Superclass of all list objects to be stored in {@link ModelCache}.
@@ -173,8 +173,8 @@ public class CachedList<CO extends CachedModel> extends CachedModel {
         // Then reload each item in list. Sometimes a ConcurrentModificationException occurs.
         // Changed implementation so that it doesn't use an Iterator any more.
         // Uglier but hopefully that will solve the issue.
-        for (int i = 0; i < list.size(); i++) {
-            CachedModel listModel = list.get(i);
+        for (CO modelElement : list) {
+            CachedModel listModel = modelElement;
             if (listModel.reload(modelCache)) {
                 result = true;
             }

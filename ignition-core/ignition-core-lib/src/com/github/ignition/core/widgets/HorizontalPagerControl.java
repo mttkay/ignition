@@ -26,7 +26,6 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
-
 import com.github.ignition.core.Ignition;
 
 /**

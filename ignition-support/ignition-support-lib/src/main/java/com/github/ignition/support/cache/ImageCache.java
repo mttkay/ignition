@@ -15,15 +15,10 @@
 
 package com.github.ignition.support.cache;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+
+import java.io.*;
 
 /**
  * Implements a cache capable of caching image files. It exposes helper methods to immediately

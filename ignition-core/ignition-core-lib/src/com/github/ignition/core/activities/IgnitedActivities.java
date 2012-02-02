@@ -15,12 +15,12 @@
 
 package com.github.ignition.core.activities;
 
-import java.util.List;
-
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningTaskInfo;
 import android.content.ComponentName;
 import android.content.Context;
+
+import java.util.List;
 
 public class IgnitedActivities {
 

@@ -16,11 +16,7 @@
 
 package com.github.ignition.location.receivers;
 
-import android.content.BroadcastReceiver;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.*;
 import android.content.pm.PackageManager;
 import com.github.ignition.location.IgnitedLocationConstants;
 

@@ -15,16 +15,16 @@
 
 package com.github.ignition.support;
 
-import java.io.File;
-import java.util.List;
-import java.util.Locale;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.provider.MediaStore;
+
+import java.io.File;
+import java.util.List;
+import java.util.Locale;
 
 public class IgnitedIntents {
 

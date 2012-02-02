@@ -1,23 +1,18 @@
 package com.github.ignition.samples;
 
-import java.io.File;
-import java.util.List;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
+import android.widget.*;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.github.ignition.core.tasks.IgnitedAsyncTask;
 import com.github.ignition.support.http.IgnitedHttp;
 import com.github.ignition.support.http.IgnitedHttpResponse;
 import com.github.ignition.support.http.cache.CachedHttpResponse;
 import com.github.ignition.support.http.cache.HttpResponseCache;
+
+import java.io.File;
+import java.util.List;
 
 public class IgnitedHttpSampleActivity extends Activity {
 

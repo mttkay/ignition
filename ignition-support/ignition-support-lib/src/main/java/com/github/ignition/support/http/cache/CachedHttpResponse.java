@@ -1,12 +1,11 @@
 package com.github.ignition.support.http.cache;
 
+import com.github.ignition.support.http.IgnitedHttpResponse;
+import org.apache.http.HttpResponse;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
-import org.apache.http.HttpResponse;
-
-import com.github.ignition.support.http.IgnitedHttpResponse;
 
 /**
  * A response proxy returning data from a {@link HttpResponseCache}

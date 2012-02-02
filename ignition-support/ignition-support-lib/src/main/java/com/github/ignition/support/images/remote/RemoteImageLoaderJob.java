@@ -1,18 +1,17 @@
 package com.github.ignition.support.images.remote;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Message;
 import android.os.SystemClock;
 import android.util.Log;
-
 import com.github.ignition.support.cache.ImageCache;
+
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class RemoteImageLoaderJob implements Runnable {
 

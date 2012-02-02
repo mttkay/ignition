@@ -1,20 +1,18 @@
 package com.github.ignition.support.http;
 
-import java.io.IOException;
-import java.io.InterruptedIOException;
-import java.net.SocketException;
-import java.net.UnknownHostException;
-import java.util.HashSet;
-
-import javax.net.ssl.SSLHandshakeException;
-
+import android.os.SystemClock;
+import android.util.Log;
 import org.apache.http.NoHttpResponseException;
 import org.apache.http.client.HttpRequestRetryHandler;
 import org.apache.http.protocol.ExecutionContext;
 import org.apache.http.protocol.HttpContext;
 
-import android.os.SystemClock;
-import android.util.Log;
+import javax.net.ssl.SSLHandshakeException;
+import java.io.IOException;
+import java.io.InterruptedIOException;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+import java.util.HashSet;
 
 public class IgnitedHttpRequestRetryHandler implements HttpRequestRetryHandler {
 

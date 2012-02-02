@@ -16,14 +16,9 @@
 
 package com.github.ignition.location.utils;
 
-import static android.content.Context.ALARM_SERVICE;
-import static android.content.Context.LOCATION_SERVICE;
-import static com.github.ignition.support.IgnitedDiagnostics.FROYO;
-import static com.github.ignition.support.IgnitedDiagnostics.GINGERBREAD;
 import android.app.AlarmManager;
 import android.content.Context;
 import android.location.LocationManager;
-
 import com.github.ignition.location.templates.ILastLocationFinder;
 import com.github.ignition.location.templates.IgnitedAbstractLocationUpdateRequester;
 import com.github.ignition.location.utils.lastlocationfinders.IgnitedGingerbreadLastLocationFinder;
@@ -32,6 +27,11 @@ import com.github.ignition.location.utils.locationupdaterequesters.IgnitedFroyoL
 import com.github.ignition.location.utils.locationupdaterequesters.IgnitedGingerbreadLocationUpdateRequester;
 import com.github.ignition.location.utils.locationupdaterequesters.IgnitedLegacyLocationUpdateRequester;
 import com.github.ignition.support.IgnitedDiagnostics;
+
+import static android.content.Context.ALARM_SERVICE;
+import static android.content.Context.LOCATION_SERVICE;
+import static com.github.ignition.support.IgnitedDiagnostics.FROYO;
+import static com.github.ignition.support.IgnitedDiagnostics.GINGERBREAD;
 
 /**
  * Factory class to create the correct instances of a variety of classes with platform specific

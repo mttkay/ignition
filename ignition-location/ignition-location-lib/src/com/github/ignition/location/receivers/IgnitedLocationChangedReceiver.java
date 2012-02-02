@@ -22,7 +22,6 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.util.Log;
-
 import com.github.ignition.location.IgnitedLocationConstants;
 import com.github.ignition.location.annotations.IgnitedLocation;
 
@@ -35,7 +34,7 @@ public class IgnitedLocationChangedReceiver extends BroadcastReceiver {
     @IgnitedLocation
     Location currentLocation;
 
-    protected static String LOG_TAG = IgnitedLocationChangedReceiver.class.getSimpleName();
+    protected static final String LOG_TAG = IgnitedLocationChangedReceiver.class.getSimpleName();
 
     /**
      * When a new location is received, extract it from the Intent and use it to start the Service

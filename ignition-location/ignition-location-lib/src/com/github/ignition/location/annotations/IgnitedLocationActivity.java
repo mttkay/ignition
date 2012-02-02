@@ -15,12 +15,12 @@
 
 package com.github.ignition.location.annotations;
 
+import com.github.ignition.location.IgnitedLocationConstants;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
-import com.github.ignition.location.IgnitedLocationConstants;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.TYPE })
