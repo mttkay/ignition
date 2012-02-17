@@ -7,15 +7,14 @@ Ignition helps you getting your Android applications off the ground quickly, by 
  * An HTTP wrapper library that allows you to write simple yet robust networking code
  * A class to load remote images off the web and cache them
  * A simple yet effective caching framework (caches to memory and disk, anything from HTTP responses to entire object trees)
- * Diagnostic helpers to gather device information and help users sending error reports to you via email
- * API level backwards compatibility helpers
+ * Several helper classes for easier API level backwards compatibility, Intents, diagnostics, and more
  * A friendlier and more robust implementation of AsyncTask
 
 Ignition is split up into three sub-projects. Click on one to see what's inside.
 
- * [ignition-core](https://github.com/kaeppler/ignition/wiki/Core-module-features). This is an Android library project that is compiled straight into your apps. This allows you to re-use views and shared resources right in your own code.
- * [ignition-support](https://github.com/kaeppler/ignition/wiki/Support-module-features). This is a standard Java library project, deployed as an ordinary JAR. It contains most of the utility classes. You can use this independently of the core module.
- * [ignition-location](https://github.com/kaeppler/ignition/wiki/Location-module-features). This is an Android AspectJ library project that is compiled straight into your apps. It allows your location-aware applications to always have the most recent location without the need to handle location updates within your Activity.
+ * **ignition-core.** This is an Android library project that is compiled straight into your apps. This allows you to re-use views and shared resources right in your own code.
+ * **ignition-support.** This is a standard Java library project, deployed as an ordinary JAR. It contains most of the utility classes. You can use this independently of the core module.
+ * **ignition-location.** This is an Android AspectJ library project that is compiled straight into your apps. It allows your location-aware applications to always have the most recent location without the need to handle location updates within your Activity.
 
 ## Documentation
 We decided to not write exhaustive documentation, since it would get outdated frequently. Instead, the project is documented both via [sample applications](https://github.com/kaeppler/ignition/wiki/Sample-applications) that are part of the build, as well as online JavaDoc (TODO).
