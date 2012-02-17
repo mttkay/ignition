@@ -113,7 +113,7 @@ public aspect IgnitedLocationManager {
         @Override
         public void onReceive(Context context, Intent intent) {
             disableLocationUpdates(false);
-            requestLocationUpdates(context, lowPowerCriteria());
+            requestLocationUpdates(context, null);
         }
     };
 
