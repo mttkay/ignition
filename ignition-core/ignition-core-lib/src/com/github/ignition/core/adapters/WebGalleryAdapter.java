@@ -84,8 +84,11 @@ public class WebGalleryAdapter extends BaseAdapter {
      */
     public WebGalleryAdapter(Context context, List<String> imageUrls, int progressDrawableResId,
             int errorDrawableId) {
-        initialize(context, imageUrls, progressDrawableResId == NO_DRAWABLE ? null : context
-                .getResources().getDrawable(progressDrawableResId),
+        initialize(
+                context,
+                imageUrls,
+                progressDrawableResId == NO_DRAWABLE ? null : context.getResources().getDrawable(
+                        progressDrawableResId),
                 errorDrawableId == NO_DRAWABLE ? null : context.getResources().getDrawable(
                         errorDrawableId));
     }
@@ -138,45 +141,60 @@ public class WebGalleryAdapter extends BaseAdapter {
         String imageUrl = (String) getItem(position);
 
         ViewHolder viewHolder = null;
-        RemoteImageView webImageView = null;
+        RemoteImageView remoteImageView = null;
 
         if (convertView == null) {
             // create the image view
-            webImageView = new RemoteImageView(context, null, progressDrawable,
-                    errorDrawable, false);
+            remoteImageView = new RemoteImageView(context, null, progressDrawable, errorDrawable,
+                    false);
             FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
                     LayoutParams.WRAP_CONTENT);
             lp.gravity = Gravity.CENTER;
-            webImageView.setLayoutParams(lp);
+            remoteImageView.setLayoutParams(lp);
 
             // create the container layout for the image view
             FrameLayout container = new FrameLayout(context);
             container.setLayoutParams(new Gallery.LayoutParams(LayoutParams.FILL_PARENT,
                     LayoutParams.FILL_PARENT));
-            container.addView(webImageView, 0);
+            container.addView(remoteImageView, 0);
 
             convertView = container;
 
             viewHolder = new ViewHolder();
-            viewHolder.webImageView = webImageView;
+            viewHolder.webImageView = remoteImageView;
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
-            webImageView = viewHolder.webImageView;
+            remoteImageView = viewHolder.webImageView;
         }
 
         // calling reset is important to prevent old images from displaying in a recycled view.
-        webImageView.reset();
+        remoteImageView.reset();
 
-        webImageView.setImageUrl(imageUrl);
-        webImageView.loadImage();
+        remoteImageView.setImageUrl(imageUrl);
+        remoteImageView.loadImage();
 
-        onGetView(position, convertView, parent);
+        onGetView(position, remoteImageView, (ViewGroup) convertView, parent);
 
         return convertView;
     }
 
-    protected void onGetView(int position, View convertView, ViewGroup parent) {
+    /**
+     * Override this to configure the views that are rendered for each gallery element. The default
+     * implementation does nothing.
+     * 
+     * @param position
+     *            the current position in the gallery
+     * @param remoteImageView
+     *            the {@link RemoteImageView} that is used to render a gallery image
+     * @param remoteImageViewContainer
+     *            The cell that makes up an item in the gallery. It contains remoteImageView as a
+     *            child.
+     * @param parent
+     *            the container's parent view
+     */
+    protected void onGetView(int position, RemoteImageView remoteImageView,
+            ViewGroup remoteImageViewContainer, ViewGroup parent) {
         // for extension
     }
 

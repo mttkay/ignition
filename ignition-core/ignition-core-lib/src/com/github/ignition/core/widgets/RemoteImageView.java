@@ -1,4 +1,4 @@
-/* Copyright (c) 2009-2011 Matthias Kaeppler
+/* Copyright (c) 2009-2012 Matthias Kaeppler
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 package com.github.ignition.core.widgets;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
@@ -23,7 +24,6 @@ import android.os.Message;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
 import android.widget.ProgressBar;
 import android.widget.ViewSwitcher;
 
@@ -33,7 +33,17 @@ import com.github.ignition.support.images.remote.RemoteImageLoaderHandler;
 
 /**
  * An image view that fetches its image off the web using the supplied URL. While the image is being
- * downloaded, a progress indicator will be shown.
+ * downloaded, a progress indicator will be shown. The following attributes are supported:
+ * <ul>
+ * <li>android:src (Drawable) -- The default/placeholder image that is shown if no image can be
+ * downloaded, or before the image download starts (see {@link android.R.attr#src})
+ * <li>android:indeterminateDrawable (Drawable) -- The progress drawable to use while the image is
+ * being downloaded (see {@link android.R.attr#indeterminateDrawable})</li>
+ * <li>ignition:imageUrl (String) -- The URL at which the image is found online</li>
+ * <li>ignition:autoLoad (Boolean) -- Whether the download should start immediately after view
+ * inflation</li>
+ * <li>ignition:errorDrawable (Drawable) -- The drawable to display if the image download fails</li>
+ * </ul>
  * 
  * @author Matthias Kaeppler
  */
@@ -41,27 +51,24 @@ public class RemoteImageView extends ViewSwitcher {
 
     public static final int DEFAULT_ERROR_DRAWABLE_RES_ID = android.R.drawable.ic_dialog_alert;
     public static final int DEFAULT_DRAWABLE_RES_ID = android.R.drawable.gallery_thumb;
-    
+
     private static final String ATTR_AUTO_LOAD = "autoLoad";
     private static final String ATTR_IMAGE_URL = "imageUrl";
-    private static final String ATTR_DEFAULT_DRAWABLE = "defaultDrawable";
-    private static final String ATTR_PROGRESS_DRAWABLE = "progressDrawable";
     private static final String ATTR_ERROR_DRAWABLE = "errorDrawable";
+
+    private static final int[] ANDROID_VIEW_ATTRS = { android.R.attr.indeterminateDrawable };
+    private static final int ATTR_INDET_DRAWABLE = 0;
 
     private String imageUrl;
 
     private boolean autoLoad, isLoaded;
 
     private ProgressBar loadingSpinner;
-
     private ImageView imageView;
 
-    private ScaleType scaleType = ScaleType.CENTER_CROP;
-
-    private Drawable progressDrawable, errorDrawable, defaultDrawable;
+    private Drawable progressDrawable, errorDrawable;
 
     private RemoteImageLoader imageLoader;
-
     private static RemoteImageLoader sharedImageLoader;
 
     /**
@@ -87,25 +94,7 @@ public class RemoteImageView extends ViewSwitcher {
      */
     public RemoteImageView(Context context, String imageUrl, boolean autoLoad) {
         super(context);
-        initialize(context, imageUrl, null, null, null, autoLoad);
-    }
-
-    /**
-     * @param context
-     *            the view's current context
-     * @param imageUrl
-     *            the URL of the image to download and show
-     * @param progressDrawable
-     *            the drawable to be used for the {@link ProgressBar} which is displayed while the
-     *            image is loading
-     * @param autoLoad
-     *            Whether the download should start immediately after creating the view. If set to
-     *            false, use {@link #loadImage()} to manually trigger the image download.
-     */
-    public RemoteImageView(Context context, String imageUrl, Drawable progressDrawable,
-            boolean autoLoad) {
-        super(context);
-        initialize(context, imageUrl, progressDrawable, null, null, autoLoad);
+        initialize(context, imageUrl, null, null, autoLoad, null);
     }
 
     /**
@@ -125,21 +114,22 @@ public class RemoteImageView extends ViewSwitcher {
     public RemoteImageView(Context context, String imageUrl, Drawable progressDrawable,
             Drawable errorDrawable, boolean autoLoad) {
         super(context);
-        initialize(context, imageUrl, progressDrawable, errorDrawable, null, autoLoad);
+        initialize(context, imageUrl, progressDrawable, errorDrawable, autoLoad, null);
     }
 
     public RemoteImageView(Context context, AttributeSet attributes) {
         super(context, attributes);
-        // TypedArray styles = context.obtainStyledAttributes(attributes,
-        // R.styleable.GalleryItem);
-        int progressDrawableId = attributes.getAttributeResourceValue(Ignition.XMLNS,
-                ATTR_PROGRESS_DRAWABLE, 0);
+
+        // Read all Android specific view attributes into a typed array first.
+        // These are attributes that are specific to RemoteImageView, but which are not in the
+        // ignition XML namespace.
+        TypedArray imageViewAttrs = context.getTheme().obtainStyledAttributes(attributes,
+                ANDROID_VIEW_ATTRS, 0, 0);
+        int progressDrawableId = imageViewAttrs.getResourceId(ATTR_INDET_DRAWABLE, 0);
+        imageViewAttrs.recycle();
+
         int errorDrawableId = attributes.getAttributeResourceValue(Ignition.XMLNS,
                 ATTR_ERROR_DRAWABLE, DEFAULT_ERROR_DRAWABLE_RES_ID);
-        int defaultDrawableId = attributes.getAttributeResourceValue(Ignition.XMLNS,
-                ATTR_DEFAULT_DRAWABLE, DEFAULT_DRAWABLE_RES_ID);
-
-        Drawable defaultDrawable = context.getResources().getDrawable(defaultDrawableId);
         Drawable errorDrawable = context.getResources().getDrawable(errorDrawableId);
 
         Drawable progressDrawable = null;
@@ -151,17 +141,15 @@ public class RemoteImageView extends ViewSwitcher {
         boolean autoLoad = attributes
                 .getAttributeBooleanValue(Ignition.XMLNS, ATTR_AUTO_LOAD, true);
 
-        initialize(context, imageUrl, progressDrawable, errorDrawable, defaultDrawable, autoLoad);
-        // styles.recycle();
+        initialize(context, imageUrl, progressDrawable, errorDrawable, autoLoad, attributes);
     }
 
     private void initialize(Context context, String imageUrl, Drawable progressDrawable,
-            Drawable errorDrawable, Drawable defaultDrawable, boolean autoLoad) {
+            Drawable errorDrawable, boolean autoLoad, AttributeSet attributes) {
         this.imageUrl = imageUrl;
         this.autoLoad = autoLoad;
         this.progressDrawable = progressDrawable;
         this.errorDrawable = errorDrawable;
-        this.defaultDrawable = defaultDrawable;
         if (sharedImageLoader == null) {
             this.imageLoader = new RemoteImageLoader(context);
         } else {
@@ -177,7 +165,7 @@ public class RemoteImageView extends ViewSwitcher {
         // setInAnimation(anim);
 
         addLoadingSpinnerView(context);
-        addImageView(context);
+        addImageView(context, attributes);
 
         if (autoLoad && imageUrl != null) {
             loadImage();
@@ -206,14 +194,15 @@ public class RemoteImageView extends ViewSwitcher {
         addView(loadingSpinner, 0, lp);
     }
 
-    private void addImageView(Context context) {
-        imageView = new ImageView(context);
-        imageView.setScaleType(scaleType);
+    private void addImageView(Context context, AttributeSet attributes) {
+        if (attributes != null) {
+            // pass along any view attribtues inflated from XML to the image view
+            imageView = new ImageView(context, attributes);
+        } else {
+            imageView = new ImageView(context);
+        }
         LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         lp.gravity = Gravity.CENTER;
-        if (defaultDrawable != null) {
-            imageView.setImageDrawable(defaultDrawable);
-        }
         addView(imageView, 1, lp);
     }
 
@@ -293,18 +282,6 @@ public class RemoteImageView extends ViewSwitcher {
     }
 
     /**
-     * The drawable that is shown in place of the downloaded image. It will be replaces once the
-     * image has been downloaded. This can be used to display a placeholder image while the download
-     * is in progress. Corresponds to the view attribute ignition:defaultDrawable. If left blank, no
-     * placeholder image will be used.
-     * 
-     * @return the placeholder (default) image
-     */
-    public Drawable getDefaultDrawable() {
-        return defaultDrawable;
-    }
-
-    /**
      * The drawable that should be used to indicate progress while downloading the image.
      * Corresponds to the view attribute ignition:progressDrawable. If left blank, the platform's
      * standard indeterminate progress drawable will be used.
@@ -324,5 +301,23 @@ public class RemoteImageView extends ViewSwitcher {
      */
     public Drawable getErrorDrawable() {
         return errorDrawable;
+    }
+
+    /**
+     * The image view that will render the downloaded image.
+     * 
+     * @return the {@link ImageView}
+     */
+    public ImageView getImageView() {
+        return imageView;
+    }
+
+    /**
+     * The progress bar that is shown while the image is loaded.
+     * 
+     * @return the {@link ProgressBar}
+     */
+    public ProgressBar getProgressBar() {
+        return loadingSpinner;
     }
 }
