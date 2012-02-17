@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:ignition="http://github.com/ignition/schema"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent">
+  
+  <Gallery android:id="@+id/gallery"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_gravity="center"
+    android:animationDuration="300"
+    android:unselectedAlpha="0.3" />
+  
+</RelativeLayout>
