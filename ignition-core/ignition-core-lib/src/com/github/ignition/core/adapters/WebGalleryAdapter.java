@@ -31,13 +31,11 @@ import com.github.ignition.core.widgets.RemoteImageView;
 
 /**
  * Can be used as an adapter for an Android {@link Gallery} view. This adapter loads the images to
- * be shown from the web.
+ * be shown from the web using embedded {@link RemoteImageView}s.
  * 
  * @author Matthias Kaeppler
  */
 public class WebGalleryAdapter extends BaseAdapter {
-
-    public static final int NO_DRAWABLE = -1;
 
     private List<String> imageUrls;
 
@@ -46,7 +44,7 @@ public class WebGalleryAdapter extends BaseAdapter {
     private Drawable progressDrawable, errorDrawable;
 
     public WebGalleryAdapter(Context context) {
-        initialize(context, null, null, null);
+        this(context, null, null, null);
     }
 
     /**
@@ -56,7 +54,7 @@ public class WebGalleryAdapter extends BaseAdapter {
      *            the set of image URLs which are to be loaded and displayed
      */
     public WebGalleryAdapter(Context context, List<String> imageUrls) {
-        initialize(context, imageUrls, null, null);
+        this(context, imageUrls, null, null);
     }
 
     /**
@@ -64,36 +62,12 @@ public class WebGalleryAdapter extends BaseAdapter {
      *            the current context
      * @param imageUrls
      *            the set of image URLs which are to be loaded and displayed
-     * @param progressDrawableResId
-     *            the resource ID of the drawable that will be used for rendering progress
+     * @param progressDrawable
+     *            the drawable that will be used for rendering progress
+     * @param errorDrawable
+     *            the drawable that will be used if a download error occurs
      */
-    public WebGalleryAdapter(Context context, List<String> imageUrls, int progressDrawableResId) {
-        initialize(context, imageUrls, context.getResources().getDrawable(progressDrawableResId),
-                null);
-    }
-
-    /**
-     * @param context
-     *            the current context
-     * @param imageUrls
-     *            the set of image URLs which are to be loaded and displayed
-     * @param progressDrawableResId
-     *            the resource ID of the drawable that will be used for rendering progress
-     * @param errorDrawableId
-     *            the resource ID of the drawable that will be used if a download error occurs
-     */
-    public WebGalleryAdapter(Context context, List<String> imageUrls, int progressDrawableResId,
-            int errorDrawableId) {
-        initialize(
-                context,
-                imageUrls,
-                progressDrawableResId == NO_DRAWABLE ? null : context.getResources().getDrawable(
-                        progressDrawableResId),
-                errorDrawableId == NO_DRAWABLE ? null : context.getResources().getDrawable(
-                        errorDrawableId));
-    }
-
-    private void initialize(Context context, List<String> imageUrls, Drawable progressDrawable,
+    public WebGalleryAdapter(Context context, List<String> imageUrls, Drawable progressDrawable,
             Drawable errorDrawable) {
         this.imageUrls = imageUrls;
         this.context = context;
@@ -130,6 +104,14 @@ public class WebGalleryAdapter extends BaseAdapter {
 
     public Drawable getProgressDrawable() {
         return progressDrawable;
+    }
+
+    public void setErrorDrawable(Drawable errorDrawable) {
+        this.errorDrawable = errorDrawable;
+    }
+
+    public Drawable getErrorDrawable() {
+        return errorDrawable;
     }
 
     // TODO: both convertView and ViewHolder are pointless at the moment, since there's a framework
