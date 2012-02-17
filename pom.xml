@@ -68,7 +68,7 @@
   <properties>
     <androidApiLevel>4</androidApiLevel>
     <androidVersion>1.6</androidVersion>
-    <androidApiRevision>r2</androidApiRevision>
+    <androidApiRevision>_r2</androidApiRevision>
 
     <androidPluginVersion>3.0.2</androidPluginVersion>
 
@@ -85,7 +85,7 @@
       <dependency>
         <groupId>com.google.android</groupId>
         <artifactId>android</artifactId>
-        <version>${androidVersion}_${androidApiRevision}</version>
+        <version>${androidVersion}${androidApiRevision}</version>
         <scope>provided</scope>
       </dependency>
 

@@ -15,6 +15,13 @@
     <module>remote-image-view-test</module>
   </modules>
 
+  <properties>
+    <!-- Robolectric requires a newer API level than our library -->
+    <androidApiLevel>10</androidApiLevel>
+    <androidVersion>2.3.3</androidVersion>
+    <androidApiRevision></androidApiRevision>
+  </properties>
+
   <dependencies>
     <!-- test dependencies -->
     <dependency>

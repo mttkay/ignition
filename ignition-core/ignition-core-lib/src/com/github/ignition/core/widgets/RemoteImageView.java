@@ -50,7 +50,6 @@ import com.github.ignition.support.images.remote.RemoteImageLoaderHandler;
 public class RemoteImageView extends ViewSwitcher {
 
     public static final int DEFAULT_ERROR_DRAWABLE_RES_ID = android.R.drawable.ic_dialog_alert;
-    public static final int DEFAULT_DRAWABLE_RES_ID = android.R.drawable.gallery_thumb;
 
     private static final String ATTR_AUTO_LOAD = "autoLoad";
     private static final String ATTR_IMAGE_URL = "imageUrl";

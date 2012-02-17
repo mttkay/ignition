@@ -11,7 +11,6 @@
     android:layout_height="150dip"
     android:layout_alignParentLeft="true"
     android:layout_alignParentTop="true"
-    android:scaleType="fitXY"
     ignition:imageUrl="http://developer.android.com/images/home/android-design.png" />
 
   <!-- custom progress -->
@@ -48,6 +47,7 @@
     android:layout_height="150dip"
     android:layout_below="@id/image3"
     android:src="@android:drawable/dialog_frame"
+    android:scaleType="fitXY"
     ignition:autoLoad="false"
     ignition:imageUrl="http://developer.android.com/images/home/android-design.png" />  
   
