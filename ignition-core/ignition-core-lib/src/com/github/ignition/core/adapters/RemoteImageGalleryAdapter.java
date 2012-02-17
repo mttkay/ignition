@@ -35,7 +35,7 @@ import com.github.ignition.core.widgets.RemoteImageView;
  * 
  * @author Matthias Kaeppler
  */
-public class WebGalleryAdapter extends BaseAdapter {
+public class RemoteImageGalleryAdapter extends BaseAdapter {
 
     private List<String> imageUrls;
 
@@ -43,7 +43,7 @@ public class WebGalleryAdapter extends BaseAdapter {
 
     private Drawable progressDrawable, errorDrawable;
 
-    public WebGalleryAdapter(Context context) {
+    public RemoteImageGalleryAdapter(Context context) {
         this(context, null, null, null);
     }
 
@@ -53,7 +53,7 @@ public class WebGalleryAdapter extends BaseAdapter {
      * @param imageUrls
      *            the set of image URLs which are to be loaded and displayed
      */
-    public WebGalleryAdapter(Context context, List<String> imageUrls) {
+    public RemoteImageGalleryAdapter(Context context, List<String> imageUrls) {
         this(context, imageUrls, null, null);
     }
 
@@ -67,7 +67,7 @@ public class WebGalleryAdapter extends BaseAdapter {
      * @param errorDrawable
      *            the drawable that will be used if a download error occurs
      */
-    public WebGalleryAdapter(Context context, List<String> imageUrls, Drawable progressDrawable,
+    public RemoteImageGalleryAdapter(Context context, List<String> imageUrls, Drawable progressDrawable,
             Drawable errorDrawable) {
         this.imageUrls = imageUrls;
         this.context = context;
