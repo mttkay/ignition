@@ -20,7 +20,6 @@ import java.util.List;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -36,12 +35,6 @@ import com.github.ignition.support.IgnitedIntents;
 
 public class IgnitedDialogs {
 
-    private static final String PROGRESS_DIALOG_TITLE_RESOURCE = "droidfu_progress_dialog_title";
-
-    private static final String PROGRESS_DIALOG_MESSAGE_RESOURCE = "droidfu_progress_dialog_message";
-
-    public static final String ERROR_DIALOG_TITLE_RESOURCE = "droidfu_error_dialog_title";
-
     /**
      * Creates a new ProgressDialog
      * 
@@ -50,20 +43,19 @@ public class IgnitedDialogs {
      *            The resource id for the title. If this is less than or equal to 0, a default title
      *            is used.
      * @param progressDialogMsgId
-     *            The resource id for the message.
+     *            The resource id for the message. If this is less than or equal to 0, a default
+     *            message is used.
      * @return The new dialog
      */
-    public static ProgressDialog createProgressDialog(final Activity activity,
+    public static ProgressDialog newProgressDialog(final Activity activity,
             int progressDialogTitleId, int progressDialogMsgId) {
         ProgressDialog progressDialog = new ProgressDialog(activity);
         if (progressDialogTitleId <= 0) {
-            progressDialogTitleId = activity.getResources().getIdentifier(
-                    PROGRESS_DIALOG_TITLE_RESOURCE, "string", activity.getPackageName());
+            progressDialogTitleId = R.string.ign_progress_dialog_title;
         }
         progressDialog.setTitle(progressDialogTitleId);
         if (progressDialogMsgId <= 0) {
-            progressDialogMsgId = activity.getResources().getIdentifier(
-                    PROGRESS_DIALOG_MESSAGE_RESOURCE, "string", activity.getPackageName());
+            progressDialogMsgId = R.string.ign_progress_dialog_msg;
         }
         progressDialog.setMessage(activity.getString(progressDialogMsgId));
         progressDialog.setIndeterminate(true);
@@ -74,12 +66,11 @@ public class IgnitedDialogs {
                 return false;
             }
         });
-        // progressDialog.setInverseBackgroundForced(true);
         return progressDialog;
     }
 
     /**
-     * Creates a new Yes/No AlertDialog
+     * Builds a new Yes/No AlertDialog
      * 
      * @param context
      * @param dialogTitle
@@ -88,7 +79,7 @@ public class IgnitedDialogs {
      * @param listener
      * @return
      */
-    public static AlertDialog newYesNoDialog(final Context context, String dialogTitle,
+    public static AlertDialog.Builder newYesNoDialog(final Context context, String dialogTitle,
             String screenMessage, int iconResourceId, OnClickListener listener) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setCancelable(false);
@@ -99,11 +90,11 @@ public class IgnitedDialogs {
         builder.setMessage(screenMessage);
         builder.setIcon(iconResourceId);
 
-        return builder.create();
+        return builder;
     }
 
     /**
-     * Creates a new AlertDialog to display a simple message
+     * Builds a new AlertDialog to display a simple message
      * 
      * @param context
      * @param dialogTitle
@@ -111,7 +102,7 @@ public class IgnitedDialogs {
      * @param iconResourceId
      * @return
      */
-    public static AlertDialog newMessageDialog(final Context context, String dialogTitle,
+    public static AlertDialog.Builder newMessageDialog(final Context context, String dialogTitle,
             String screenMessage, int iconResourceId) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setCancelable(false);
@@ -127,18 +118,18 @@ public class IgnitedDialogs {
         builder.setMessage(screenMessage);
         builder.setIcon(iconResourceId);
 
-        return builder.create();
+        return builder;
     }
 
-    public static AlertDialog newErrorDialog(final Activity activity, String dialogTitle,
+    public static AlertDialog.Builder newErrorDialog(final Activity activity, String dialogTitle,
             Exception error) {
-        return createErrorDialog(activity, error, dialogTitle).create();
+        return newErrorDialog(activity, error, dialogTitle);
     }
 
     /**
-     * Displays a error dialog with an exception as its body. Also displays a Send Email button to
-     * send the exception to the developer, if an appropriate Intent handler is available (otherwise
-     * it will behave exactly like {@link #newErrorDialog(Activity, String, Exception)}.
+     * Displays a error dialog with an exception's message as its body. Also displays a Send Email
+     * button to send the exception to the developer, if an appropriate Intent handler is available
+     * (otherwise it will behave exactly like {@link #newErrorDialog(Activity, String, Exception)}.
      * 
      * <p>
      * Email subject and button label will have default values, but you can override them by
@@ -155,10 +146,10 @@ public class IgnitedDialogs {
      * @param error
      * @return
      */
-    public static AlertDialog newErrorHandlerDialog(final Activity activity, String dialogTitle,
-            String emailAddress, Exception error) {
+    public static AlertDialog.Builder newErrorHandlerDialog(final Activity activity,
+            String dialogTitle, String emailAddress, Exception error) {
 
-        AlertDialog.Builder builder = createErrorDialog(activity, error, dialogTitle);
+        AlertDialog.Builder builder = newErrorDialog(activity, error, dialogTitle);
 
         if (IgnitedIntents.isIntentAvailable(activity, Intent.ACTION_SEND,
                 IgnitedIntents.MIME_TYPE_EMAIL)) {
@@ -178,7 +169,7 @@ public class IgnitedDialogs {
             });
         }
 
-        return builder.create();
+        return builder;
     }
 
     /**
@@ -199,13 +190,13 @@ public class IgnitedDialogs {
      *            onClick events may be sent.
      * @return The new dialog.
      */
-    public static <T> Dialog newListDialog(final Activity context, String dialogTitle,
+    public static <T> AlertDialog.Builder newListDialog(final Activity context, String dialogTitle,
             final List<T> elements, final DialogClickListener<T> listener,
             final boolean closeOnSelect) {
         return newListDialog(context, dialogTitle, elements, listener, closeOnSelect, 0);
     }
 
-    public static <T> Dialog newListDialog(final Activity context, String dialogTitle,
+    public static <T> AlertDialog.Builder newListDialog(final Activity context, String dialogTitle,
             final List<T> elements, final DialogClickListener<T> listener,
             final boolean closeOnSelect, int selectedItem) {
         final int entriesSize = elements.size();
@@ -228,10 +219,10 @@ public class IgnitedDialogs {
             }
         });
 
-        return builder.create();
+        return builder;
     }
 
-    private static AlertDialog.Builder createErrorDialog(final Activity activity, Exception error,
+    private static AlertDialog.Builder newErrorDialog(final Activity activity, Exception error,
             String dialogTitle) {
         String screenMessage = "";
         if (error instanceof ResourceMessageException) {
