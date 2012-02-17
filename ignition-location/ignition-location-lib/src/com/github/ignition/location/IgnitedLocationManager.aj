@@ -262,8 +262,8 @@ public aspect IgnitedLocationManager {
         && within(IgnitedPassiveLocationChangedReceiver) && !adviceexecution() {
 
         currentLocation = freshLocation;
-        Log.d(LOG_TAG, "New location from " + currentLocation.getProvider() + " (lat, long): "
-                + currentLocation.getLatitude() + ", " + currentLocation.getLongitude());
+        Log.d(LOG_TAG, "New location from " + currentLocation.getProvider() + " (lat, lng/acc): "
+                + currentLocation.getLatitude() + ", " + currentLocation.getLongitude() + "/" + currentLocation.getAccuracy());
     }
 
     void around(Location freshLocation) : set(@IgnitedLocation Location *) && args(freshLocation) 
@@ -283,8 +283,8 @@ public aspect IgnitedLocationManager {
         }
 
         currentLocation = freshLocation;
-        Log.d(LOG_TAG, "New location from " + currentLocation.getProvider() + " (lat, long): "
-                + currentLocation.getLatitude() + ", " + currentLocation.getLongitude());
+        Log.d(LOG_TAG, "New location from " + currentLocation.getProvider() + " (lat, lng/acc): "
+                + currentLocation.getLatitude() + ", " + currentLocation.getLongitude() + "/" + currentLocation.getAccuracy());
         boolean keepRequestingLocationUpdates = ((OnIgnitedLocationChangedListener) context)
                 .onIgnitedLocationChanged(currentLocation);
         Bundle extras = freshLocation.getExtras();
