@@ -67,9 +67,11 @@ public class RemoteImageLoaderHandler extends Handler {
         // the thread will set the image only if it's the right position,
         // otherwise it won't do anything.
         String forUrl = (String) imageView.getTag();
-        if (imageUrl.equals(forUrl)) {
-            Bitmap image = (bitmap == null ? ((BitmapDrawable) errorDrawable).getBitmap() : bitmap);
-            imageView.setImageBitmap(image);
+        if (bitmap == null && errorDrawable != null) {
+            bitmap = ((BitmapDrawable) errorDrawable).getBitmap();
+        }
+        if (bitmap != null && imageUrl.equals(forUrl)) {
+            imageView.setImageBitmap(bitmap);
 
             // remove the image URL from the view's tag
             imageView.setTag(null);
