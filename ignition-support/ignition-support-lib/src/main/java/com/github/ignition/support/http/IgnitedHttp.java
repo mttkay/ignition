@@ -46,6 +46,8 @@ import com.github.ignition.support.IgnitedDiagnostics;
 import com.github.ignition.support.cache.AbstractCache;
 import com.github.ignition.support.http.cache.CachedHttpRequest;
 import com.github.ignition.support.http.cache.HttpResponseCache;
+import com.github.ignition.support.http.gzip.GzipHttpRequestInterceptor;
+import com.github.ignition.support.http.gzip.GzipHttpResponseInterceptor;
 import com.github.ignition.support.http.ssl.EasySSLSocketFactory;
 
 public class IgnitedHttp {
@@ -56,6 +58,9 @@ public class IgnitedHttp {
     public static final int DEFAULT_SOCKET_TIMEOUT = 30 * 1000;
     public static final int DEFAULT_WAIT_FOR_CONNECTION_TIMEOUT = 30 * 1000;
     public static final String DEFAULT_HTTP_USER_AGENT = "Android/Ignition";
+
+    public static final String HEADER_ACCEPT_ENCODING = "Accept-Encoding";
+    public static final String ENCODING_GZIP = "gzip";
 
     private HashMap<String, String> defaultHeaders = new HashMap<String, String>();
     private AbstractHttpClient httpClient;
@@ -97,20 +102,28 @@ public class IgnitedHttp {
         httpClient = new DefaultHttpClient(cm, httpParams);
     }
 
+    public void setGzipEncodingEnabled(boolean enabled) {
+        if (enabled) {
+            httpClient.addRequestInterceptor(new GzipHttpRequestInterceptor());
+            httpClient.addResponseInterceptor(new GzipHttpResponseInterceptor());
+        } else {
+            httpClient.removeRequestInterceptorByClass(GzipHttpRequestInterceptor.class);
+            httpClient.removeResponseInterceptorByClass(GzipHttpResponseInterceptor.class);
+        }
+    }
+
     /**
-     * Enables caching of HTTP responses. This will only enable the in-memory
-     * cache. If you also want to enable the disk cache, see
-     * {@link #enableResponseCache(Context, int, long, int, int)} .
+     * Enables caching of HTTP responses. This will only enable the in-memory cache. If you also
+     * want to enable the disk cache, see {@link #enableResponseCache(Context, int, long, int, int)}
+     * .
      * 
      * @param initialCapacity
      *            the initial element size of the cache
      * @param expirationInMinutes
-     *            time in minutes after which elements will be purged from the
-     *            cache
+     *            time in minutes after which elements will be purged from the cache
      * @param maxConcurrentThreads
-     *            how many threads you think may at once access the cache; this
-     *            need not be an exact number, but it helps in fragmenting the
-     *            cache properly
+     *            how many threads you think may at once access the cache; this need not be an exact
+     *            number, but it helps in fragmenting the cache properly
      * @see HttpResponseCache
      */
     public void enableResponseCache(int initialCapacity, long expirationInMinutes,
@@ -127,17 +140,16 @@ public class IgnitedHttp {
      * @param initialCapacity
      *            the initial element size of the cache
      * @param expirationInMinutes
-     *            time in minutes after which elements will be purged from the
-     *            cache (NOTE: this only affects the memory cache, the disk
-     *            cache does currently NOT handle element TTLs!)
+     *            time in minutes after which elements will be purged from the cache (NOTE: this
+     *            only affects the memory cache, the disk cache does currently NOT handle element
+     *            TTLs!)
      * @param maxConcurrentThreads
-     *            how many threads you think may at once access the cache; this
-     *            need not be an exact number, but it helps in fragmenting the
-     *            cache properly
+     *            how many threads you think may at once access the cache; this need not be an exact
+     *            number, but it helps in fragmenting the cache properly
      * @param diskCacheStorageDevice
      *            where files should be cached persistently (
-     *            {@link AbstractCache#DISK_CACHE_INTERNAL},
-     *            {@link AbstractCache#DISK_CACHE_SDCARD} )
+     *            {@link AbstractCache#DISK_CACHE_INTERNAL}, {@link AbstractCache#DISK_CACHE_SDCARD}
+     *            )
      * @see HttpResponseCache
      */
     public void enableResponseCache(Context context, int initialCapacity, long expirationInMinutes,
@@ -240,9 +252,8 @@ public class IgnitedHttp {
     }
 
     /**
-     * Adjust the connection timeout, i.e. the amount of time that may pass in
-     * order to establish a connection with the server. Time unit is
-     * milliseconds.
+     * Adjust the connection timeout, i.e. the amount of time that may pass in order to establish a
+     * connection with the server. Time unit is milliseconds.
      * 
      * @param connectionTimeout
      *            the timeout in milliseconds
@@ -253,8 +264,8 @@ public class IgnitedHttp {
     }
 
     /**
-     * Adjust the socket timeout, i.e. the amount of time that may pass when
-     * waiting for data coming in from the server. Time unit is milliseconds.
+     * Adjust the socket timeout, i.e. the amount of time that may pass when waiting for data coming
+     * in from the server. Time unit is milliseconds.
      * 
      * @param socketTimeout
      *            the timeout in milliseconds
