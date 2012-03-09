@@ -20,10 +20,10 @@ Ignition is split up into three sub-projects.
 We decided to not write exhaustive documentation, since it would get outdated frequently. Instead, the project is documented both via [sample applications](https://github.com/kaeppler/ignition/wiki/Sample-applications) that are part of the build, as well as online JavaDoc (TODO).
 
 ## Installation
-Please refer to [Installation and setup](https://github.com/kaeppler/ignition/wiki/Installation-and-setup).
+Please refer to [Installation and setup](https://github.com/kaeppler/ignition/wiki/Installation-and-setup). We are also collecting answers to [frequently asked questions](https://github.com/kaeppler/ignition/wiki/FAQ).
 
 ## Getting help
-You can ask questions and get help by joining [ignition-users](https://groups.google.com/group/ignition-users) on Google Groups.
+First, please check if your question is answered in the [FAQ](https://github.com/kaeppler/ignition/wiki/FAQ). If not, you can ask questions and get help by joining [ignition-users](https://groups.google.com/group/ignition-users) on Google Groups.
 
 ## Contributing
 Feel like giving back? We'll happily take contributions via GitHub. For questions, please turn to [ignition-developers](https://groups.google.com/group/ignition-developers) on Google Groups.
