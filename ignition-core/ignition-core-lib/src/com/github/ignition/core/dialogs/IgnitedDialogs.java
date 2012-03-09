@@ -73,37 +73,43 @@ public class IgnitedDialogs {
      * Builds a new Yes/No AlertDialog
      * 
      * @param context
-     * @param dialogTitle
-     * @param screenMessage
-     * @param iconResourceId
+     * @param title
+     * @param message
+     * @param iconId
      * @param listener
      * @return
      */
-    public static AlertDialog.Builder newYesNoDialog(final Context context, String dialogTitle,
-            String screenMessage, int iconResourceId, OnClickListener listener) {
+    public static AlertDialog.Builder newYesNoDialog(final Context context, String title,
+            String message, int iconId, OnClickListener listener) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setCancelable(false);
         builder.setPositiveButton(android.R.string.yes, listener);
         builder.setNegativeButton(android.R.string.no, listener);
 
-        builder.setTitle(dialogTitle);
-        builder.setMessage(screenMessage);
-        builder.setIcon(iconResourceId);
+        builder.setTitle(title);
+        builder.setMessage(message);
+        builder.setIcon(iconId);
 
         return builder;
+    }
+
+    public static AlertDialog.Builder newYesNoDialog(final Context context, int titleId,
+            int messageId, int iconId, OnClickListener listener) {
+        return newYesNoDialog(context, context.getString(titleId), context.getString(messageId),
+                iconId, listener);
     }
 
     /**
      * Builds a new AlertDialog to display a simple message
      * 
      * @param context
-     * @param dialogTitle
-     * @param screenMessage
-     * @param iconResourceId
+     * @param title
+     * @param message
+     * @param iconId
      * @return
      */
-    public static AlertDialog.Builder newMessageDialog(final Context context, String dialogTitle,
-            String screenMessage, int iconResourceId) {
+    public static AlertDialog.Builder newMessageDialog(final Context context, String title,
+            String message, int iconId) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setCancelable(false);
         builder.setPositiveButton(context.getString(android.R.string.ok), new OnClickListener() {
@@ -114,16 +120,48 @@ public class IgnitedDialogs {
             }
         });
 
-        builder.setTitle(dialogTitle);
-        builder.setMessage(screenMessage);
-        builder.setIcon(iconResourceId);
+        builder.setTitle(title);
+        builder.setMessage(message);
+        builder.setIcon(iconId);
 
         return builder;
     }
 
-    public static AlertDialog.Builder newErrorDialog(final Activity activity, String dialogTitle,
+    public static AlertDialog.Builder newMessageDialog(final Context context, int titleId,
+            int messageId, int iconId) {
+        return newMessageDialog(context, context.getString(titleId), context.getString(messageId),
+                iconId);
+    }
+
+    public static AlertDialog.Builder newErrorDialog(final Activity activity, String title,
             Exception error) {
-        return newErrorDialog(activity, error, dialogTitle);
+        String screenMessage = "";
+        if (error instanceof ResourceMessageException) {
+            screenMessage = activity.getString(((ResourceMessageException) error)
+                    .getClientMessageResourceId());
+        } else {
+            screenMessage = error.getLocalizedMessage();
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle(title);
+        builder.setMessage(screenMessage);
+        builder.setIcon(android.R.drawable.ic_dialog_alert);
+        builder.setCancelable(false);
+        builder.setPositiveButton(activity.getString(android.R.string.ok), new OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        return builder;
+    }
+
+    public static AlertDialog.Builder newErrorDialog(final Activity activity, int titleId,
+            Exception error) {
+        return newErrorDialog(activity, activity.getString(titleId), error);
     }
 
     /**
@@ -142,14 +180,14 @@ public class IgnitedDialogs {
      * </p>
      * 
      * @param activity
-     * @param dialogTitle
+     * @param title
      * @param error
      * @return
      */
-    public static AlertDialog.Builder newErrorHandlerDialog(final Activity activity,
-            String dialogTitle, String emailAddress, Exception error) {
+    public static AlertDialog.Builder newErrorHandlerDialog(final Activity activity, String title,
+            String emailAddress, Exception error) {
 
-        AlertDialog.Builder builder = newErrorDialog(activity, error, dialogTitle);
+        AlertDialog.Builder builder = newErrorDialog(activity, title, error);
 
         if (IgnitedIntents.isIntentAvailable(activity, Intent.ACTION_SEND,
                 IgnitedIntents.MIME_TYPE_EMAIL)) {
@@ -172,6 +210,11 @@ public class IgnitedDialogs {
         return builder;
     }
 
+    public static AlertDialog.Builder newErrorHandlerDialog(final Activity activity, int titleId,
+            String emailAddress, Exception error) {
+        return newErrorHandlerDialog(activity, activity.getString(titleId), emailAddress, error);
+    }
+
     /**
      * Creates a AlertDialog that shows a list of elements. The listener's onClick method gets
      * called when the user taps a list item.
@@ -179,7 +222,7 @@ public class IgnitedDialogs {
      * @param <T>
      *            The type of each element
      * @param context
-     * @param dialogTitle
+     * @param title
      *            the title or null to disable the title
      * @param elements
      *            List of elements to be displayed. Each elements toString() method will be called.
@@ -190,13 +233,13 @@ public class IgnitedDialogs {
      *            onClick events may be sent.
      * @return The new dialog.
      */
-    public static <T> AlertDialog.Builder newListDialog(final Activity context, String dialogTitle,
+    public static <T> AlertDialog.Builder newListDialog(final Activity context, String title,
             final List<T> elements, final DialogClickListener<T> listener,
             final boolean closeOnSelect) {
-        return newListDialog(context, dialogTitle, elements, listener, closeOnSelect, 0);
+        return newListDialog(context, title, elements, listener, closeOnSelect, 0);
     }
 
-    public static <T> AlertDialog.Builder newListDialog(final Activity context, String dialogTitle,
+    public static <T> AlertDialog.Builder newListDialog(final Activity context, String title,
             final List<T> elements, final DialogClickListener<T> listener,
             final boolean closeOnSelect, int selectedItem) {
         final int entriesSize = elements.size();
@@ -206,8 +249,8 @@ public class IgnitedDialogs {
         }
 
         Builder builder = new AlertDialog.Builder(context);
-        if (dialogTitle != null) {
-            builder.setTitle(dialogTitle);
+        if (title != null) {
+            builder.setTitle(title);
         }
         builder.setSingleChoiceItems(entries, selectedItem, new DialogInterface.OnClickListener() {
 
@@ -216,32 +259,6 @@ public class IgnitedDialogs {
                 if (closeOnSelect)
                     dialog.dismiss();
                 listener.onClick(which, elements.get(which));
-            }
-        });
-
-        return builder;
-    }
-
-    private static AlertDialog.Builder newErrorDialog(final Activity activity, Exception error,
-            String dialogTitle) {
-        String screenMessage = "";
-        if (error instanceof ResourceMessageException) {
-            screenMessage = activity.getString(((ResourceMessageException) error)
-                    .getClientMessageResourceId());
-        } else {
-            screenMessage = error.getLocalizedMessage();
-        }
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setTitle(dialogTitle);
-        builder.setMessage(screenMessage);
-        builder.setIcon(android.R.drawable.ic_dialog_alert);
-        builder.setCancelable(false);
-        builder.setPositiveButton(activity.getString(android.R.string.ok), new OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
             }
         });
 
