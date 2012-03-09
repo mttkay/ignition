@@ -18,6 +18,7 @@ Ignition is split up into three sub-projects.
 
 ## Documentation
 We decided to not write exhaustive documentation, since it would get outdated frequently. Instead, the project is documented both via [sample applications](https://github.com/kaeppler/ignition/wiki/Sample-applications) that are part of the build, as well as online JavaDoc:
+
  * [ignition-core](http://kaeppler.github.com/ignition-docs/ignition-core/apidocs/)
  * [ignition-support](http://kaeppler.github.com/ignition-docs/ignition-support/apidocs/)
  * [ignition-location](http://kaeppler.github.com/ignition-docs/ignition-location/apidocs/)
