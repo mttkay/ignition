@@ -174,7 +174,7 @@ public abstract class AbstractIgnitedLocationManagerTest {
                 IgnitedLocationConstants.WAIT_FOR_GPS_FIX_INTERVAL_DEFAULT + 1);
         int minBatteryLevelToUseGps = pref.getInt(
                 IgnitedLocationConstants.SP_KEY_MIN_BATTERY_LEVEL,
-                IgnitedLocationConstants.MIN_BATTERY_LEVEL_DEFAULT + 1);
+                IgnitedLocationConstants.MIN_BATTERY_LEVEL_FOR_GPS_DEFAULT + 1);
         boolean showWaitForLocationDialog = pref.getBoolean(
                 IgnitedLocationConstants.SP_KEY_SHOW_WAIT_FOR_LOCATION_DIALOG,
                 !IgnitedLocationConstants.SHOW_WAIT_FOR_LOCATION_DIALOG_DEFAULT);
@@ -183,8 +183,10 @@ public abstract class AbstractIgnitedLocationManagerTest {
         assertThat(useGps, is(true));
         assertThat(runOnce, is(true));
         assertThat(showWaitForLocationDialog, is(true));
-        assertThat(minBatteryLevelToUseGps, equalTo(IgnitedLocationConstants.MIN_BATTERY_LEVEL_DEFAULT));
-        assertThat(waitForGpsFixInterval, equalTo(IgnitedLocationConstants.WAIT_FOR_GPS_FIX_INTERVAL_DEFAULT));
+        assertThat(minBatteryLevelToUseGps,
+                equalTo(IgnitedLocationConstants.MIN_BATTERY_LEVEL_FOR_GPS_DEFAULT));
+        assertThat(waitForGpsFixInterval,
+                equalTo(IgnitedLocationConstants.WAIT_FOR_GPS_FIX_INTERVAL_DEFAULT));
         assertThat(IgnitedLocationConstants.LOCATION_UPDATES_DISTANCE_DIFF_DEFAULT,
                 equalTo(locUpdatesDistDiff));
         assertThat(IgnitedLocationConstants.LOCATION_UPDATES_INTERVAL_DEFAULT,
