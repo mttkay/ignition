@@ -4,7 +4,7 @@
   <parent>
     <groupId>com.github.ignition</groupId>
     <artifactId>ignition-location-project</artifactId>
-    <version>0.1</version>
+    <version>0.2-SNAPSHOT</version>
   </parent>
   <artifactId>ignition-location-samples</artifactId>
   <packaging>pom</packaging>
