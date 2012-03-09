@@ -10,7 +10,7 @@ Ignition helps you getting your Android applications off the ground quickly, by 
  * Several helper classes for easier API level backwards compatibility, Intents, diagnostics, and more
  * A friendlier and more robust implementation of AsyncTask
 
-Ignition is split up into three sub-projects. Click on one to see what's inside.
+Ignition is split up into three sub-projects.
 
  * **ignition-core.** This is an Android library project that is compiled straight into your apps. This allows you to re-use views and shared resources right in your own code.
  * **ignition-support.** This is a standard Java library project, deployed as an ordinary JAR. It contains most of the utility classes. You can use this independently of the core module.
