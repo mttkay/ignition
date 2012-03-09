@@ -216,7 +216,7 @@ public class IgnitedLocationSampleActivity extends MapActivity {
                 + " secs");
         minBatteryLevel.setText(String.valueOf(settings.getInt(
                 IgnitedLocationConstants.SP_KEY_MIN_BATTERY_LEVEL,
-                IgnitedLocationConstants.MIN_BATTERY_LEVEL_DEFAULT))
+                IgnitedLocationConstants.MIN_BATTERY_LEVEL_FOR_GPS_DEFAULT))
                 + "%");
     }
 

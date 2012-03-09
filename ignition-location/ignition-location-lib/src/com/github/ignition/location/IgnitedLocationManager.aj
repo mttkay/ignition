@@ -168,7 +168,7 @@ public aspect IgnitedLocationManager {
         }
 
         return currentLevel >= prefs.getInt(IgnitedLocationConstants.SP_KEY_MIN_BATTERY_LEVEL,
-                IgnitedLocationConstants.MIN_BATTERY_LEVEL_DEFAULT);
+                IgnitedLocationConstants.MIN_BATTERY_LEVEL_FOR_GPS_DEFAULT);
     }
 
     before(Context context, IgnitedLocationActivity ignitedAnnotation) : 
@@ -221,9 +221,9 @@ public aspect IgnitedLocationManager {
                 passiveLocationUpdatesInterval);
         editor.putBoolean(IgnitedLocationConstants.SP_KEY_RUN_ONCE, true);
         editor.putInt(IgnitedLocationConstants.SP_KEY_MIN_BATTERY_LEVEL,
-                locationAnnotation.minBatteryLevel());
+                locationAnnotation.minBatteryLevelForGps());
         editor.putLong(IgnitedLocationConstants.SP_KEY_WAIT_FOR_GPS_FIX_INTERVAL,
-                locationAnnotation.waitForGpsFix());
+                locationAnnotation.waitForGpsFixInterval());
         editor.putBoolean(IgnitedLocationConstants.SP_KEY_SHOW_WAIT_FOR_LOCATION_DIALOG,
                 locationAnnotation.showWaitForLocationDialog());
         editor.commit();

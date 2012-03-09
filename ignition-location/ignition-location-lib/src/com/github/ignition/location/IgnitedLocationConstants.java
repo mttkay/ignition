@@ -52,7 +52,7 @@ public class IgnitedLocationConstants {
     public static final String IGNITED_LOCATION_EXTRA = "ignited_location_extra";
     public static final String IGNITED_LAST_LOCATION_EXTRA = "ignited_last_location_extra";
 
-    public static final int MIN_BATTERY_LEVEL_DEFAULT = 15;
+    public static final int MIN_BATTERY_LEVEL_FOR_GPS_DEFAULT = 15;
 
     public static final long WAIT_FOR_GPS_FIX_INTERVAL_DEFAULT = 30000; // 30s
 

@@ -90,7 +90,7 @@ public @interface IgnitedLocationActivity {
      *
      * @return the interval (in milliseconds) to wait for a GPS fix.
      */
-    long waitForGpsFix() default IgnitedLocationConstants.WAIT_FOR_GPS_FIX_INTERVAL_DEFAULT;
+    long waitForGpsFixInterval() default IgnitedLocationConstants.WAIT_FOR_GPS_FIX_INTERVAL_DEFAULT;
 
     /**
      * Determines the minimum battery level to enable location updates using GPS. Default value is
@@ -98,7 +98,7 @@ public @interface IgnitedLocationActivity {
      *
      * @return the minimum battery level to enable location updates using GPS.
      */
-    int minBatteryLevel() default IgnitedLocationConstants.MIN_BATTERY_LEVEL_DEFAULT;
+    int minBatteryLevelForGps() default IgnitedLocationConstants.MIN_BATTERY_LEVEL_FOR_GPS_DEFAULT;
 
     /**
      * Determines whether the activity should display a "wait for location" dialog while the
