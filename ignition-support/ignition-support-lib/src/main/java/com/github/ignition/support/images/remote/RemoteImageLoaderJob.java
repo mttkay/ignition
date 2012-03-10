@@ -91,7 +91,7 @@ public class RemoteImageLoaderJob implements Runnable {
 
         // determine the image size and allocate a buffer
         int fileSize = connection.getContentLength();
-        Log.d(LOG_TAG, "fetching image " + imageUrl + " (" + (filesize <= 0 ? "size unknown" : Integer.toString(fileSize) + ")");
+        Log.d(LOG_TAG, "fetching image " + imageUrl + " (" + (fileSize <= 0 ? "size unknown" : Integer.toString(fileSize)) + ")");
 
         BufferedInputStream istream = new BufferedInputStream(connection.getInputStream());
 
