@@ -35,6 +35,7 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
@@ -64,15 +65,16 @@ public class IgnitedHttp {
 
     private HashMap<String, String> defaultHeaders = new HashMap<String, String>();
     private AbstractHttpClient httpClient;
-    private Context appContext;
 
     private HttpResponseCache responseCache;
 
-    public IgnitedHttp(Context context) {
-        appContext = context.getApplicationContext();
+    public IgnitedHttp() {
         setupHttpClient();
-        appContext.registerReceiver(new ConnectionChangedBroadcastReceiver(this), new IntentFilter(
-                ConnectivityManager.CONNECTIVITY_ACTION));
+    }
+
+    public IgnitedHttp(Context context) {
+        setupHttpClient();
+        listenForConnectivityChanges(context);
     }
 
     protected void setupHttpClient() {
@@ -100,6 +102,20 @@ public class IgnitedHttp {
 
         ThreadSafeClientConnManager cm = new ThreadSafeClientConnManager(httpParams, schemeRegistry);
         httpClient = new DefaultHttpClient(cm, httpParams);
+    }
+
+    /**
+     * Registers a broadcast receiver with the application context that will take care of updating
+     * proxy settings when failing over between 3G and Wi-Fi. <b>This requires the
+     * {@link Manifest.permission#ACCESS_NETWORK_STATE} permission</b>.
+     * 
+     * @param context
+     *            the context used to retrieve the app context
+     */
+    public void listenForConnectivityChanges(Context context) {
+        context.getApplicationContext().registerReceiver(
+                new ConnectionChangedBroadcastReceiver(this),
+                new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
     }
 
     public void setGzipEncodingEnabled(boolean enabled) {
@@ -184,12 +200,21 @@ public class IgnitedHttp {
         return httpClient;
     }
 
-    public void updateProxySettings() {
-        if (appContext == null) {
+    /**
+     * Updates the underlying HTTP client's proxy settings with what the user has entered in the APN
+     * settings. This will be called automatically if {@link #listenForConnectivityChanges(Context)}
+     * has been called. <b>This requires the {@link Manifest.permission#ACCESS_NETWORK_STATE}
+     * permission</b>.
+     * 
+     * @param context
+     *            the current context
+     */
+    public void updateProxySettings(Context context) {
+        if (context == null) {
             return;
         }
         HttpParams httpParams = httpClient.getParams();
-        ConnectivityManager connectivity = (ConnectivityManager) appContext
+        ConnectivityManager connectivity = (ConnectivityManager) context
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo nwInfo = connectivity.getActiveNetworkInfo();
         if (nwInfo == null) {
@@ -197,11 +222,11 @@ public class IgnitedHttp {
         }
         Log.i(LOG_TAG, nwInfo.toString());
         if (nwInfo.getType() == ConnectivityManager.TYPE_MOBILE) {
-            String proxyHost = Proxy.getHost(appContext);
+            String proxyHost = Proxy.getHost(context);
             if (proxyHost == null) {
                 proxyHost = Proxy.getDefaultHost();
             }
-            int proxyPort = Proxy.getPort(appContext);
+            int proxyPort = Proxy.getPort(context);
             if (proxyPort == -1) {
                 proxyPort = Proxy.getDefaultPort();
             }

@@ -29,7 +29,7 @@ public class ConnectionChangedBroadcastReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        http.updateProxySettings();
+        http.updateProxySettings(context);
     }
 
 }
