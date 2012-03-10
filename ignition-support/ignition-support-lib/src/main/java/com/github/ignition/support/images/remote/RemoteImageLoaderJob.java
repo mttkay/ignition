@@ -91,6 +91,8 @@ public class RemoteImageLoaderJob implements Runnable {
 
         // determine the image size and allocate a buffer
         int fileSize = connection.getContentLength();
+        Log.d(LOG_TAG, "fetching image " + imageUrl + " (" + (filesize <= 0 ? "size unknown" : Integer.toString(fileSize) + ")");
+
         BufferedInputStream istream = new BufferedInputStream(connection.getInputStream());
 
         try {   
@@ -110,8 +112,6 @@ public class RemoteImageLoaderJob implements Runnable {
             } else {
                 byte[] imageData = new byte[fileSize];
         
-                // download the file
-                Log.d(LOG_TAG, "fetching image " + imageUrl + " (" + fileSize + ")");
                 int bytesRead = 0;
                 int offset = 0;
                 while (bytesRead != -1 && offset < fileSize) {
