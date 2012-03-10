@@ -3,14 +3,17 @@ package com.github.ignition.samples.ignitedasynctask;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.github.ignition.core.tasks.IgnitedAsyncTask;
+import com.github.ignition.core.tasks.IgnitedAsyncTaskContextHandler;
 
-public class IgnitedAsyncTaskActivity extends Activity {
+public class IgnitedAsyncTaskActivity extends Activity implements
+        IgnitedAsyncTaskContextHandler<Integer, String> {
 
     private SampleTask task;
     private ProgressBar progressBar;
@@ -81,13 +84,8 @@ public class IgnitedAsyncTaskActivity extends Activity {
             IgnitedAsyncTask<IgnitedAsyncTaskActivity, Void, Integer, String> {
 
         @Override
-        protected void onStart(IgnitedAsyncTaskActivity context) {
+        public void onTaskStarted(IgnitedAsyncTaskActivity context) {
             publishProgress(0);
-        }
-
-        @Override
-        protected void onProgress(IgnitedAsyncTaskActivity context, Integer... values) {
-            context.updateProgress(values[0]);
         }
 
         @Override
@@ -102,19 +100,38 @@ public class IgnitedAsyncTaskActivity extends Activity {
         }
 
         @Override
-        protected void onCompleted(IgnitedAsyncTaskActivity context, String result) {
-            context.resetTask();
+        public void onTaskCompleted(IgnitedAsyncTaskActivity context, String result) {
+            Log.d("Task", "task completed");
         }
 
         @Override
-        protected void onSuccess(IgnitedAsyncTaskActivity context, String result) {
-            context.showSuccess(result);
-        }
-
-        @Override
-        protected void onError(IgnitedAsyncTaskActivity context, Exception error) {
-            super.onError(context, error);
+        public void onTaskSuccess(IgnitedAsyncTaskActivity context, String result) {
+            Log.d("Task", "task succeeded");
         }
     }
+
+    @Override
+    public void onTaskStarted() {
+    }
+
+    @Override
+    public void onTaskProgress(Integer... progress) {
+        updateProgress(progress[0]);
+    }
+
+    @Override
+    public void onTaskCompleted(String result) {
+        resetTask();
+    }
+
+    @Override
+    public void onTaskSuccess(String result) {
+        showSuccess(result);
+    }
+
+    @Override
+    public void onTaskFailed(Exception error) {
+    }
+
 
 }

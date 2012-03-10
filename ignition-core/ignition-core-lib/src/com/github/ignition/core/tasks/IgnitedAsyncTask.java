@@ -9,17 +9,22 @@ import android.os.AsyncTask;
  * An extension to AsyncTask that removes some of the boilerplate that's typically involved. Some of
  * the things handled for you by this class are:
  * <ul>
- * <li>allows worker method to throw exceptions, which will be passed to {@link #onError}</li>
- * <li>it handles a {@link Context} reference for you, which is also passed to {@link #onStart},
- * {@link #onSuccess}, and {@link #onError}</li>
+ * <li>handles a {@link Context} reference for you, which is passed to all status callbacks</li>
+ * <li>allows worker method to throw exceptions, which will be passed to
+ * {@link #onTaskFailed(Context, Exception)}</li>
  * <li>allows re-using a task as a skeleton that delegates to different worker implementations via
  * {@link IgnitedAsyncTaskCallable}</li>
+ * <li>allows a {@link Context} to register itself as a callback handler via
+ * {@link IgnitedAsyncTaskContextHandler}</li>
+ * <li>allows any arbitrary object to register itself as a callback handler via
+ * {@link IgnitedAsyncTaskDelegateHandler}</li>
  * </ul>
  * <p>
- * Since this class keeps a reference to a Context, you MUST ensure that this reference is cleared
- * when the Context gets destroyed. You can handle Context connection and disconnection using the
- * {@link #connect(Context)} and {@link #disconnect()} methods. For Activities, a good place to call
- * them is onRestoreInstanceState and onDestroy respectively.
+ * Since this class keeps a reference to a Context (either directly or indirectly through a callback
+ * handler), you MUST ensure that this reference is cleared when the Context gets destroyed. You can
+ * handle Context and handler connection and disconnection using the {@link #connect} and
+ * {@link #disconnect} methods. For Activities, a good place to call them is onCreate and onDestroy
+ * respectively.
  * </p>
  * <p>
  * Please note that the callbacks added by this class will ONLY be called if the context reference
@@ -35,7 +40,8 @@ import android.os.AsyncTask;
  * @param <ReturnT>
  */
 public abstract class IgnitedAsyncTask<ContextT extends Context, ParameterT, ProgressT, ReturnT>
-        extends AsyncTask<ParameterT, ProgressT, ReturnT> {
+        extends AsyncTask<ParameterT, ProgressT, ReturnT> implements
+        IgnitedAsyncTaskDelegateHandler<ContextT, ProgressT, ReturnT> {
 
     public interface IgnitedAsyncTaskCallable<ContextT extends Context, ParameterT, ProgressT, ReturnT> {
         public ReturnT call(IgnitedAsyncTask<ContextT, ParameterT, ProgressT, ReturnT> task)
@@ -43,35 +49,52 @@ public abstract class IgnitedAsyncTask<ContextT extends Context, ParameterT, Pro
     }
 
     private ContextT context;
-    private Exception error;
+    private IgnitedAsyncTaskContextHandler<ProgressT, ReturnT> contextHandler;
+    private IgnitedAsyncTaskDelegateHandler<ContextT, ProgressT, ReturnT> delegateHandler;
     private IgnitedAsyncTaskCallable<ContextT, ParameterT, ProgressT, ReturnT> callable;
+
+    private Exception error;
 
     public IgnitedAsyncTask() {
     }
 
-    public IgnitedAsyncTask(ContextT context) {
-        this.context = context;
-    }
-
+    @SuppressWarnings("unchecked")
     public void connect(ContextT context) {
         this.context = context;
+        if (context instanceof IgnitedAsyncTaskContextHandler) {
+            this.contextHandler = (IgnitedAsyncTaskContextHandler<ProgressT, ReturnT>) context;
+        }
+    }
+
+    public void connect(IgnitedAsyncTaskDelegateHandler<ContextT, ProgressT, ReturnT> handler) {
+        this.delegateHandler = handler;
+        this.context = handler.getContext();
     }
 
     public void disconnect() {
+        this.contextHandler = null;
+        this.delegateHandler = null;
         this.context = null;
     }
 
+    @Override
     public ContextT getContext() {
         return context;
     }
 
     /**
-     * If you rely on a valid context reference, override {@link #onStart(Context)} instead.
+     * If you rely on a valid context reference, override {@link #onTaskStarted(Context)} instead.
      */
     @Override
     protected void onPreExecute() {
         if (context != null) {
-            onStart(context);
+            onTaskStarted(context);
+            if (contextHandler != null) {
+                contextHandler.onTaskStarted();
+            }
+            if (delegateHandler != null) {
+                delegateHandler.onTaskStarted(context);
+            }
         }
     }
 
@@ -82,7 +105,8 @@ public abstract class IgnitedAsyncTask<ContextT extends Context, ParameterT, Pro
      * @param context
      *            The most recent instance of the Context that executed this IgnitedAsyncTask
      */
-    protected void onStart(ContextT context) {
+    @Override
+    public void onTaskStarted(ContextT context) {
     }
 
     /**
@@ -91,7 +115,13 @@ public abstract class IgnitedAsyncTask<ContextT extends Context, ParameterT, Pro
     @Override
     protected void onProgressUpdate(ProgressT... values) {
         if (context != null) {
-            onProgress(context, values);
+            onTaskProgress(context, values);
+            if (contextHandler != null) {
+                contextHandler.onTaskProgress(values);
+            }
+            if (delegateHandler != null) {
+                delegateHandler.onTaskProgress(context, values);
+            }
         }
     }
 
@@ -106,7 +136,8 @@ public abstract class IgnitedAsyncTask<ContextT extends Context, ParameterT, Pro
      * @param progress
      *            the progress values
      */
-    protected void onProgress(ContextT context, ProgressT... progress) {
+    @Override
+    public void onTaskProgress(ContextT context, ProgressT... progress) {
     }
 
     /**
@@ -149,11 +180,29 @@ public abstract class IgnitedAsyncTask<ContextT extends Context, ParameterT, Pro
     @Override
     protected void onPostExecute(ReturnT result) {
         if (context != null) {
-            onCompleted(context, result);
+            onTaskCompleted(context, result);
+            if (contextHandler != null) {
+                contextHandler.onTaskCompleted(result);
+            }
+            if (delegateHandler != null) {
+                delegateHandler.onTaskCompleted(context, result);
+            }
             if (failed()) {
-                onError(context, error);
+                onTaskFailed(context, error);
+                if (contextHandler != null) {
+                    contextHandler.onTaskFailed(error);
+                }
+                if (delegateHandler != null) {
+                    delegateHandler.onTaskFailed(context, error);
+                }
             } else {
-                onSuccess(context, result);
+                onTaskSuccess(context, result);
+                if (contextHandler != null) {
+                    contextHandler.onTaskSuccess(result);
+                }
+                if (delegateHandler != null) {
+                    delegateHandler.onTaskSuccess(context, result);
+                }
             }
         }
     }
@@ -167,7 +216,8 @@ public abstract class IgnitedAsyncTask<ContextT extends Context, ParameterT, Pro
      *            The most recent instance of the Context that executed this IgnitedAsyncTask
      * @param result
      */
-    protected void onCompleted(ContextT context, ReturnT result) {
+    @Override
+    public void onTaskCompleted(ContextT context, ReturnT result) {
     }
 
     /**
@@ -178,7 +228,8 @@ public abstract class IgnitedAsyncTask<ContextT extends Context, ParameterT, Pro
      *            The most recent instance of the Context that executed this IgnitedAsyncTask
      * @param result
      */
-    protected void onSuccess(ContextT context, ReturnT result) {
+    @Override
+    public void onTaskSuccess(ContextT context, ReturnT result) {
     }
 
     /**
@@ -190,7 +241,8 @@ public abstract class IgnitedAsyncTask<ContextT extends Context, ParameterT, Pro
      * @param error
      *            The exception that was thrown during task execution
      */
-    protected void onError(ContextT context, Exception error) {
+    @Override
+    public void onTaskFailed(ContextT context, Exception error) {
         error.printStackTrace();
     }
 
