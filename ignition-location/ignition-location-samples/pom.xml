@@ -24,10 +24,6 @@
           <groupId>com.google.guava</groupId>
           <artifactId>guava-collections</artifactId>
         </exclusion>
-        <exclusion>
-          <groupId>org.aspectj</groupId>
-          <artifactId>aspectjrt</artifactId>
-        </exclusion>
       </exclusions>
     </dependency>
   </dependencies>
