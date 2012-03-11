@@ -65,6 +65,7 @@ public class IgnitedGingerbreadLastLocationFinder extends IgnitedAbstractLastLoc
      */
     @Override
     public void retrieveSingleLocationUpdate() {
+        Log.d(LOG_TAG, "Requesting Single Location Update...");
         IntentFilter locIntentFilter = new IntentFilter(SINGLE_LOCATION_UPDATE_ACTION);
         context.registerReceiver(singleUpdateReceiver, locIntentFilter);
         singleUpdateReceiverRegistered = true;

@@ -288,9 +288,12 @@ public aspect IgnitedLocationManager {
         boolean keepRequestingLocationUpdates = ((OnIgnitedLocationChangedListener) context)
                 .onIgnitedLocationChanged(currentLocation);
         Bundle extras = freshLocation.getExtras();
+        // a) If location updates shouldn't be requested anymore turn them off.
+        // b) Don't turn location updates on if last location is too old, since the single location
+        // update is running.
         if (!keepRequestingLocationUpdates) {
             disableLocationUpdates(true);
-            PlatformSpecificImplementationFactory.getLastLocationFinder(context).cancel();
+            // PlatformSpecificImplementationFactory.getLastLocationFinder(context).cancel();
             return;
         } else if (requestLocationUpdates
                 && !extras.containsKey(ILastLocationFinder.LAST_LOCATION_TOO_OLD_EXTRA)) {
