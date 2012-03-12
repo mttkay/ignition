@@ -113,18 +113,18 @@ public class IgnitedHttpSampleActivity extends Activity {
         }
 
         @Override
-        protected void onStart(IgnitedHttpSampleActivity context) {
+        public void onTaskStarted(IgnitedHttpSampleActivity context) {
             context.updateStatusText("Downloading file...");
         }
 
         @Override
-        protected IgnitedHttpResponse run(Void... params) throws Exception {
+        public IgnitedHttpResponse run(Void... params) throws Exception {
             return http.get(url, true).retries(3).expecting(200).send();
         }
 
         @Override
-        protected void onError(IgnitedHttpSampleActivity context, Exception error) {
-            super.onError(context, error); // prints a stack trace
+        public void onTaskFailed(IgnitedHttpSampleActivity context, Exception error) {
+            super.onTaskFailed(context, error); // prints a stack trace
 
             context.updateStatusText("Download failed! " + error.getCause().getMessage());
 
@@ -132,7 +132,7 @@ public class IgnitedHttpSampleActivity extends Activity {
         }
 
         @Override
-        protected void onSuccess(IgnitedHttpSampleActivity context, IgnitedHttpResponse response) {
+        public void onTaskSuccess(IgnitedHttpSampleActivity context, IgnitedHttpResponse response) {
             boolean cachedResponse = response instanceof CachedHttpResponse;
 
             context.updateStatusText(url, cachedResponse);
