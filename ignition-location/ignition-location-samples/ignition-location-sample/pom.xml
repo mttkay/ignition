@@ -14,6 +14,7 @@
       <groupId>com.google.android.maps</groupId>
       <artifactId>maps</artifactId>
       <version>14_r1</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.bugsense</groupId>
