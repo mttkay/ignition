@@ -73,7 +73,7 @@ public abstract class IgnitedAbstractLastLocationFinder implements ILastLocation
             Log.d(LOG_TAG, "Last location is too old or too inaccurate. Retrieving a new one...");
             retrieveSingleLocationUpdate();
             if (bestResult != null) {
-                bestResult.getExtras().putBoolean(LAST_LOCATION_TOO_OLD_EXTRA, true);
+                bestResult.getExtras().putBoolean(LAST_LOCATION_TOO_OLD_OR_INACCURATE_EXTRA, true);
             }
         }
 
