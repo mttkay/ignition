@@ -1,33 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry including="**/*.aj|**/*.java" kind="src" path="src"/>
-	<classpathentry kind="var" path="M2_REPO/org/aspectj/aspectjrt/1.6.11/aspectjrt-1.6.11.jar"/>
-	<classpathentry kind="var" path="M2_REPO/com/bugsense/bugsense-trace/1.1.2/bugsense-trace-1.1.2.jar"/>
-	<classpathentry kind="var" path="M2_REPO/commons-codec/commons-codec/1.3/commons-codec-1.3.jar" sourcepath="M2_REPO/commons-codec/commons-codec/1.3/commons-codec-1.3-sources.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="jar:file:/Users/stefanodacchille/.m2/repository/commons-codec/commons-codec/1.3/commons-codec-1.3-javadoc.jar!/"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="var" path="M2_REPO/org/apache/httpcomponents/httpclient/4.0.1/httpclient-4.0.1.jar" sourcepath="M2_REPO/org/apache/httpcomponents/httpclient/4.0.1/httpclient-4.0.1-sources.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/apache/httpcomponents/httpcore/4.0.1/httpcore-4.0.1.jar" sourcepath="M2_REPO/org/apache/httpcomponents/httpcore/4.0.1/httpcore-4.0.1-sources.jar"/>
-	<classpathentry kind="var" path="M2_REPO/com/github/ignition/ignition-support/0.1-SNAPSHOT/ignition-support-0.1-SNAPSHOT.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/json/json/20080701/json-20080701.jar" sourcepath="M2_REPO/org/json/json/20080701/json-20080701-sources.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="jar:file:/Users/stefanodacchille/.m2/repository/org/json/json/20080701/json-20080701-javadoc.jar!/"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="var" path="M2_REPO/org/khronos/opengl-api/gl1.1-android-2.1_r1/opengl-api-gl1.1-android-2.1_r1.jar" sourcepath="M2_REPO/org/khronos/opengl-api/gl1.1-android-2.1_r1/opengl-api-gl1.1-android-2.1_r1-sources.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="jar:file:/Users/stefanodacchille/.m2/repository/org/khronos/opengl-api/gl1.1-android-2.1_r1/opengl-api-gl1.1-android-2.1_r1-javadoc.jar!/"/>
-		</attributes>
-	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES">
 		<attributes>
-			<attribute name="org.eclipse.ajdt.aspectpath.restriction" value="ignition-location-lib.jar"/>
+			<attribute name="org.eclipse.ajdt.aspectpath.restriction" value="ignition-location.jar"/>
 			<attribute name="org.eclipse.ajdt.aspectpath" value="org.eclipse.ajdt.aspectpath"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="src" path="gen"/>
+	<classpathentry kind="src" output="bin/classes" path="gen">
+		<attributes>
+			<attribute name="optional" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" output="bin/classes" path="src"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

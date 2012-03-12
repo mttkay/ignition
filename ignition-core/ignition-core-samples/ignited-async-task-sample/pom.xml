@@ -5,7 +5,6 @@
     <artifactId>ignition-core-samples</artifactId>
     <version>0.2-SNAPSHOT</version>
   </parent>
-  <groupId>com.github.ignition</groupId>
   <artifactId>ignited-async-task-sample</artifactId>
   <packaging>apk</packaging>
   

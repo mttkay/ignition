@@ -6,7 +6,6 @@
     <artifactId>ignition-location-samples</artifactId>
     <version>0.2-SNAPSHOT</version>
   </parent>
-  <groupId>com.github.ignition</groupId>
   <artifactId>ignition-location-sample</artifactId>
   <packaging>apk</packaging>
 

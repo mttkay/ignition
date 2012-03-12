@@ -5,7 +5,6 @@
     <artifactId>ignition-location-project</artifactId>
     <version>0.2-SNAPSHOT</version>
   </parent>
-  <groupId>com.github.ignition</groupId>
   <artifactId>ignition-location</artifactId>
   <packaging>apklib</packaging>
 
