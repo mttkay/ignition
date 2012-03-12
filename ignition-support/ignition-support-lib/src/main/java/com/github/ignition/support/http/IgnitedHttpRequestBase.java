@@ -17,9 +17,9 @@ package com.github.ignition.support.http;
 
 import java.io.IOException;
 import java.net.ConnectException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpResponseException;
@@ -32,8 +32,8 @@ import org.apache.http.protocol.HttpContext;
 
 import android.util.Log;
 
-import com.github.ignition.support.http.cache.HttpResponseCache;
 import com.github.ignition.support.http.cache.CachedHttpResponse.ResponseData;
+import com.github.ignition.support.http.cache.HttpResponseCache;
 
 public abstract class IgnitedHttpRequestBase implements IgnitedHttpRequest,
         ResponseHandler<IgnitedHttpResponse> {
@@ -42,7 +42,7 @@ public abstract class IgnitedHttpRequestBase implements IgnitedHttpRequest,
 
     protected static final String HTTP_CONTENT_TYPE_HEADER = "Content-Type";
 
-    protected List<Integer> expectedStatusCodes = new ArrayList<Integer>();
+    protected Set<Integer> expectedStatusCodes = new HashSet<Integer>();
 
     protected IgnitedHttp ignitedHttp;
 
@@ -71,7 +71,7 @@ public abstract class IgnitedHttpRequestBase implements IgnitedHttpRequest,
     }
 
     public IgnitedHttpRequestBase expecting(Integer... statusCodes) {
-        expectedStatusCodes = Arrays.asList(statusCodes);
+        expectedStatusCodes.addAll(Arrays.asList(statusCodes));
         return this;
     }
 
