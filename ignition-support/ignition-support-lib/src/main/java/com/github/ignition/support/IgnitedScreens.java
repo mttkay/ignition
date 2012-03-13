@@ -27,6 +27,7 @@ public class IgnitedScreens {
     public static final int SCREEN_DENSITY_LOW = 120;
     public static final int SCREEN_DENSITY_MEDIUM = 160;
     public static final int SCREEN_DENSITY_HIGH = 240;
+    public static final int SCREEN_DENSITY_XHIGH = 320;
 
     private static int screenDensity = -1;
 
@@ -38,18 +39,21 @@ public class IgnitedScreens {
     public static Drawable scaleDrawable(Context context, int drawableResourceId, int width,
             int height) {
         Bitmap sourceBitmap = BitmapFactory.decodeResource(context.getResources(),
-            drawableResourceId);
+                drawableResourceId);
         return new BitmapDrawable(Bitmap.createScaledBitmap(sourceBitmap, width, height, true));
     }
 
+    /**
+     * Provides a save (i.e. backwards compatible) of accessing the device's screen density.
+     * 
+     * @param context
+     *            the current context
+     * @return the screen density in dots-per-inch
+     */
     public static int getScreenDensity(Context context) {
         if (screenDensity == -1) {
             DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-            try {
-                screenDensity = DisplayMetrics.class.getField("densityDpi").getInt(displayMetrics);
-            } catch (Exception e) {
-                screenDensity = SCREEN_DENSITY_MEDIUM;
-            }
+            screenDensity = displayMetrics.densityDpi;
         }
         return screenDensity;
     }
