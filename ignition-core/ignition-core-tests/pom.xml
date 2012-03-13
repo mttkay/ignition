@@ -25,6 +25,7 @@
       <groupId>com.github.ignition</groupId>
       <artifactId>ignition-core</artifactId>
       <version>${project.version}</version>
+      <type>apklib</type>
     </dependency>
     <!-- test dependencies -->
     <dependency>
