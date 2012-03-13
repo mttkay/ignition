@@ -48,7 +48,7 @@ public class RemoteImageLoader {
     private int defaultBufferSize = DEFAULT_BUFFER_SIZE;
     private long expirationInMinutes = DEFAULT_TTL_MINUTES;
 
-    private Drawable dummyDrawable, errorDrawable;
+    private Drawable defaultDummyDrawable, errorDrawable;
 
     public RemoteImageLoader(Context context) {
         this(context, true);
@@ -106,7 +106,7 @@ public class RemoteImageLoader {
     }
 
     public void setDownloadInProgressDrawable(Drawable drawable) {
-        this.dummyDrawable = drawable;
+        this.defaultDummyDrawable = drawable;
     }
 
     public void setDownloadFailedDrawable(Drawable drawable) {
@@ -148,7 +148,8 @@ public class RemoteImageLoader {
      *            the ImageView which should be updated with the new image
      */
     public void loadImage(String imageUrl, ImageView imageView) {
-        loadImage(imageUrl, imageView, new RemoteImageLoaderHandler(imageView, imageUrl, errorDrawable));
+        loadImage(imageUrl, imageView, defaultDummyDrawable, new RemoteImageLoaderHandler(
+                imageView, imageUrl, errorDrawable));
     }
 
     /**
@@ -164,6 +165,26 @@ public class RemoteImageLoader {
      *            the handler that will process the bitmap after completion
      */
     public void loadImage(String imageUrl, ImageView imageView, RemoteImageLoaderHandler handler) {
+        loadImage(imageUrl, imageView, defaultDummyDrawable, handler);
+    }
+
+    /**
+     * Triggers the image loader for the given image and view. The image loading will be performed
+     * concurrently to the UI main thread, using a fixed size thread pool. The loaded image will be
+     * posted back to the given ImageView upon completion. While waiting, the dummyDrawable is
+     * shown.
+     * 
+     * @param imageUrl
+     *            the URL of the image to download
+     * @param imageView
+     *            the ImageView which should be updated with the new image
+     * @param dummyDrawable
+     *            the Drawable to be shown while the image is being downloaded.
+     * @param handler
+     *            the handler that will process the bitmap after completion
+     */
+    public void loadImage(String imageUrl, ImageView imageView, Drawable dummyDrawable,
+            RemoteImageLoaderHandler handler) {
         if (imageView != null) {
             if (imageUrl == null) {
                 // In a ListView views are reused, so we must be sure to remove the tag that could
