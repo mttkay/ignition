@@ -177,10 +177,13 @@ public abstract class IgnitedAsyncTask<ContextT extends Context, ParameterT, Pro
     }
 
     /**
-     * Override this method to define your task execution if your task takes more than one argument.
-     * If your task logic is pluggable, but shares progress reporting or pre/post execute hooks, you
-     * can also set a {@link Callable} via {@link #setCallable(IgnitedAsyncTaskCallable)}. By
-     * default, this method delegates to {@link #run(ParameterT)}.
+     * Override this method to define your task execution if your task takes either zero or more
+     * than one argument. <b>NOTE</b> that if you override this method and still want to use this
+     * variant of the method tu run jobs with a single argument If your task logic is pluggable, but
+     * shares progress reporting or pre/post execute hooks, you can also set a {@link Callable} via
+     * {@link #setCallable(IgnitedAsyncTaskCallable)}. By default, this method delegates to
+     * {@link #run(ParameterT)} with the first element of params, or null if params is null or
+     * empty.
      * 
      * @see {@link AsyncTask#doInBackground}
      * @param params
@@ -189,7 +192,7 @@ public abstract class IgnitedAsyncTask<ContextT extends Context, ParameterT, Pro
      * @throws Exception
      */
     protected ReturnT run(ParameterT... params) throws Exception {
-        return run(params[0]);
+        return run(params.length > 0 ? params[0] : null);
     }
 
     /**
