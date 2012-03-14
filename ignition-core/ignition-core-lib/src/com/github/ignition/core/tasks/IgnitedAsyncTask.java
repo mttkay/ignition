@@ -63,6 +63,8 @@ public abstract class IgnitedAsyncTask<ContextT extends Context, ParameterT, Pro
         this.context = context;
         if (context instanceof IgnitedAsyncTaskContextHandler) {
             this.contextHandler = (IgnitedAsyncTaskContextHandler<ProgressT, ReturnT>) context;
+        } else if (context instanceof IgnitedAsyncTaskDelegateHandler) {
+            this.delegateHandler = (IgnitedAsyncTaskDelegateHandler<ContextT, ProgressT, ReturnT>) context;
         }
     }
 
