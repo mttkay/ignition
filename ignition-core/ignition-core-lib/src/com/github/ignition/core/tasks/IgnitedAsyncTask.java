@@ -17,7 +17,7 @@ import android.os.AsyncTask;
  * <li>allows a {@link Context} to register itself as a callback handler via
  * {@link IgnitedAsyncTaskContextHandler}</li>
  * <li>allows any arbitrary object to register itself as a callback handler via
- * {@link IgnitedAsyncTaskDelegateHandler}</li>
+ * {@link IgnitedAsyncTaskHandler}</li>
  * </ul>
  * <p>
  * Since this class keeps a reference to a Context (either directly or indirectly through a callback
@@ -41,7 +41,7 @@ import android.os.AsyncTask;
  */
 public abstract class IgnitedAsyncTask<ContextT extends Context, ParameterT, ProgressT, ReturnT>
         extends AsyncTask<ParameterT, ProgressT, ReturnT> implements
-        IgnitedAsyncTaskDelegateHandler<ContextT, ProgressT, ReturnT> {
+        IgnitedAsyncTaskHandler<ContextT, ProgressT, ReturnT> {
 
     public interface IgnitedAsyncTaskCallable<ContextT extends Context, ParameterT, ProgressT, ReturnT> {
         public ReturnT call(IgnitedAsyncTask<ContextT, ParameterT, ProgressT, ReturnT> task)
@@ -50,7 +50,7 @@ public abstract class IgnitedAsyncTask<ContextT extends Context, ParameterT, Pro
 
     private ContextT context;
     private IgnitedAsyncTaskContextHandler<ProgressT, ReturnT> contextHandler;
-    private IgnitedAsyncTaskDelegateHandler<ContextT, ProgressT, ReturnT> delegateHandler;
+    private IgnitedAsyncTaskHandler<ContextT, ProgressT, ReturnT> delegateHandler;
     private IgnitedAsyncTaskCallable<ContextT, ParameterT, ProgressT, ReturnT> callable;
 
     private Exception error;
@@ -63,12 +63,12 @@ public abstract class IgnitedAsyncTask<ContextT extends Context, ParameterT, Pro
         this.context = context;
         if (context instanceof IgnitedAsyncTaskContextHandler) {
             this.contextHandler = (IgnitedAsyncTaskContextHandler<ProgressT, ReturnT>) context;
-        } else if (context instanceof IgnitedAsyncTaskDelegateHandler) {
-            this.delegateHandler = (IgnitedAsyncTaskDelegateHandler<ContextT, ProgressT, ReturnT>) context;
+        } else if (context instanceof IgnitedAsyncTaskHandler) {
+            this.delegateHandler = (IgnitedAsyncTaskHandler<ContextT, ProgressT, ReturnT>) context;
         }
     }
 
-    public void connect(IgnitedAsyncTaskDelegateHandler<ContextT, ProgressT, ReturnT> handler) {
+    public void connect(IgnitedAsyncTaskHandler<ContextT, ProgressT, ReturnT> handler) {
         this.delegateHandler = handler;
         this.context = handler.getContext();
     }

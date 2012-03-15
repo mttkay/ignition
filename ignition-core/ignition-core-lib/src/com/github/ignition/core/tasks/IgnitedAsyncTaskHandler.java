@@ -13,7 +13,7 @@ import android.content.Context;
  * @param <ProgressT>
  * @param <ReturnT>
  */
-public interface IgnitedAsyncTaskDelegateHandler<ContextT extends Context, ProgressT, ReturnT> {
+public interface IgnitedAsyncTaskHandler<ContextT extends Context, ProgressT, ReturnT> {
 
     ContextT getContext();
 
