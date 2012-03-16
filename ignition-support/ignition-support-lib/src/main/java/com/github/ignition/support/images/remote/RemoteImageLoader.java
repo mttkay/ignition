@@ -155,6 +155,24 @@ public class RemoteImageLoader {
     /**
      * Triggers the image loader for the given image and view. The image loading will be performed
      * concurrently to the UI main thread, using a fixed size thread pool. The loaded image will be
+     * posted back to the given ImageView upon completion. This method will the default
+     * {@link RemoteImageLoaderHandler} to process the bitmap after downloading it.
+     *
+     * @param imageUrl
+     *            the URL of the image to download
+     * @param imageView
+     *            the ImageView which should be updated with the new image
+     * @param dummyDrawable
+     *            the Drawable to be shown while the image is being downloaded.
+     */
+    public void loadImage(String imageUrl, ImageView imageView, Drawable dummyDrawable) {
+        loadImage(imageUrl, imageView, dummyDrawable, new RemoteImageLoaderHandler(
+                imageView, imageUrl, errorDrawable));
+    }
+
+    /**
+     * Triggers the image loader for the given image and view. The image loading will be performed
+     * concurrently to the UI main thread, using a fixed size thread pool. The loaded image will be
      * posted back to the given ImageView upon completion.
      * 
      * @param imageUrl
