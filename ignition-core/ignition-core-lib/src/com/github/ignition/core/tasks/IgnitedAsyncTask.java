@@ -2,6 +2,7 @@ package com.github.ignition.core.tasks;
 
 import java.util.concurrent.Callable;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 
@@ -58,30 +59,99 @@ public abstract class IgnitedAsyncTask<ContextT extends Context, ParameterT, Pro
     public IgnitedAsyncTask() {
     }
 
+    /**
+     * Connects a context object to this task. Use this method immediately after first creating the
+     * task, and again in {@link Activity#onCreate} to re-connect tasks that you retained via
+     * {@link Activity#onRetainNonConfigurationInstance()}. Make sure to always
+     * {@link #disconnect()} a context in {@link Activity#onDestroy}.
+     * 
+     * <p>
+     * As long as this context is not null, it will be passed to any handler callbacks associated
+     * with this task, as well as to the task's own callbacks. If the context you pass here
+     * implements {@link IgnitedAsyncTaskContextHandler}, it will be registered to receive callbacks
+     * itself. If instead it implements the more generic {@link IgnitedAsyncTaskHandler}, <b>and if
+     * no other handler of this type has been connected before (!)</b>, then the context will also
+     * receive these callbacks. If however an ordinary POJO had already been connected to this task
+     * as a {@link IgnitedAsyncTaskHandler}, then the context will not receive callbacks via this
+     * interface (this is because a context must be disconnected from the task in onDestroy, while
+     * ordinary handlers that are not Contexts will be retained by the task instance).
+     * </p>
+     */
     @SuppressWarnings("unchecked")
     public void connect(ContextT context) {
         this.context = context;
         if (context instanceof IgnitedAsyncTaskContextHandler) {
             this.contextHandler = (IgnitedAsyncTaskContextHandler<ProgressT, ReturnT>) context;
-        } else if (context instanceof IgnitedAsyncTaskHandler) {
+        } else if (delegateHandler == null && context instanceof IgnitedAsyncTaskHandler) {
             this.delegateHandler = (IgnitedAsyncTaskHandler<ContextT, ProgressT, ReturnT>) context;
+        }
+        if (delegateHandler != null) {
+            delegateHandler.setContext(context);
         }
     }
 
+    /**
+     * Connects an {@link IgnitedAsyncTaskHandler} to this task to receive callbacks. The context
+     * instance wrapped by this handler will be passed to {@link #connect(Context)}.
+     * 
+     * @param handler
+     *            the handler object to receive task callbacks
+     */
     public void connect(IgnitedAsyncTaskHandler<ContextT, ProgressT, ReturnT> handler) {
         this.delegateHandler = handler;
-        this.context = handler.getContext();
+        connect(handler.getContext());
     }
 
+    /**
+     * Disconnects all context references, also those that are both a Context and handler at the
+     * same time. Call this method in {@link Context#onDestroy}. <b>Note that this will NOT
+     * disconnect handlers which are not Contexts but plain POJOs, so make sure you do not leak an
+     * implicit reference to the same context from any handlers you have connected.</b>
+     */
     public void disconnect() {
         this.contextHandler = null;
-        this.delegateHandler = null;
         this.context = null;
+        if (delegateHandler != null) {
+            if (delegateHandler instanceof Context) {
+                delegateHandler = null;
+            } else {
+                delegateHandler.setContext(null);
+            }
+        }
     }
 
+    /**
+     * Returns the task's current context reference. Can be null. Handling the context reference is
+     * done in {@link #connect(Context)} and {@link #disconnect()}.
+     */
     @Override
     public ContextT getContext() {
         return context;
+    }
+
+    /**
+     * DON'T use this to handle the task's context reference. Use {@link #connect(Context)} and
+     * {@link #disconnect()} instead.
+     */
+    @Override
+    public void setContext(ContextT context) {
+        this.context = context;
+    }
+
+    /**
+     * If you have connected a Context which implements the {@link IgnitedAsyncTaskContextHandler}
+     * interface, this instance will be returned. Null otherwise.
+     */
+    public IgnitedAsyncTaskContextHandler<ProgressT, ReturnT> getContextHandler() {
+        return contextHandler;
+    }
+
+    /**
+     * If you have connected a Context or POJO which implements the {@link IgnitedAsyncTaskHandler}
+     * interface, this instance will be returned. Null otherwise.
+     */
+    public IgnitedAsyncTaskHandler<ContextT, ProgressT, ReturnT> getDelegateHandler() {
+        return delegateHandler;
     }
 
     /**
