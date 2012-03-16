@@ -277,8 +277,10 @@ public aspect IgnitedLocationManager {
         boolean showWaitForLocationDialog = prefs.getBoolean(
                 IgnitedLocationConstants.SP_KEY_SHOW_WAIT_FOR_LOCATION_DIALOG,
                 IgnitedLocationConstants.SHOW_WAIT_FOR_LOCATION_DIALOG_DEFAULT);
-        if (freshLocation == null && showWaitForLocationDialog) {
-            activity.showDialog(R.id.ign_loc_dialog_wait_for_fix);
+        if (freshLocation == null) {
+            if (showWaitForLocationDialog) {
+                activity.showDialog(R.id.ign_loc_dialog_wait_for_fix);
+            }
             return;
         }
 
