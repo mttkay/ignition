@@ -28,13 +28,33 @@ public interface IgnitedAsyncTaskHandler<ContextT extends Context, ProgressT, Re
 
     void setContext(ContextT context);
 
-    void onTaskStarted(ContextT context);
+    /**
+     * Return true from this method if you want to swallow the event; it will then not be passed on
+     * to the task itself.
+     */
+    boolean onTaskStarted(ContextT context);
 
-    void onTaskProgress(ContextT context, ProgressT... progress);
+    /**
+     * Return true from this method if you want to swallow the event; it will then not be passed on
+     * to the task itself.
+     */
+    boolean onTaskProgress(ContextT context, ProgressT... progress);
 
-    void onTaskCompleted(ContextT context, ReturnT result);
+    /**
+     * Return true from this method if you want to swallow the event; it will then not be passed on
+     * to the task itself.
+     */
+    boolean onTaskCompleted(ContextT context, ReturnT result);
 
-    void onTaskSuccess(ContextT context, ReturnT result);
+    /**
+     * Return true from this method if you want to swallow the event; it will then not be passed on
+     * to the task itself.
+     */
+    boolean onTaskSuccess(ContextT context, ReturnT result);
 
-    void onTaskFailed(ContextT context, Exception error);
+    /**
+     * Return true from this method if you want to swallow the event; it will then not be passed on
+     * to the task itself.
+     */
+    boolean onTaskFailed(ContextT context, Exception error);
 }

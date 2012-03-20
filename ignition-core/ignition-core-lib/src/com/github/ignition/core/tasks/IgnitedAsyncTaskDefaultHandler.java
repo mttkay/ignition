@@ -34,23 +34,28 @@ public abstract class IgnitedAsyncTaskDefaultHandler<ContextT extends Context, P
     }
 
     @Override
-    public void onTaskStarted(ContextT context) {
+    public boolean onTaskStarted(ContextT context) {
+        return false;
     }
 
     @Override
-    public void onTaskProgress(ContextT context, ProgressT... progress) {
+    public boolean onTaskProgress(ContextT context, ProgressT... progress) {
+        return false;
     }
 
     @Override
-    public void onTaskCompleted(ContextT context, ReturnT result) {
+    public boolean onTaskCompleted(ContextT context, ReturnT result) {
+        return false;
     }
 
     @Override
-    public void onTaskSuccess(ContextT context, ReturnT result) {
+    public boolean onTaskSuccess(ContextT context, ReturnT result) {
+        return false;
     }
 
     @Override
-    public void onTaskFailed(ContextT context, Exception error) {
+    public boolean onTaskFailed(ContextT context, Exception error) {
+        return false;
     }
 
 }

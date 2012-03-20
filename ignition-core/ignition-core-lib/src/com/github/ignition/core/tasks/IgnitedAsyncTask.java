@@ -160,25 +160,30 @@ public abstract class IgnitedAsyncTask<ContextT extends Context, ParameterT, Pro
     @Override
     protected void onPreExecute() {
         if (context != null) {
-            onTaskStarted(context);
+            boolean eventHandled = false;
             if (contextHandler != null) {
-                contextHandler.onTaskStarted();
+                eventHandled = contextHandler.onTaskStarted();
             }
             if (delegateHandler != null) {
-                delegateHandler.onTaskStarted(context);
+                eventHandled = delegateHandler.onTaskStarted(context);
+            }
+            if (!eventHandled) {
+                onTaskStarted(context);
             }
         }
     }
 
     /**
-     * Override this method to prepare task execution. The default implementation does nothing.
+     * Override this method to prepare task execution. The default implementation simply returns
+     * false.
      * 
      * @see {@link AsyncTask#onPreExecute}
      * @param context
      *            The most recent instance of the Context that executed this IgnitedAsyncTask
      */
     @Override
-    public void onTaskStarted(ContextT context) {
+    public boolean onTaskStarted(ContextT context) {
+        return false;
     }
 
     /**
@@ -199,7 +204,7 @@ public abstract class IgnitedAsyncTask<ContextT extends Context, ParameterT, Pro
 
     /**
      * Override this method to update progress elements on the UI thread. The default implementation
-     * does nothing.
+     * simply returns false.
      * 
      * @see {@link AsyncTask#publishProgress}
      * @see {@link AsyncTask#onProgressUpdate}
@@ -209,7 +214,8 @@ public abstract class IgnitedAsyncTask<ContextT extends Context, ParameterT, Pro
      *            the progress values
      */
     @Override
-    public void onTaskProgress(ContextT context, ProgressT... progress) {
+    public boolean onTaskProgress(ContextT context, ProgressT... progress) {
+        return false;
     }
 
     /**
@@ -297,28 +303,35 @@ public abstract class IgnitedAsyncTask<ContextT extends Context, ParameterT, Pro
     @Override
     protected void onPostExecute(ReturnT result) {
         if (context != null) {
-            onTaskCompleted(context, result);
+            boolean eventHandled = false;
             if (contextHandler != null) {
-                contextHandler.onTaskCompleted(result);
+                eventHandled = contextHandler.onTaskCompleted(result);
             }
             if (delegateHandler != null) {
-                delegateHandler.onTaskCompleted(context, result);
+                eventHandled = delegateHandler.onTaskCompleted(context, result);
+            }
+            if (!eventHandled) {
+                onTaskCompleted(context, result);
             }
             if (failed()) {
-                onTaskFailed(context, error);
                 if (contextHandler != null) {
-                    contextHandler.onTaskFailed(error);
+                    eventHandled = contextHandler.onTaskFailed(error);
                 }
                 if (delegateHandler != null) {
-                    delegateHandler.onTaskFailed(context, error);
+                    eventHandled = delegateHandler.onTaskFailed(context, error);
+                }
+                if (!eventHandled) {
+                    onTaskFailed(context, error);
                 }
             } else {
-                onTaskSuccess(context, result);
                 if (contextHandler != null) {
-                    contextHandler.onTaskSuccess(result);
+                    eventHandled = contextHandler.onTaskSuccess(result);
                 }
                 if (delegateHandler != null) {
-                    delegateHandler.onTaskSuccess(context, result);
+                    eventHandled = delegateHandler.onTaskSuccess(context, result);
+                }
+                if (!eventHandled) {
+                    onTaskSuccess(context, result);
                 }
             }
         }
@@ -326,7 +339,7 @@ public abstract class IgnitedAsyncTask<ContextT extends Context, ParameterT, Pro
 
     /**
      * Implement this method to handle a completed task execution, regardless of outcome. The
-     * default implementation does nothing.
+     * default implementation simply returns false.
      * 
      * @see {@link AsyncTask#onPostExecute}
      * @param context
@@ -334,19 +347,21 @@ public abstract class IgnitedAsyncTask<ContextT extends Context, ParameterT, Pro
      * @param result
      */
     @Override
-    public void onTaskCompleted(ContextT context, ReturnT result) {
+    public boolean onTaskCompleted(ContextT context, ReturnT result) {
+        return false;
     }
 
     /**
-     * Implement this method to handle a successful task execution. The default implementation does
-     * nothing.
+     * Implement this method to handle a successful task execution. The default implementation
+     * simply returns false.
      * 
      * @param context
      *            The most recent instance of the Context that executed this IgnitedAsyncTask
      * @param result
      */
     @Override
-    public void onTaskSuccess(ContextT context, ReturnT result) {
+    public boolean onTaskSuccess(ContextT context, ReturnT result) {
+        return false;
     }
 
     /**
@@ -359,8 +374,9 @@ public abstract class IgnitedAsyncTask<ContextT extends Context, ParameterT, Pro
      *            The exception that was thrown during task execution
      */
     @Override
-    public void onTaskFailed(ContextT context, Exception error) {
+    public boolean onTaskFailed(ContextT context, Exception error) {
         error.printStackTrace();
+        return false;
     }
 
     /**

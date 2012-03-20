@@ -12,13 +12,33 @@ import android.content.Context;
  */
 public interface IgnitedAsyncTaskContextHandler<ProgressT, ReturnT> {
 
-    void onTaskStarted();
+    /**
+     * Return true from this method if you want to swallow the event; it will then not be passed on
+     * to the task itself.
+     */
+    boolean onTaskStarted();
 
-    void onTaskProgress(ProgressT... progress);
+    /**
+     * Return true from this method if you want to swallow the event; it will then not be passed on
+     * to the task itself.
+     */
+    boolean onTaskProgress(ProgressT... progress);
 
-    void onTaskCompleted(ReturnT result);
+    /**
+     * Return true from this method if you want to swallow the event; it will then not be passed on
+     * to the task itself.
+     */
+    boolean onTaskCompleted(ReturnT result);
 
-    void onTaskSuccess(ReturnT result);
+    /**
+     * Return true from this method if you want to swallow the event; it will then not be passed on
+     * to the task itself.
+     */
+    boolean onTaskSuccess(ReturnT result);
 
-    void onTaskFailed(Exception error);
+    /**
+     * Return true from this method if you want to swallow the event; it will then not be passed on
+     * to the task itself.
+     */
+    boolean onTaskFailed(Exception error);
 }
