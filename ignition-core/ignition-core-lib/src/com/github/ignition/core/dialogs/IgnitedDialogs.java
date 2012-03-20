@@ -70,6 +70,16 @@ public class IgnitedDialogs {
     }
 
     /**
+     * Creates a new ProgressDialog with the default dialog title and message.
+     * 
+     * @param activity
+     * @return
+     */
+    public static ProgressDialog newProgressDialog(final Activity activity) {
+        return newProgressDialog(activity, -1, -1);
+    }
+
+    /**
      * Builds a new Yes/No AlertDialog
      * 
      * @param context
@@ -256,8 +266,9 @@ public class IgnitedDialogs {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (closeOnSelect)
+                if (closeOnSelect) {
                     dialog.dismiss();
+                }
                 listener.onClick(which, elements.get(which));
             }
         });

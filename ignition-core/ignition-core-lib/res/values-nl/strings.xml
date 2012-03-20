@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <string name="ign_progress_dialog_title">Bezig&#8230;</string>
+  <string name="ign_progress_dialog_message">Een ogenblik geduld a.u.b.</string>
+
+</resources>

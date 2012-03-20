@@ -3,7 +3,7 @@
   <string name="ign_error_report_email_subject">New error report: %s</string>
   <string name="ign_error_report_send_button">Send Email</string>
 
-  <string name="ign_progress_dialog_title">Loading...</string>
-  <string name="ign_progress_dialog_msg">Please wait</string>
+  <string name="ign_progress_dialog_title">Loading&#8230;</string>
+  <string name="ign_progress_dialog_msg">Please wait a moment</string>
 
 </resources>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <string name="ign_progress_dialog_title">En cours, patience&#8230;</string>
+  <string name="ign_progress_dialog_message">Veuillez patienter un petit moment</string>
+
+</resources>
