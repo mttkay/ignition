@@ -249,10 +249,6 @@ public aspect IgnitedLocationManager {
         }
     }
 
-    // after() : execution(* Activity.onDestroy(..)) && @this(IgnitedLocationActivity)
-    // && within(@IgnitedLocationActivity *) {
-    // }
-
     Location around() : get(@IgnitedLocation Location *) {
         return currentLocation;
     }

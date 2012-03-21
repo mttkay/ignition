@@ -88,8 +88,8 @@ public class IgnitedGingerbreadLastLocationFinder extends IgnitedAbstractLastLoc
             if (location != null) {
                 Log.d(LOG_TAG,
                         "Single Location Update Received from " + location.getProvider()
-                                + " (lat, long): " + location.getLatitude() + ", "
-                                + location.getLongitude());
+                                + " (lat, long/acc): " + location.getLatitude() + ", "
+                                + location.getLongitude() + "/" + location.getAccuracy());
                 setCurrentLocation(location);
             }
 

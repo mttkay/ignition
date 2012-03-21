@@ -16,13 +16,13 @@
 
 package com.github.ignition.location.utils.lastlocationfinders;
 
-import com.github.ignition.location.templates.IgnitedAbstractLastLocationFinder;
-
 import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
 import android.util.Log;
+
+import com.github.ignition.location.templates.IgnitedAbstractLastLocationFinder;
 
 /**
  * Legacy implementation of Last Location Finder for all Android platforms down to Android 1.6.
@@ -69,8 +69,8 @@ public class IgnitedLegacyLastLocationFinder extends IgnitedAbstractLastLocation
             if (location != null) {
                 Log.d(LOG_TAG,
                         "Single Location Update Received from " + location.getProvider()
-                                + " (lat, long): " + location.getLatitude() + ", "
-                                + location.getLongitude());
+                                + " (lat, long/acc): " + location.getLatitude() + ", "
+                                + location.getLongitude() + "/" + location.getAccuracy());
                 setCurrentLocation(location);
             }
             locationManager.removeUpdates(IgnitedLegacyLastLocationFinder.this.singeUpdateListener);
