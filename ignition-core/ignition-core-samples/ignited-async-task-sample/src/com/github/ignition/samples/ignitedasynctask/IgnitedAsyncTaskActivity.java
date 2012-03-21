@@ -84,8 +84,9 @@ public class IgnitedAsyncTaskActivity extends Activity implements
             IgnitedAsyncTask<IgnitedAsyncTaskActivity, Void, Integer, String> {
 
         @Override
-        public void onTaskStarted(IgnitedAsyncTaskActivity context) {
+        public boolean onTaskStarted(IgnitedAsyncTaskActivity context) {
             publishProgress(0);
+            return true;
         }
 
         @Override
@@ -100,38 +101,48 @@ public class IgnitedAsyncTaskActivity extends Activity implements
         }
 
         @Override
-        public void onTaskCompleted(IgnitedAsyncTaskActivity context, String result) {
+        public boolean onTaskCompleted(IgnitedAsyncTaskActivity context, String result) {
             Log.d("Task", "task completed");
+            return true;
         }
 
         @Override
-        public void onTaskSuccess(IgnitedAsyncTaskActivity context, String result) {
+        public boolean onTaskSuccess(IgnitedAsyncTaskActivity context, String result) {
             Log.d("Task", "task succeeded");
+            return true;
         }
     }
 
     @Override
-    public void onTaskStarted() {
+    public boolean onTaskStarted() {
+        // returning false here means we have not consumed the task, and SampleTask#onTaskStarted
+        // will be executed
+        return false;
     }
 
     @Override
-    public void onTaskProgress(Integer... progress) {
+    public boolean onTaskProgress(Integer... progress) {
         updateProgress(progress[0]);
+        // returning true here means that we have handled the event, and SampleTask#onTaskProgress
+        // will not be executed
+        return true;
     }
 
     @Override
-    public void onTaskCompleted(String result) {
+    public boolean onTaskCompleted(String result) {
         resetTask();
+        return true;
     }
 
     @Override
-    public void onTaskSuccess(String result) {
+    public boolean onTaskSuccess(String result) {
         showSuccess(result);
+        return false;
     }
 
     @Override
-    public void onTaskFailed(Exception error) {
+    public boolean onTaskFailed(Exception error) {
+        return false;
     }
-
 
 }
