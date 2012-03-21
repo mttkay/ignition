@@ -11,7 +11,6 @@ import com.github.ignition.location.utils.PlatformSpecificImplementationFactory;
 
 public class IgnitedLastKnownLocationAsyncTask extends AsyncTask<Void, Void, Location> {
     private final Context context;
-    private final ILastLocationFinder lastLocationFinder;
     private final int locationUpdateDistanceDiff;
     private final long locationUpdateInterval;
     @SuppressWarnings("unused")
@@ -27,9 +26,6 @@ public class IgnitedLastKnownLocationAsyncTask extends AsyncTask<Void, Void, Loc
     public IgnitedLastKnownLocationAsyncTask(Context appContext, int locationUpdateDistanceDiff,
             long locationUpdateInterval) {
         this.context = appContext;
-        // Instantiate a LastLocationFinder class. This will be used to find the last known
-        // location when the application starts.
-        lastLocationFinder = PlatformSpecificImplementationFactory.getLastLocationFinder(context);
         this.locationUpdateDistanceDiff = locationUpdateDistanceDiff;
         this.locationUpdateInterval = locationUpdateInterval;
     }
@@ -58,14 +54,11 @@ public class IgnitedLastKnownLocationAsyncTask extends AsyncTask<Void, Void, Loc
         // of within the min distance between updates
         // and a required latency of the minimum time required between
         // updates.
+        ILastLocationFinder lastLocationFinder = PlatformSpecificImplementationFactory
+                .getLastLocationFinder(context);
         Location lastKnownLocation = lastLocationFinder.getLastBestLocation(context,
                 locationUpdateDistanceDiff, System.currentTimeMillis() - locationUpdateInterval);
 
         return lastKnownLocation;
-    }
-
-    @Override
-    protected void onCancelled() {
-        lastLocationFinder.cancel();
     }
 }

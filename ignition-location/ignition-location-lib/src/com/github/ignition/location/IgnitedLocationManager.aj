@@ -231,21 +231,20 @@ public aspect IgnitedLocationManager {
     }
 
     before(Activity activity, IgnitedLocationActivity ignitedAnnotation) : execution(* Activity.onPause(..)) 
-        && @this(ignitedAnnotation) && this(activity)
-        && within(@IgnitedLocationActivity *) && if (ignitedAnnotation.requestLocationUpdates()) {
+        && @this(ignitedAnnotation) && this(activity) && within(@IgnitedLocationActivity *) {
 
-        disableLocationUpdates(true);
+        if (ignitedAnnotation.requestLocationUpdates()) {
+            disableLocationUpdates(true);
+            handler.removeCallbacks(removeGpsUpdates);
+        }
 
-        handler.removeCallbacks(removeGpsUpdates);
+        PlatformSpecificImplementationFactory.getLastLocationFinder(context).cancel();
 
         boolean finishing = activity.isFinishing();
         if (finishing) {
             if (ignitedLastKnownLocationTask != null && ignitedLastKnownLocationTask.getStatus() != AsyncTask.Status.FINISHED) {
                 ignitedLastKnownLocationTask.cancel(true);
-            } else {
-                PlatformSpecificImplementationFactory.getLastLocationFinder(context).cancel();
             }
-
             context = null;
         }
     }

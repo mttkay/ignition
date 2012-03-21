@@ -39,21 +39,29 @@ import com.github.ignition.support.IgnitedDiagnostics;
  */
 public class PlatformSpecificImplementationFactory {
 
+    private static ILastLocationFinder lastLocationFinder;
+
     /**
      * Create a new LastLocationFinder instance
-     *
-     * @param context {@link android.content.Context}
+     * 
+     * @param context
+     *            {@link android.content.Context}
      * @return LastLocationFinder
      */
     public static ILastLocationFinder getLastLocationFinder(Context context) {
-        return IgnitedDiagnostics.supportsApiLevel(GINGERBREAD) ? new IgnitedGingerbreadLastLocationFinder(
-                context) : new IgnitedLegacyLastLocationFinder(context);
+        if (lastLocationFinder == null) {
+            lastLocationFinder = IgnitedDiagnostics.supportsApiLevel(GINGERBREAD) ? new IgnitedGingerbreadLastLocationFinder(
+                    context) : new IgnitedLegacyLastLocationFinder(context);
+        }
+
+        return lastLocationFinder;
     }
 
     /**
      * Create a new LocationUpdateRequester
-     *
-     * @param locationManager {@link android.location.LocationManager}
+     * 
+     * @param locationManager
+     *            {@link android.location.LocationManager}
      * @return LocationUpdateRequester
      */
     public static IgnitedAbstractLocationUpdateRequester getLocationUpdateRequester(Context context) {
