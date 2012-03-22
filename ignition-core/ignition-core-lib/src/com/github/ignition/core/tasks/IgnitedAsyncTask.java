@@ -270,13 +270,19 @@ public abstract class IgnitedAsyncTask<ContextT extends Context, ParameterT, Pro
      * {@link #run(ParameterT)} with the first element of params, or null if params is null or
      * empty.
      * 
+     * <p>
+     * Typically you do not call this method directly; instead it's called by {@link #execute()} and
+     * run on a worker thread. If however you want to execute the task synchronously, you can invoke
+     * this method directly.
+     * </p>
+     * 
      * @see {@link AsyncTask#doInBackground}
      * @param params
      *            the parameters for your task
      * @return the result of your task
      * @throws Exception
      */
-    protected ReturnT run(ParameterT... params) throws Exception {
+    public ReturnT run(ParameterT... params) throws Exception {
         return run(params.length > 0 ? params[0] : null);
     }
 
@@ -286,13 +292,19 @@ public abstract class IgnitedAsyncTask<ContextT extends Context, ParameterT, Pro
      * can also set a {@link Callable} via {@link #setCallable(IgnitedAsyncTaskCallable)}. By
      * default, this method returns null.
      * 
+     * <p>
+     * Typically you do not call this method directly; instead it's called by {@link #execute()} and
+     * run on a worker thread. If however you want to execute the task synchronously, you can invoke
+     * this method directly.
+     * </p>
+     * 
      * @see {@link AsyncTask#doInBackground}
      * @param arg
      *            the single argument to your task
      * @return the result of your task
      * @throws Exception
      */
-    protected ReturnT run(ParameterT arg) throws Exception {
+    public ReturnT run(ParameterT arg) throws Exception {
         return null;
     }
 
