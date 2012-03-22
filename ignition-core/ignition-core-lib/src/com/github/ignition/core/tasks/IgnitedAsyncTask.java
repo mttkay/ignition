@@ -221,26 +221,17 @@ public abstract class IgnitedAsyncTask<ContextT extends Context, ParameterT, Pro
     /**
      * Wrapper around {@link AsyncTask#execute} that does not take a varargs argument, but a single
      * parameter of type {@code ParameterT}. This is useful if you only ever need to pass one
-     * argument to your tasks, and want to avoid running into compiler warning if the argument type
-     * is itself parameterized (i.e. a generic type). However, for a single argument, this is
-     * actually typesafe.
+     * argument to your tasks, but want to avoid running into compiler warning if the argument is
+     * itself parameterized (i.e. a generic type). However, for a single argument, this is actually
+     * typesafe.
      * 
      * @param arg
      *            the single argument you want to pass to the task's {@link #run} method.
+     * @return
      */
     @SuppressWarnings("unchecked")
     public AsyncTask<ParameterT, ProgressT, ReturnT> execute(ParameterT arg) {
         return super.execute(arg);
-    }
-
-    /**
-     * Wrapper around {@link AsyncTask#execute} that does not take any arguments. This is useful if
-     * arguments to your tasks are nullable, and you want to avoid running into compiler warnings if
-     * the argument type is itself parameterized (i.e. a generic type).
-     */
-    @SuppressWarnings("unchecked")
-    public AsyncTask<ParameterT, ProgressT, ReturnT> execute() {
-        return super.execute();
     }
 
     /**
