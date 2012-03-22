@@ -113,8 +113,9 @@ public class IgnitedHttpSampleActivity extends Activity {
         }
 
         @Override
-        public void onTaskStarted(IgnitedHttpSampleActivity context) {
+        public boolean onTaskStarted(IgnitedHttpSampleActivity context) {
             context.updateStatusText("Downloading file...");
+            return true;
         }
 
         @Override
@@ -123,20 +124,23 @@ public class IgnitedHttpSampleActivity extends Activity {
         }
 
         @Override
-        public void onTaskFailed(IgnitedHttpSampleActivity context, Exception error) {
+        public boolean onTaskFailed(IgnitedHttpSampleActivity context, Exception error) {
             super.onTaskFailed(context, error); // prints a stack trace
 
             context.updateStatusText("Download failed! " + error.getCause().getMessage());
 
             Toast.makeText(context, error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+            return true;
         }
 
         @Override
-        public void onTaskSuccess(IgnitedHttpSampleActivity context, IgnitedHttpResponse response) {
+        public boolean onTaskSuccess(IgnitedHttpSampleActivity context, IgnitedHttpResponse response) {
             boolean cachedResponse = response instanceof CachedHttpResponse;
 
             context.updateStatusText(url, cachedResponse);
             context.updateCacheStatus();
+
+            return true;
         }
     }
 }
