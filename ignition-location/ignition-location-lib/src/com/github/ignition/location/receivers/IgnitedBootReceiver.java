@@ -36,7 +36,7 @@ import com.github.ignition.support.IgnitedDiagnostics;
  * If the app has been run at least once, the passive location updates should be enabled after a
  * reboot.
  */
-public class BootReceiver extends BroadcastReceiver {
+public class IgnitedBootReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         SharedPreferences prefs = context.getSharedPreferences(SHARED_PREFERENCE_FILE,

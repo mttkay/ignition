@@ -22,20 +22,20 @@
 <!--         <receiver -->
 <!--             android:name="com.github.ignition.location.receivers.IgnitedPassiveLocationChangedReceiver" /> -->
 <!--         <receiver -->
-<!--             android:name="com.github.ignition.location.receivers.ConnectivityChangedReceiver" -->
+<!--             android:name="com.github.ignition.location.receivers.IgnitedConnectivityChangedReceiver" -->
 <!--             enabled="false"> -->
 <!--             <intent-filter> -->
 <!--                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" /> -->
 <!--             </intent-filter> -->
 <!--         </receiver> -->
 <!--         <receiver -->
-<!--             android:name="com.github.ignition.location.receivers.PowerStateChangedReceiver"> -->
+<!--             android:name="com.github.ignition.location.receivers.IgnitedPowerStateChangedReceiver"> -->
 <!--             <intent-filter> -->
 <!--                 <action android:name="android.intent.action.BATTERY_LOW" /> -->
 <!--                 <action android:name="android.intent.action.BATTERY_OKAY" /> -->
 <!--             </intent-filter> -->
 <!--         </receiver> -->
-<!--         <receiver android:name="com.github.ignition.location.receivers.BootReceiver"> -->
+<!--         <receiver android:name="com.github.ignition.location.receivers.IgnitedBootReceiver"> -->
 <!--             <intent-filter> -->
 <!--                 <action android:name="android.intent.action.BOOT_COMPLETED" /> -->
 <!--             </intent-filter> -->

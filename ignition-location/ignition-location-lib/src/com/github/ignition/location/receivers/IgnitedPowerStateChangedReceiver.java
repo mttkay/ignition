@@ -32,7 +32,7 @@ import com.github.ignition.location.IgnitedLocationConstants;
  * When the system broadcasts "Battery OK" to indicate the battery has returned to an okay state,
  * the passive location updates are resumed.
  */
-public class PowerStateChangedReceiver extends BroadcastReceiver {
+public class IgnitedPowerStateChangedReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         boolean batteryLow = intent.getAction().equals(Intent.ACTION_BATTERY_LOW);
