@@ -90,7 +90,7 @@ public class IgnitedAsyncTaskActivity extends Activity implements
         }
 
         @Override
-        protected String run(Void... params) throws Exception {
+        public String run(Void... params) throws Exception {
             int progress = 0;
             while (progress < 100) {
                 progress += 10;

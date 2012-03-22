@@ -219,22 +219,6 @@ public abstract class IgnitedAsyncTask<ContextT extends Context, ParameterT, Pro
     }
 
     /**
-     * Wrapper around {@link AsyncTask#execute} that does not take a varargs argument, but a single
-     * parameter of type {@code ParameterT}. This is useful if you only ever need to pass one
-     * argument to your tasks, but want to avoid running into compiler warning if the argument is
-     * itself parameterized (i.e. a generic type). However, for a single argument, this is actually
-     * typesafe.
-     * 
-     * @param arg
-     *            the single argument you want to pass to the task's {@link #run} method.
-     * @return
-     */
-    @SuppressWarnings("unchecked")
-    public AsyncTask<ParameterT, ProgressT, ReturnT> execute(ParameterT arg) {
-        return super.execute(arg);
-    }
-
-    /**
      * No, you want to override {@link #run(Object...)} instead.
      */
     @Override
@@ -253,14 +237,9 @@ public abstract class IgnitedAsyncTask<ContextT extends Context, ParameterT, Pro
     }
 
     /**
-     * Override this method to define your task execution if your task takes either zero or more
-     * than one argument. <b>NOTE</b> that if you override this method and still want to use this
-     * variant of the method tu run jobs with a single argument If your task logic is pluggable, but
+     * Implement this method to define your task execution. If your task logic is pluggable, but
      * shares progress reporting or pre/post execute hooks, you can also set a {@link Callable} via
-     * {@link #setCallable(IgnitedAsyncTaskCallable)}. By default, this method delegates to
-     * {@link #run(ParameterT)} with the first element of params, or null if params is null or
-     * empty.
-     * 
+     * {@link #setCallable(IgnitedAsyncTaskCallable)}
      * <p>
      * Typically you do not call this method directly; instead it's called by {@link #execute()} and
      * run on a worker thread. If however you want to execute the task synchronously, you can invoke
@@ -274,28 +253,6 @@ public abstract class IgnitedAsyncTask<ContextT extends Context, ParameterT, Pro
      * @throws Exception
      */
     public ReturnT run(ParameterT... params) throws Exception {
-        return run(params.length > 0 ? params[0] : null);
-    }
-
-    /**
-     * Override this method to define your task execution if your task takes a single argument. If
-     * your task logic is pluggable, but shares progress reporting or pre/post execute hooks, you
-     * can also set a {@link Callable} via {@link #setCallable(IgnitedAsyncTaskCallable)}. By
-     * default, this method returns null.
-     * 
-     * <p>
-     * Typically you do not call this method directly; instead it's called by {@link #execute()} and
-     * run on a worker thread. If however you want to execute the task synchronously, you can invoke
-     * this method directly.
-     * </p>
-     * 
-     * @see {@link AsyncTask#doInBackground}
-     * @param arg
-     *            the single argument to your task
-     * @return the result of your task
-     * @throws Exception
-     */
-    public ReturnT run(ParameterT arg) throws Exception {
         return null;
     }
 
