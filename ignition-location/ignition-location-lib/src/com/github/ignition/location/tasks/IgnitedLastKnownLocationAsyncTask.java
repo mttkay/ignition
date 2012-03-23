@@ -10,7 +10,6 @@ import com.github.ignition.location.templates.ILastLocationFinder;
 import com.github.ignition.location.utils.PlatformSpecificImplementationFactory;
 
 public class IgnitedLastKnownLocationAsyncTask extends AsyncTask<Void, Void, Location> {
-    private final Context context;
     private final int locationUpdateDistanceDiff;
     private final long locationUpdateInterval;
     @SuppressWarnings("unused")
@@ -24,9 +23,8 @@ public class IgnitedLastKnownLocationAsyncTask extends AsyncTask<Void, Void, Loc
      * @param locationUpdateDistanceDiff
      * @param locationUpdateInterval
      */
-    public IgnitedLastKnownLocationAsyncTask(Context appContext, int locationUpdateDistanceDiff,
+    public IgnitedLastKnownLocationAsyncTask(Context context, int locationUpdateDistanceDiff,
             long locationUpdateInterval) {
-        this.context = appContext;
         this.locationUpdateDistanceDiff = locationUpdateDistanceDiff;
         this.locationUpdateInterval = locationUpdateInterval;
         this.lastLocationFinder = PlatformSpecificImplementationFactory
@@ -35,7 +33,7 @@ public class IgnitedLastKnownLocationAsyncTask extends AsyncTask<Void, Void, Loc
 
     @Override
     protected Location doInBackground(Void... params) {
-        return getLastKnownLocation(context);
+        return getLastKnownLocation();
     }
 
     @Override
@@ -52,7 +50,7 @@ public class IgnitedLastKnownLocationAsyncTask extends AsyncTask<Void, Void, Loc
      * accordingly.
      * 
      */
-    protected Location getLastKnownLocation(Context context) {
+    protected Location getLastKnownLocation() {
         // Find the last known location, specifying a required accuracy
         // of within the min distance between updates
         // and a required latency of the minimum time required between
