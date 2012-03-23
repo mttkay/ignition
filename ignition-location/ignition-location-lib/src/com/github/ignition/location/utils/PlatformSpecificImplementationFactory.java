@@ -39,8 +39,6 @@ import com.github.ignition.support.IgnitedDiagnostics;
  */
 public class PlatformSpecificImplementationFactory {
 
-    private static ILastLocationFinder lastLocationFinder;
-
     /**
      * Create a new LastLocationFinder instance
      * 
@@ -49,12 +47,8 @@ public class PlatformSpecificImplementationFactory {
      * @return LastLocationFinder
      */
     public static ILastLocationFinder getLastLocationFinder(Context context) {
-        if (lastLocationFinder == null) {
-            lastLocationFinder = IgnitedDiagnostics.supportsApiLevel(GINGERBREAD) ? new IgnitedGingerbreadLastLocationFinder(
-                    context) : new IgnitedLegacyLastLocationFinder(context);
-        }
-
-        return lastLocationFinder;
+        return IgnitedDiagnostics.supportsApiLevel(GINGERBREAD) ? new IgnitedGingerbreadLastLocationFinder(
+                context) : new IgnitedLegacyLastLocationFinder(context);
     }
 
     /**
@@ -76,5 +70,4 @@ public class PlatformSpecificImplementationFactory {
             return new IgnitedLegacyLocationUpdateRequester(locationManager, alarmManager);
         }
     }
-
 }

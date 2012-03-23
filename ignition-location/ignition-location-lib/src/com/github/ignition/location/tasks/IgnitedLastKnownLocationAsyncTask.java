@@ -16,6 +16,7 @@ public class IgnitedLastKnownLocationAsyncTask extends AsyncTask<Void, Void, Loc
     @SuppressWarnings("unused")
     @IgnitedLocation
     private Location currentLocation;
+    private ILastLocationFinder lastLocationFinder;
 
     /**
      * 
@@ -28,6 +29,8 @@ public class IgnitedLastKnownLocationAsyncTask extends AsyncTask<Void, Void, Loc
         this.context = appContext;
         this.locationUpdateDistanceDiff = locationUpdateDistanceDiff;
         this.locationUpdateInterval = locationUpdateInterval;
+        this.lastLocationFinder = PlatformSpecificImplementationFactory
+                .getLastLocationFinder(context);
     }
 
     @Override
@@ -54,11 +57,14 @@ public class IgnitedLastKnownLocationAsyncTask extends AsyncTask<Void, Void, Loc
         // of within the min distance between updates
         // and a required latency of the minimum time required between
         // updates.
-        ILastLocationFinder lastLocationFinder = PlatformSpecificImplementationFactory
-                .getLastLocationFinder(context);
-        Location lastKnownLocation = lastLocationFinder.getLastBestLocation(context,
-                locationUpdateDistanceDiff, System.currentTimeMillis() - locationUpdateInterval);
+        Location lastKnownLocation = lastLocationFinder.getLastBestLocation(
+                locationUpdateDistanceDiff, System.currentTimeMillis() - locationUpdateInterval,
+                false);
 
         return lastKnownLocation;
+    }
+
+    public ILastLocationFinder getLastLocationFinder() {
+        return lastLocationFinder;
     }
 }

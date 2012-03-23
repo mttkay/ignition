@@ -238,7 +238,7 @@ public aspect IgnitedLocationManager {
             handler.removeCallbacks(removeGpsUpdates);
         }
 
-        PlatformSpecificImplementationFactory.getLastLocationFinder(context).cancel();
+        ignitedLastKnownLocationTask.getLastLocationFinder().cancel();
 
         boolean finishing = activity.isFinishing();
         if (finishing) {
