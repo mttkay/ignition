@@ -56,7 +56,17 @@ public abstract class IgnitedAsyncTask<ContextT extends Context, ParameterT, Pro
 
     private Exception error;
 
+    protected boolean cancelOnActivityBack = true;
+
     public IgnitedAsyncTask() {
+    }
+
+    public void setCancelOnActivityBack(boolean cancelOnActivityBack) {
+        this.cancelOnActivityBack = cancelOnActivityBack;
+    }
+
+    public boolean isCancelOnActivityBack() {
+        return cancelOnActivityBack;
     }
 
     /**
