@@ -20,7 +20,7 @@ public abstract class IgnitedAbstractLastLocationFinder implements ILastLocation
     protected Location currentLocation;
 
     public IgnitedAbstractLastLocationFinder(Context context) {
-        this.context = context;
+        this.context = context.getApplicationContext();
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         criteria = new Criteria();
         // Coarse accuracy is specified here to get the fastest possible result.
@@ -33,7 +33,7 @@ public abstract class IgnitedAbstractLastLocationFinder implements ILastLocation
      * {@inheritDoc}
      */
     @Override
-    public Location getLastBestLocation(Context context, int minDistance, long minTime) {
+    public Location getLastBestLocation(int minDistance, long minTime, boolean isPassiveRequest) {
         Location bestResult = null;
         float bestAccuracy = Float.MAX_VALUE;
         long bestTime = Long.MIN_VALUE;
@@ -69,7 +69,7 @@ public abstract class IgnitedAbstractLastLocationFinder implements ILastLocation
         // of the best result is wider than the acceptable maximum distance, request a
         // single update. This check simply implements the same conditions we set when
         // requesting regular location updates every [minTime] and [minDistance].
-        if ((bestTime < minTime) || (bestAccuracy > minDistance)) {
+        if (!isPassiveRequest && ((bestTime < minTime) || (bestAccuracy > minDistance))) {
             Log.d(LOG_TAG, "Last location is too old or too inaccurate. Retrieving a new one...");
             retrieveSingleLocationUpdate();
             if (bestResult != null) {

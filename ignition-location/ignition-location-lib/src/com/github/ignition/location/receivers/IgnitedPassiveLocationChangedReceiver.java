@@ -27,7 +27,8 @@ import android.util.Log;
 
 import com.github.ignition.location.IgnitedLocationConstants;
 import com.github.ignition.location.annotations.IgnitedLocation;
-import com.github.ignition.location.utils.lastlocationfinders.IgnitedLegacyLastLocationFinder;
+import com.github.ignition.location.templates.ILastLocationFinder;
+import com.github.ignition.location.utils.PlatformSpecificImplementationFactory;
 
 /**
  * This Receiver class is used to listen for Broadcast Intents that announce that a location change
@@ -72,10 +73,10 @@ public class IgnitedPassiveLocationChangedReceiver extends BroadcastReceiver {
                     IgnitedLocationConstants.LOCATION_UPDATES_DISTANCE_DIFF_DEFAULT);
 
             // Get the best last location detected from the providers.
-            IgnitedLegacyLastLocationFinder lastLocationFinder = new IgnitedLegacyLastLocationFinder(
-                    context);
-            location = lastLocationFinder.getLastBestLocation(context, locationUpdateDistanceDiff,
-                    System.currentTimeMillis() - locationUpdateInterval);
+            ILastLocationFinder lastLocationFinder = PlatformSpecificImplementationFactory
+                    .getLastLocationFinder(context);
+            location = lastLocationFinder.getLastBestLocation(locationUpdateDistanceDiff,
+                    System.currentTimeMillis() - locationUpdateInterval, true);
 
             // Check if the last location detected from the providers is either
             // too soon, or too close to the last

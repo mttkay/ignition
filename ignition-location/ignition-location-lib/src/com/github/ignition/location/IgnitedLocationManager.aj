@@ -32,7 +32,6 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.AsyncTask;
 import android.os.BatteryManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -65,7 +64,7 @@ public aspect IgnitedLocationManager {
     private Context context;
     private volatile Location currentLocation;
 
-    private AsyncTask<Void, Void, Location> ignitedLastKnownLocationTask;
+    private IgnitedLastKnownLocationAsyncTask ignitedLastKnownLocationTask;
     private SharedPreferences prefs;
     private Handler handler;
 
@@ -74,7 +73,7 @@ public aspect IgnitedLocationManager {
     private int passiveLocationUpdatesDistanceDiff;
     private boolean requestLocationUpdates;
     private boolean locationUpdatesDisabled = true;
-    
+
     // Switch to another provider if gps doesn't return a location quickly enough.
     private Runnable removeGpsUpdates = new Runnable() {
         @Override
@@ -184,9 +183,11 @@ public aspect IgnitedLocationManager {
         Log.d(LOG_TAG, "Retrieving last known location...");
         // Get the last known location. This isn't directly affecting the UI, so put it on a
         // worker thread.
-        ignitedLastKnownLocationTask = new IgnitedLastKnownLocationAsyncTask(
-                context, locationUpdatesDistanceDiff, locationUpdatesInterval);
-        ignitedLastKnownLocationTask.execute();
+        if (ignitedLastKnownLocationTask == null) {
+            ignitedLastKnownLocationTask = new IgnitedLastKnownLocationAsyncTask(context,
+                    locationUpdatesDistanceDiff, locationUpdatesInterval);
+            ignitedLastKnownLocationTask.execute();
+        }
     }
 
     /**
@@ -238,12 +239,13 @@ public aspect IgnitedLocationManager {
             handler.removeCallbacks(removeGpsUpdates);
         }
 
-        PlatformSpecificImplementationFactory.getLastLocationFinder(context).cancel();
+        ignitedLastKnownLocationTask.getLastLocationFinder().cancel();
 
         boolean finishing = activity.isFinishing();
         if (finishing) {
-            if (ignitedLastKnownLocationTask != null && ignitedLastKnownLocationTask.getStatus() != AsyncTask.Status.FINISHED) {
+            if (ignitedLastKnownLocationTask != null) {
                 ignitedLastKnownLocationTask.cancel(true);
+                ignitedLastKnownLocationTask = null;
             }
             context = null;
         }
