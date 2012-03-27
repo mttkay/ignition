@@ -98,6 +98,15 @@ public abstract class AbstractIgnitedLocationManagerTest {
     }
 
     @Test
+    public void shouldShowWaitForFixDialogIfNoLocationAvailable() {
+        shadowLocationManager.setLastKnownLocation(LocationManager.GPS_PROVIDER, null);
+        resume();
+
+        assertThat("Wait for fix dialog should be shown", Robolectric.shadowOf(activity)
+                .getLastShownDialogId(), equalTo(R.id.ign_loc_dialog_wait_for_fix));
+    }
+
+    @Test
     public void ignitedLocationIsCurrentLocation() {
         resume();
 

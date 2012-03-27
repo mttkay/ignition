@@ -38,7 +38,7 @@ import com.github.ignition.location.templates.IgnitedAbstractLastLocationFinder;
  * (where one exists) and setup a oneshot location update to find the current location.
  */
 public class IgnitedGingerbreadLastLocationFinder extends IgnitedAbstractLastLocationFinder {
-    private static String SINGLE_LOCATION_UPDATE_ACTION = "com.github.ignition.location.SINGLE_LOCATION_UPDATE_ACTION";
+    public static String SINGLE_LOCATION_UPDATE_ACTION = "com.github.ignition.location.SINGLE_LOCATION_UPDATE_ACTION";
 
     private PendingIntent singleUpatePI;
 

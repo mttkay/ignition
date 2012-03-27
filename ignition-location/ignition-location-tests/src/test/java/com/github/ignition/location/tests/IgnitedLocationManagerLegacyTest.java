@@ -43,4 +43,11 @@ public class IgnitedLocationManagerLegacyTest extends AbstractIgnitedLocationMan
                 + " provider should be requested when battery power is okay!",
                 locationPendingIntents.containsValue(LocationManager.GPS_PROVIDER));
     }
+
+    // TODO don't see an easy way to test it, maybe this requires patching robolectric
+    // @Test
+    // public void shouldDismissWaitForFixDialogWhenLocationIsAvailable() {
+    // shadowLocationManager.setLastKnownLocation(LocationManager.GPS_PROVIDER, null);
+    // resume();
+    // }
 }
