@@ -183,11 +183,9 @@ public aspect IgnitedLocationManager {
         Log.d(LOG_TAG, "Retrieving last known location...");
         // Get the last known location. This isn't directly affecting the UI, so put it on a
         // worker thread.
-        if (ignitedLastKnownLocationTask == null) {
-            ignitedLastKnownLocationTask = new IgnitedLastKnownLocationAsyncTask(context,
-                    locationUpdatesDistanceDiff, locationUpdatesInterval);
-            ignitedLastKnownLocationTask.execute();
-        }
+        ignitedLastKnownLocationTask = new IgnitedLastKnownLocationAsyncTask(context,
+                locationUpdatesDistanceDiff, locationUpdatesInterval);
+        ignitedLastKnownLocationTask.execute();
     }
 
     /**
@@ -239,14 +237,12 @@ public aspect IgnitedLocationManager {
             handler.removeCallbacks(removeGpsUpdates);
         }
 
-        ignitedLastKnownLocationTask.getLastLocationFinder().cancel();
+        if (ignitedLastKnownLocationTask != null) {
+            ignitedLastKnownLocationTask.cancel(true);
+        }
 
         boolean finishing = activity.isFinishing();
         if (finishing) {
-            if (ignitedLastKnownLocationTask != null) {
-                ignitedLastKnownLocationTask.cancel(true);
-                ignitedLastKnownLocationTask = null;
-            }
             context = null;
         }
     }
