@@ -300,13 +300,13 @@ public aspect IgnitedLocationManager {
             // PlatformSpecificImplementationFactory.getLastLocationFinder(context).cancel();
             return;
         } else if (requestLocationUpdates
-                && !extras.containsKey(ILastLocationFinder.LAST_LOCATION_TOO_OLD_OR_INACCURATE_EXTRA)) {
+                && (extras == null || !extras.containsKey(ILastLocationFinder.LAST_LOCATION_TOO_OLD_OR_INACCURATE_EXTRA))) {
             // If we requested location updates, turn them on here.
             requestLocationUpdates(context, null);
         }
 
         // If gps is enabled location comes from gps, remove runnable that removes gps updates
-        boolean lastLocation = extras.containsKey(IgnitedLocationConstants.IGNITED_LAST_LOCATION_EXTRA);
+        boolean lastLocation = extras != null && extras.containsKey(IgnitedLocationConstants.IGNITED_LAST_LOCATION_EXTRA);
         if (!lastLocation && defaultCriteria.getAccuracy() == Criteria.ACCURACY_FINE
                 && currentLocation.getProvider().equals(LocationManager.GPS_PROVIDER)) {
             handler.removeCallbacks(removeGpsUpdates);

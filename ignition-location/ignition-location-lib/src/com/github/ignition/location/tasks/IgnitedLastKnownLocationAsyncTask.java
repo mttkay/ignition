@@ -3,6 +3,7 @@ package com.github.ignition.location.tasks;
 import android.content.Context;
 import android.location.Location;
 import android.os.AsyncTask;
+import android.os.Bundle;
 
 import com.github.ignition.location.IgnitedLocationConstants;
 import com.github.ignition.location.annotations.IgnitedLocation;
@@ -39,8 +40,11 @@ public class IgnitedLastKnownLocationAsyncTask extends AsyncTask<Void, Void, Loc
     @Override
     protected void onPostExecute(Location lastKnownLocation) {
         if (lastKnownLocation != null) {
-            lastKnownLocation.getExtras().putBoolean(
-                    IgnitedLocationConstants.IGNITED_LAST_LOCATION_EXTRA, true);
+            Bundle extras = lastKnownLocation.getExtras();
+            if (extras == null) {
+                extras = new Bundle();
+            }
+            extras.putBoolean(IgnitedLocationConstants.IGNITED_LAST_LOCATION_EXTRA, true);
         }
         currentLocation = lastKnownLocation;
     }

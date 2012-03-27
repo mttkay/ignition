@@ -7,6 +7,7 @@ import android.content.Context;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Bundle;
 import android.util.Log;
 
 import com.github.ignition.location.annotations.IgnitedLocation;
@@ -73,7 +74,11 @@ public abstract class IgnitedAbstractLastLocationFinder implements ILastLocation
             Log.d(LOG_TAG, "Last location is too old or too inaccurate. Retrieving a new one...");
             retrieveSingleLocationUpdate();
             if (bestResult != null) {
-                bestResult.getExtras().putBoolean(LAST_LOCATION_TOO_OLD_OR_INACCURATE_EXTRA, true);
+                Bundle extras = bestResult.getExtras();
+                if (extras == null) {
+                    extras = new Bundle();
+                }
+                extras.putBoolean(LAST_LOCATION_TOO_OLD_OR_INACCURATE_EXTRA, true);
             }
         }
 
