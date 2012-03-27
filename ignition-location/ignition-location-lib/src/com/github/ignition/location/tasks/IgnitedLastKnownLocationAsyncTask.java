@@ -65,4 +65,11 @@ public class IgnitedLastKnownLocationAsyncTask extends AsyncTask<Void, Void, Loc
     public ILastLocationFinder getLastLocationFinder() {
         return lastLocationFinder;
     }
+
+    @Override
+    protected void onCancelled() {
+        super.onCancelled();
+        lastLocationFinder.cancel();
+    }
+
 }
