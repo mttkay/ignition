@@ -73,6 +73,7 @@ public aspect IgnitedLocationManager {
     private int passiveLocationUpdatesDistanceDiff;
     private boolean requestLocationUpdates;
     private boolean locationUpdatesDisabled = true;
+    private boolean waitForFixDialogShown = false;
 
     // Switch to another provider if gps doesn't return a location quickly enough.
     private Runnable removeGpsUpdates = new Runnable() {
@@ -272,8 +273,10 @@ public aspect IgnitedLocationManager {
                 IgnitedLocationConstants.SP_KEY_SHOW_WAIT_FOR_LOCATION_DIALOG,
                 IgnitedLocationConstants.SHOW_WAIT_FOR_LOCATION_DIALOG_DEFAULT);
         if (freshLocation == null) {
+            // TODO Migrate this to DialogFragment at some point
             if (showWaitForLocationDialog) {
                 activity.showDialog(R.id.ign_loc_dialog_wait_for_fix);
+                waitForFixDialogShown = true;
             }
             return;
         }
@@ -281,6 +284,11 @@ public aspect IgnitedLocationManager {
         currentLocation = freshLocation;
         Log.d(LOG_TAG, "New location from " + currentLocation.getProvider() + " (lat, lng/acc): "
                 + currentLocation.getLatitude() + ", " + currentLocation.getLongitude() + "/" + currentLocation.getAccuracy());
+        // TODO Migrate this to DialogFragment at some point
+        if (waitForFixDialogShown) {
+            activity.removeDialog(R.id.ign_loc_dialog_wait_for_fix);
+            waitForFixDialogShown = false;
+        }
         boolean keepRequestingLocationUpdates = ((OnIgnitedLocationChangedListener) context)
                 .onIgnitedLocationChanged(currentLocation);
         Bundle extras = freshLocation.getExtras();
