@@ -25,6 +25,7 @@ import android.location.LocationManager;
 import android.os.BatteryManager;
 
 import com.github.ignition.location.IgnitedLocationConstants;
+import com.github.ignition.samples.R;
 import com.github.ignition.samples.ui.IgnitedLocationSampleActivity;
 import com.xtremelabs.robolectric.Robolectric;
 import com.xtremelabs.robolectric.shadows.ShadowActivity;
@@ -33,10 +34,12 @@ import com.xtremelabs.robolectric.shadows.ShadowApplication.Wrapper;
 import com.xtremelabs.robolectric.shadows.ShadowLocationManager;
 
 public abstract class AbstractIgnitedLocationManagerTest {
+    private static final float DEFAULT_ACCURACY = 50f;
+
     protected ShadowApplication shadowApp;
     protected ShadowLocationManager shadowLocationManager;
+    protected IgnitedLocationSampleActivity activity;
 
-    private IgnitedLocationSampleActivity activity;
     private Location lastKnownLocation;
 
     @Before
@@ -67,23 +70,29 @@ public abstract class AbstractIgnitedLocationManagerTest {
     }
 
     protected Location getMockLocation() {
+        return getMockLocation(1.0, 1.0);
+    }
+
+    protected Location getMockLocation(double lat, double lon) {
         Location location = new Location(LocationManager.GPS_PROVIDER);
-        location.setLatitude(1.0);
-        location.setLongitude(1.0);
-        location.setAccuracy(50);
+        location.setLatitude(lat);
+        location.setLongitude(lon);
+        location.setAccuracy(DEFAULT_ACCURACY);
         return location;
     }
 
     protected Location sendMockLocationBroadcast(String provider) {
-        return sendMockLocationBroadcast(provider, 50f);
+        return sendMockLocationBroadcast(provider, DEFAULT_ACCURACY,
+                IgnitedLocationConstants.ACTIVE_LOCATION_UPDATE_ACTION);
     }
 
-    protected Location sendMockLocationBroadcast(String provider, float accuracy) {
-        Intent intent = new Intent(IgnitedLocationConstants.ACTIVE_LOCATION_UPDATE_ACTION);
-        Location location = new Location(provider);
-        location.setLatitude(2.0);
-        location.setLongitude(2.0);
-        location.setAccuracy(accuracy);
+    protected Location sendMockLocationBroadcast(String provider, String action) {
+        return sendMockLocationBroadcast(provider, DEFAULT_ACCURACY, action);
+    }
+
+    protected Location sendMockLocationBroadcast(String provider, float accuracy, String action) {
+        Intent intent = new Intent(action);
+        Location location = getMockLocation(2.0, 2.0);
         intent.putExtra(LocationManager.KEY_LOCATION_CHANGED, location);
         shadowApp.sendBroadcast(intent);
 
