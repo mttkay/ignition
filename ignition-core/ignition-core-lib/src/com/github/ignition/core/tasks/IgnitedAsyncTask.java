@@ -312,8 +312,8 @@ public abstract class IgnitedAsyncTask<ContextT extends Context, ParameterT, Pro
     }
 
     /**
-     * If you rely on a valid context reference, override {@link #onCompleted}, {@link #onSuccess},
-     * and {@link #onError} instead.
+     * Don't override this method; use {@link #onTaskCompleted}, {@link #onTaskSuccess}, and
+     * {@link #onTaskFailed} instead.
      */
     @Override
     protected void onPostExecute(ReturnT result) {
