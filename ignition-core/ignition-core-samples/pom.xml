@@ -13,6 +13,7 @@
     <module>ignited-async-task-sample</module>
     <module>remote-image-view-sample</module>
     <module>remote-image-gallery-sample</module>
+    <module>endless-list-adapter-sample</module>
   </modules>
 
   <dependencyManagement>
