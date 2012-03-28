@@ -50,7 +50,7 @@ public abstract class IgnitedAsyncTask<ContextT extends Context, ParameterT, Pro
                 throws Exception;
     }
 
-    private ContextT context;
+    private volatile ContextT context;
     private IgnitedAsyncTaskContextHandler<ProgressT, ReturnT> contextHandler;
     private IgnitedAsyncTaskHandler<ContextT, ProgressT, ReturnT> delegateHandler;
     private IgnitedAsyncTaskCallable<ContextT, ParameterT, ProgressT, ReturnT> callable;
@@ -90,17 +90,14 @@ public abstract class IgnitedAsyncTask<ContextT extends Context, ParameterT, Pro
      */
     @SuppressWarnings("unchecked")
     public void connect(ContextT context) {
-        // claim a lock for the context instance, in case getContext is used on the worker thread
-        synchronized (context) {
-            this.context = context;
-            if (context instanceof IgnitedAsyncTaskContextHandler) {
-                this.contextHandler = (IgnitedAsyncTaskContextHandler<ProgressT, ReturnT>) context;
-            } else if (delegateHandler == null && context instanceof IgnitedAsyncTaskHandler) {
-                this.delegateHandler = (IgnitedAsyncTaskHandler<ContextT, ProgressT, ReturnT>) context;
-            }
-            if (delegateHandler != null) {
-                delegateHandler.setContext(context);
-            }
+        this.context = context;
+        if (context instanceof IgnitedAsyncTaskContextHandler) {
+            this.contextHandler = (IgnitedAsyncTaskContextHandler<ProgressT, ReturnT>) context;
+        } else if (delegateHandler == null && context instanceof IgnitedAsyncTaskHandler) {
+            this.delegateHandler = (IgnitedAsyncTaskHandler<ContextT, ProgressT, ReturnT>) context;
+        }
+        if (delegateHandler != null) {
+            delegateHandler.setContext(context);
         }
     }
 
@@ -123,16 +120,13 @@ public abstract class IgnitedAsyncTask<ContextT extends Context, ParameterT, Pro
      * implicit reference to the same context from any handlers you have connected.</b>
      */
     public void disconnect() {
-        // claim a lock for the context instance, in case getContext is used on the worker thread
-        synchronized (context) {
-            this.contextHandler = null;
-            this.context = null;
-            if (delegateHandler != null) {
-                if (delegateHandler instanceof Context) {
-                    delegateHandler = null;
-                } else {
-                    delegateHandler.setContext(null);
-                }
+        this.contextHandler = null;
+        this.context = null;
+        if (delegateHandler != null) {
+            if (delegateHandler instanceof Context) {
+                delegateHandler = null;
+            } else {
+                delegateHandler.setContext(null);
             }
         }
     }
@@ -143,9 +137,7 @@ public abstract class IgnitedAsyncTask<ContextT extends Context, ParameterT, Pro
      */
     @Override
     public ContextT getContext() {
-        synchronized (context) {
-            return context;
-        }
+        return context;
     }
 
     /**
@@ -154,9 +146,7 @@ public abstract class IgnitedAsyncTask<ContextT extends Context, ParameterT, Pro
      */
     @Override
     public void setContext(ContextT context) {
-        synchronized (context) {
-            this.context = context;
-        }
+        this.context = context;
     }
 
     /**
