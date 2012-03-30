@@ -32,6 +32,7 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.BatteryManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -239,7 +240,11 @@ public aspect IgnitedLocationManager {
         }
 
         if (ignitedLastKnownLocationTask != null) {
-            ignitedLastKnownLocationTask.cancel(true);
+            if (ignitedLastKnownLocationTask.getStatus() != AsyncTask.Status.FINISHED) {
+                Log.d(LOG_TAG, "Cancel last location task");
+                ignitedLastKnownLocationTask.cancel(true);
+            }
+            ignitedLastKnownLocationTask.getLastLocationFinder().cancel();
         }
 
         boolean finishing = activity.isFinishing();
