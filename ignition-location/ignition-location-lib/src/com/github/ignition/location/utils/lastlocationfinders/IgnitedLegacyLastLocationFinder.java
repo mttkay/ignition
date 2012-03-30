@@ -51,6 +51,7 @@ public class IgnitedLegacyLastLocationFinder extends IgnitedAbstractLastLocation
      */
     @Override
     public void retrieveSingleLocationUpdate() {
+        Log.d(LOG_TAG, "Requesting Single Location Update...");
         String provider = locationManager.getBestProvider(criteria, true);
         if (provider != null) {
             locationManager.requestLocationUpdates(provider, 0, 0, singeUpdateListener,
@@ -94,6 +95,7 @@ public class IgnitedLegacyLastLocationFinder extends IgnitedAbstractLastLocation
      */
     @Override
     public void cancel() {
+        Log.d(LOG_TAG, "Remove single update request");
         locationManager.removeUpdates(singeUpdateListener);
     }
 }
