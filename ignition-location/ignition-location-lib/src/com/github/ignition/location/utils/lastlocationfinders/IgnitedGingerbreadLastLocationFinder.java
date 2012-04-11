@@ -104,13 +104,13 @@ public class IgnitedGingerbreadLastLocationFinder extends IgnitedAbstractLastLoc
     public void cancel() {
         Log.d(LOG_TAG, "Remove single update request");
         locationManager.removeUpdates(singleUpatePI);
-        if (singleUpdateReceiverRegistered) {
-            unregisterSingleUpdateReceiver();
-        }
+        unregisterSingleUpdateReceiver();
     }
 
     private void unregisterSingleUpdateReceiver() {
-        context.unregisterReceiver(singleUpdateReceiver);
-        singleUpdateReceiverRegistered = false;
+        if (singleUpdateReceiverRegistered) {
+            context.unregisterReceiver(singleUpdateReceiver);
+            singleUpdateReceiverRegistered = false;
+        }
     }
 }
