@@ -13,7 +13,7 @@
 
   <modules>
     <module>ignition-location-lib</module>
-    <module>ignition-location-samples</module>
+    <!-- <module>ignition-location-samples</module> -->
     <module>ignition-location-tests</module>
   </modules>
 

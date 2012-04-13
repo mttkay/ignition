@@ -11,7 +11,7 @@
 
   <modules>
     <module>ignition-support-lib</module>
-    <module>ignition-support-samples</module>
+	<!-- <module>ignition-support-samples</module> -->
   </modules>
 
   <dependencies>
