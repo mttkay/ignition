@@ -16,10 +16,10 @@
 package com.github.ignition.support.images.remote;
 
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.widget.ImageView;
 
@@ -34,6 +34,19 @@ public class RemoteImageLoaderHandler extends Handler {
     private Drawable errorDrawable;
 
     public RemoteImageLoaderHandler(ImageView imageView, String imageUrl, Drawable errorDrawable) {
+        this.imageView = imageView;
+        this.imageUrl = imageUrl;
+        this.errorDrawable = errorDrawable;
+        init(imageView, imageUrl, errorDrawable);
+    }
+
+    public RemoteImageLoaderHandler(Looper looper, ImageView imageView, String imageUrl,
+            Drawable errorDrawable) {
+        super(looper);
+        init(imageView, imageUrl, errorDrawable);
+    }
+
+    private void init(ImageView imageView, String imageUrl, Drawable errorDrawable) {
         this.imageView = imageView;
         this.imageUrl = imageUrl;
         this.errorDrawable = errorDrawable;
