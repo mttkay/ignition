@@ -70,7 +70,7 @@ public abstract class AbstractCache<KeyT, ValT> implements Map<KeyT, ValT> {
     private ConcurrentMap<KeyT, ValT> cache;
 
     private String name;
-    
+
     private long expirationInMinutes;
 
     /**
@@ -93,7 +93,7 @@ public abstract class AbstractCache<KeyT, ValT> implements Map<KeyT, ValT> {
 
         this.name = name;
         this.expirationInMinutes = expirationInMinutes;
-                
+
         MapMaker mapMaker = new MapMaker();
         mapMaker.initialCapacity(initialCapacity);
         mapMaker.expiration(expirationInMinutes * 60, TimeUnit.SECONDS);
@@ -108,19 +108,19 @@ public abstract class AbstractCache<KeyT, ValT> implements Map<KeyT, ValT> {
     private void sanitizeDiskCache() {
         List<File> cachedFiles = getCachedFiles();
         for (File f : cachedFiles) {
-        	// if file older than expirationInMinutes, remove it
-        	long lastModified = f.lastModified();
-        	Date now = new Date();
-        	long ageInMinutes = ((now.getTime() - lastModified) / (1000*60));
-        	
-        	if (ageInMinutes >= expirationInMinutes) {
-        		Log.d(name, "DISK cache expiration for file " + f.toString());
-        		f.delete();
-        	}
-        }
-	}
+            // if file older than expirationInMinutes, remove it
+            long lastModified = f.lastModified();
+            Date now = new Date();
+            long ageInMinutes = ((now.getTime() - lastModified) / (1000 * 60));
 
-	/**
+            if (ageInMinutes >= expirationInMinutes) {
+                Log.d(name, "DISK cache expiration for file " + f.toString());
+                f.delete();
+            }
+        }
+    }
+
+    /**
      * Enable caching to the phone's internal storage or SD card.
      * 
      * @param context
@@ -137,8 +137,8 @@ public abstract class AbstractCache<KeyT, ValT> implements Map<KeyT, ValT> {
         if (storageDevice == DISK_CACHE_SDCARD
                 && Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
             // SD-card available
-            rootDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/data/"
-                    + appContext.getPackageName() + "/cache";
+            rootDir = Environment.getExternalStorageDirectory().getAbsolutePath()
+                    + "/Android/data/" + appContext.getPackageName() + "/cache";
         } else {
             File internalCacheDir = appContext.getCacheDir();
             // apparently on some configurations this can come back as null
@@ -251,6 +251,7 @@ public abstract class AbstractCache<KeyT, ValT> implements Map<KeyT, ValT> {
      *            the cache key
      * @return the cached value, or null if element was not cached
      */
+    @Override
     @SuppressWarnings("unchecked")
     public synchronized ValT get(Object elementKey) {
         KeyT key = (KeyT) elementKey;
@@ -264,18 +265,18 @@ public abstract class AbstractCache<KeyT, ValT> implements Map<KeyT, ValT> {
         // memory miss, try reading from disk
         File file = getFileForKey(key);
         if (file.exists()) {
-        	// if file older than expirationInMinutes, remove it
-        	long lastModified = file.lastModified();
-        	Date now = new Date();
-        	long ageInMinutes = ((now.getTime() - lastModified) / (1000*60));
-        	
-        	if (ageInMinutes >= expirationInMinutes) {
-        		Log.d(name, "DISK cache expiration for file " + file.toString());
-        		file.delete();
-        		return null;
-        	}
-        	
-        	// disk hit
+            // if file older than expirationInMinutes, remove it
+            long lastModified = file.lastModified();
+            Date now = new Date();
+            long ageInMinutes = ((now.getTime() - lastModified) / (1000 * 60));
+
+            if (ageInMinutes >= expirationInMinutes) {
+                Log.d(name, "DISK cache expiration for file " + file.toString());
+                file.delete();
+                return null;
+            }
+
+            // disk hit
             Log.d(name, "DISK cache hit for " + key.toString());
             try {
                 value = readValueFromDisk(file);
@@ -299,6 +300,7 @@ public abstract class AbstractCache<KeyT, ValT> implements Map<KeyT, ValT> {
      * Writes an element to the cache. NOTE: If disk caching is enabled, this will write through to
      * the disk, which may introduce a performance penalty.
      */
+    @Override
     public synchronized ValT put(KeyT key, ValT value) {
         if (isDiskCacheEnabled) {
             cacheToDisk(key, value);
@@ -307,6 +309,7 @@ public abstract class AbstractCache<KeyT, ValT> implements Map<KeyT, ValT> {
         return cache.put(key, value);
     }
 
+    @Override
     public synchronized void putAll(Map<? extends KeyT, ? extends ValT> t) {
         throw new UnsupportedOperationException();
     }
@@ -319,6 +322,7 @@ public abstract class AbstractCache<KeyT, ValT> implements Map<KeyT, ValT> {
      *            the cache key
      * @return true if the value is cached in memory or on disk, false otherwise
      */
+    @Override
     public synchronized boolean containsKey(Object key) {
         return cache.containsKey(key) || containsKeyOnDisk(key);
     }
@@ -351,6 +355,7 @@ public abstract class AbstractCache<KeyT, ValT> implements Map<KeyT, ValT> {
      * Checks if the given value is currently held in memory. For performance reasons, this method
      * does NOT probe the disk cache.
      */
+    @Override
     public synchronized boolean containsValue(Object value) {
         return cache.containsValue(value);
     }
@@ -358,6 +363,7 @@ public abstract class AbstractCache<KeyT, ValT> implements Map<KeyT, ValT> {
     /**
      * Removes an entry from both memory and disk.
      */
+    @Override
     @SuppressWarnings("unchecked")
     public synchronized ValT remove(Object key) {
         ValT value = removeKey(key);
@@ -383,18 +389,22 @@ public abstract class AbstractCache<KeyT, ValT> implements Map<KeyT, ValT> {
         return cache.remove(key);
     }
 
+    @Override
     public Set<KeyT> keySet() {
         return cache.keySet();
     }
 
+    @Override
     public Set<Map.Entry<KeyT, ValT>> entrySet() {
         return cache.entrySet();
     }
 
+    @Override
     public synchronized int size() {
         return cache.size();
     }
 
+    @Override
     public synchronized boolean isEmpty() {
         return cache.isEmpty();
     }
@@ -435,6 +445,7 @@ public abstract class AbstractCache<KeyT, ValT> implements Map<KeyT, ValT> {
     /**
      * Clears the entire cache (memory and disk).
      */
+    @Override
     public synchronized void clear() {
         clear(isDiskCacheEnabled);
     }
@@ -462,6 +473,7 @@ public abstract class AbstractCache<KeyT, ValT> implements Map<KeyT, ValT> {
         Log.d(LOG_TAG, "Cache cleared");
     }
 
+    @Override
     public Collection<ValT> values() {
         return cache.values();
     }

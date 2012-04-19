@@ -62,19 +62,23 @@ public abstract class IgnitedHttpRequestBase implements IgnitedHttpRequest,
         this.httpClient = http.getHttpClient();
     }
 
+    @Override
     public HttpUriRequest unwrap() {
         return request;
     }
 
+    @Override
     public String getRequestUrl() {
         return request.getURI().toString();
     }
 
+    @Override
     public IgnitedHttpRequestBase expecting(Integer... statusCodes) {
         expectedStatusCodes.addAll(Arrays.asList(statusCodes));
         return this;
     }
 
+    @Override
     public IgnitedHttpRequestBase retries(int retries) {
         if (retries < 0) {
             this.maxRetries = 0;
@@ -86,6 +90,7 @@ public abstract class IgnitedHttpRequestBase implements IgnitedHttpRequest,
         return this;
     }
 
+    @Override
     public IgnitedHttpRequest withTimeout(int timeout) {
         oldSocketTimeout = httpClient.getParams().getIntParameter(CoreConnectionPNames.SO_TIMEOUT,
                 IgnitedHttp.DEFAULT_SOCKET_TIMEOUT);
@@ -100,6 +105,7 @@ public abstract class IgnitedHttpRequestBase implements IgnitedHttpRequest,
         return this;
     }
 
+    @Override
     public IgnitedHttpResponse send() throws ConnectException {
 
         IgnitedHttpRequestRetryHandler retryHandler = new IgnitedHttpRequestRetryHandler(maxRetries);
@@ -151,6 +157,7 @@ public abstract class IgnitedHttpRequestBase implements IgnitedHttpRequest,
         return retryHandler.retryRequest(cause, ++executionCount, context);
     }
 
+    @Override
     public IgnitedHttpResponse handleResponse(HttpResponse response) throws IOException {
         int status = response.getStatusLine().getStatusCode();
         if (expectedStatusCodes != null && !expectedStatusCodes.isEmpty()

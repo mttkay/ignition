@@ -36,26 +36,32 @@ public class IgnitedHttpResponseImpl implements IgnitedHttpResponse {
         }
     }
 
+    @Override
     public HttpResponse unwrap() {
         return response;
     }
 
+    @Override
     public InputStream getResponseBody() throws IOException {
         return entity.getContent();
     }
 
+    @Override
     public byte[] getResponseBodyAsBytes() throws IOException {
         return EntityUtils.toByteArray(entity);
     }
 
+    @Override
     public String getResponseBodyAsString() throws IOException {
         return EntityUtils.toString(entity);
     }
 
+    @Override
     public int getStatusCode() {
         return this.response.getStatusLine().getStatusCode();
     }
 
+    @Override
     public String getHeader(String header) {
         if (!response.containsHeader(header)) {
             return null;

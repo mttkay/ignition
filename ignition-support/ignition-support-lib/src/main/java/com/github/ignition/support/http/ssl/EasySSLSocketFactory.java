@@ -67,6 +67,7 @@ public class EasySSLSocketFactory implements SocketFactory, LayeredSocketFactory
      * @see org.apache.http.conn.scheme.SocketFactory#connectSocket(java.net.Socket,
      *      java.lang.String, int, java.net.InetAddress, int, org.apache.http.params.HttpParams)
      */
+    @Override
     public Socket connectSocket(Socket sock, String host, int port, InetAddress localAddress,
             int localPort, HttpParams params) throws IOException, UnknownHostException,
             ConnectTimeoutException {
@@ -94,6 +95,7 @@ public class EasySSLSocketFactory implements SocketFactory, LayeredSocketFactory
     /**
      * @see org.apache.http.conn.scheme.SocketFactory#createSocket()
      */
+    @Override
     public Socket createSocket() throws IOException {
         return getSSLContext().getSocketFactory().createSocket();
     }
@@ -101,6 +103,7 @@ public class EasySSLSocketFactory implements SocketFactory, LayeredSocketFactory
     /**
      * @see org.apache.http.conn.scheme.SocketFactory#isSecure(java.net.Socket)
      */
+    @Override
     public boolean isSecure(Socket socket) throws IllegalArgumentException {
         return true;
     }
@@ -109,6 +112,7 @@ public class EasySSLSocketFactory implements SocketFactory, LayeredSocketFactory
      * @see org.apache.http.conn.scheme.LayeredSocketFactory#createSocket(java.net.Socket,
      *      java.lang.String, int, boolean)
      */
+    @Override
     public Socket createSocket(Socket socket, String host, int port, boolean autoClose)
             throws IOException, UnknownHostException {
         return getSSLContext().getSocketFactory().createSocket();
@@ -120,10 +124,12 @@ public class EasySSLSocketFactory implements SocketFactory, LayeredSocketFactory
     // for the correct operation of some connection managers
     // -------------------------------------------------------------------
 
+    @Override
     public boolean equals(Object obj) {
         return ((obj != null) && obj.getClass().equals(EasySSLSocketFactory.class));
     }
 
+    @Override
     public int hashCode() {
         return EasySSLSocketFactory.class.hashCode();
     }

@@ -39,26 +39,32 @@ public class CachedHttpResponse implements IgnitedHttpResponse {
         this.cachedData = cachedData;
     }
 
+    @Override
     public String getHeader(String header) {
         return null;
     }
 
+    @Override
     public InputStream getResponseBody() throws IOException {
         return new ByteArrayInputStream(cachedData.responseBody);
     }
 
+    @Override
     public byte[] getResponseBodyAsBytes() throws IOException {
         return cachedData.responseBody;
     }
 
+    @Override
     public String getResponseBodyAsString() throws IOException {
         return new String(cachedData.responseBody);
     }
 
+    @Override
     public int getStatusCode() {
         return cachedData.statusCode;
     }
 
+    @Override
     public HttpResponse unwrap() {
         return null;
     }

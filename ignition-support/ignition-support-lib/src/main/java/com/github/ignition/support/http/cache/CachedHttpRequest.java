@@ -18,26 +18,32 @@ public class CachedHttpRequest implements IgnitedHttpRequest {
         this.url = url;
     }
 
+    @Override
     public String getRequestUrl() {
         return url;
     }
 
+    @Override
     public IgnitedHttpRequest expecting(Integer... statusCodes) {
         return this;
     }
 
+    @Override
     public IgnitedHttpRequest retries(int retries) {
         return this;
     }
 
+    @Override
     public IgnitedHttpResponse send() throws ConnectException {
         return new CachedHttpResponse(responseCache.get(url));
     }
 
+    @Override
     public HttpUriRequest unwrap() {
         return null;
     }
 
+    @Override
     public IgnitedHttpRequest withTimeout(int timeout) {
         return this;
     }
