@@ -21,8 +21,8 @@ import com.github.ignition.support.http.cache.CachedHttpResponse.ResponseData;
  */
 public class HttpResponseCache extends AbstractCache<String, ResponseData> {
 
-    public HttpResponseCache(int initialCapacity, long expirationInMinutes, int maxConcurrentThreads) {
-        super("HttpCache", initialCapacity, expirationInMinutes, maxConcurrentThreads);
+    public HttpResponseCache(int maxSize) {
+        super("HttpCache", maxSize);
     }
 
     public synchronized void removeAllWithPrefix(String urlPrefix) {

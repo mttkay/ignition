@@ -46,8 +46,7 @@ public class IgnitedHttpSampleActivity extends Activity {
 
     private void enableCache(boolean isChecked) {
         if (isChecked) {
-            http.enableResponseCache(IgnitedHttpSampleActivity.this, 3, 30, 1,
-                    HttpResponseCache.DISK_CACHE_INTERNAL);
+            http.enableResponseCache(this, 30, HttpResponseCache.DISK_CACHE_INTERNAL);
         } else {
             http.disableResponseCache(true);
         }

@@ -22,6 +22,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import android.app.ActivityManager;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
@@ -34,8 +36,29 @@ import android.graphics.BitmapFactory;
  */
 public class ImageCache extends AbstractCache<String, byte[]> {
 
-    public ImageCache(int initialCapacity, long expirationInMinutes, int maxConcurrentThreads) {
-        super("ImageCache", initialCapacity, expirationInMinutes, maxConcurrentThreads);
+    protected static class ImageLruCache extends AbstractCache.IgnitedLruCache<String, byte[]> {
+
+        public ImageLruCache(int maxSize) {
+            super(maxSize);
+        }
+
+        @Override
+        protected int sizeOf(String key, byte[] value) {
+            return value.length;
+        }
+    }
+
+    public ImageCache(int maxSizeInBytes) {
+        super("ImageCache", maxSizeInBytes);
+    }
+
+    public ImageCache(Context context) {
+        super("ImageCache", getMemoryClass(context, 0.5f));
+    }
+
+    public static int getMemoryClass(Context context, float modifier) {
+        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        return (int) (modifier * am.getMemoryClass());
     }
 
     public synchronized void removeAllWithPrefix(String urlPrefix) {

@@ -133,19 +133,12 @@ public class IgnitedHttp {
      * want to enable the disk cache, see {@link #enableResponseCache(Context, int, long, int, int)}
      * .
      * 
-     * @param initialCapacity
-     *            the initial element size of the cache
-     * @param expirationInMinutes
-     *            time in minutes after which elements will be purged from the cache
-     * @param maxConcurrentThreads
-     *            how many threads you think may at once access the cache; this need not be an exact
-     *            number, but it helps in fragmenting the cache properly
+     * @param maxSize
+     *            the maximum number of elements in the cache
      * @see HttpResponseCache
      */
-    public void enableResponseCache(int initialCapacity, long expirationInMinutes,
-            int maxConcurrentThreads) {
-        responseCache = new HttpResponseCache(initialCapacity, expirationInMinutes,
-                maxConcurrentThreads);
+    public void enableResponseCache(int maxSize) {
+        responseCache = new HttpResponseCache(maxSize);
     }
 
     /**
@@ -153,24 +146,16 @@ public class IgnitedHttp {
      * 
      * @param context
      *            the current context
-     * @param initialCapacity
-     *            the initial element size of the cache
-     * @param expirationInMinutes
-     *            time in minutes after which elements will be purged from the cache (NOTE: this
-     *            only affects the memory cache, the disk cache does currently NOT handle element
-     *            TTLs!)
-     * @param maxConcurrentThreads
-     *            how many threads you think may at once access the cache; this need not be an exact
-     *            number, but it helps in fragmenting the cache properly
+     * @param maxSize
+     *            the maximum number of elements in the cache
      * @param diskCacheStorageDevice
      *            where files should be cached persistently (
      *            {@link AbstractCache#DISK_CACHE_INTERNAL}, {@link AbstractCache#DISK_CACHE_SDCARD}
      *            )
      * @see HttpResponseCache
      */
-    public void enableResponseCache(Context context, int initialCapacity, long expirationInMinutes,
-            int maxConcurrentThreads, int diskCacheStorageDevice) {
-        enableResponseCache(initialCapacity, expirationInMinutes, maxConcurrentThreads);
+    public void enableResponseCache(Context context, int maxSize, int diskCacheStorageDevice) {
+        enableResponseCache(maxSize);
         responseCache.enableDiskCache(context, diskCacheStorageDevice);
     }
 

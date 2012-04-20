@@ -21,11 +21,9 @@ public class ModelCache extends AbstractCache<String, CachedModel> {
 
     /**
      * Creates an {@link AbstractCache} with params provided and name 'ModelCache'.
-     * 
-     * @see com.github.droidfu.cachefu.AbstractCache#AbstractCache(java.lang.String, int, long, int)
      */
-    public ModelCache(int initialCapacity, long expirationInMinutes, int maxConcurrentThreads) {
-        super("ModelCache", initialCapacity, expirationInMinutes, maxConcurrentThreads);
+    public ModelCache(int maxSize) {
+        super("ModelCache", maxSize);
     }
 
     // Counter for all saves to cache. Used to determine if newer object in cache

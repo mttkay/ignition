@@ -68,7 +68,7 @@ public class RemoteImageLoader {
     public RemoteImageLoader(Context context, boolean createCache) {
         executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(DEFAULT_POOL_SIZE);
         if (createCache) {
-            imageCache = new ImageCache(25, expirationInMinutes, DEFAULT_POOL_SIZE);
+            imageCache = new ImageCache(context);
             imageCache.enableDiskCache(context.getApplicationContext(),
                     ImageCache.DISK_CACHE_SDCARD);
         }
@@ -157,7 +157,7 @@ public class RemoteImageLoader {
      * concurrently to the UI main thread, using a fixed size thread pool. The loaded image will be
      * posted back to the given ImageView upon completion. This method will the default
      * {@link RemoteImageLoaderHandler} to process the bitmap after downloading it.
-     *
+     * 
      * @param imageUrl
      *            the URL of the image to download
      * @param imageView
@@ -166,8 +166,8 @@ public class RemoteImageLoader {
      *            the Drawable to be shown while the image is being downloaded.
      */
     public void loadImage(String imageUrl, ImageView imageView, Drawable dummyDrawable) {
-        loadImage(imageUrl, imageView, dummyDrawable, new RemoteImageLoaderHandler(
-                imageView, imageUrl, errorDrawable));
+        loadImage(imageUrl, imageView, dummyDrawable, new RemoteImageLoaderHandler(imageView,
+                imageUrl, errorDrawable));
     }
 
     /**
