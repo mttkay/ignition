@@ -12,7 +12,7 @@
   <dependencies>
     <dependency>
       <groupId>com.github.ignition</groupId>
-      <artifactId>ignition-location-sample</artifactId>
+      <artifactId>ignition-location-samples</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>

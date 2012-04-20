@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.ignition.samples.overlays;
+package com.github.ignition.samples.location.overlays;
 
 import android.graphics.Canvas;
 import android.graphics.Color;

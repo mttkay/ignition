@@ -14,7 +14,7 @@ import android.location.Criteria;
 import android.location.LocationManager;
 
 import com.github.ignition.location.utils.lastlocationfinders.IgnitedGingerbreadLastLocationFinder;
-import com.github.ignition.samples.R;
+import com.github.ignition.samples.location.R;
 import com.github.ignition.support.IgnitedDiagnostics;
 import com.xtremelabs.robolectric.Robolectric;
 import com.xtremelabs.robolectric.shadows.ShadowActivity;

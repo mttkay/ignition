@@ -25,8 +25,8 @@ import android.location.LocationManager;
 import android.os.BatteryManager;
 
 import com.github.ignition.location.IgnitedLocationConstants;
-import com.github.ignition.samples.R;
-import com.github.ignition.samples.ui.IgnitedLocationSampleActivity;
+import com.github.ignition.samples.location.R;
+import com.github.ignition.samples.location.ui.IgnitedLocationSampleActivity;
 import com.xtremelabs.robolectric.Robolectric;
 import com.xtremelabs.robolectric.shadows.ShadowActivity;
 import com.xtremelabs.robolectric.shadows.ShadowApplication;

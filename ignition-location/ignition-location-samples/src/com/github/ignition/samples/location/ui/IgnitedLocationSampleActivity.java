@@ -16,7 +16,7 @@
  * Ignition-ized by Stefano Dacchille
  */
 
-package com.github.ignition.samples.ui;
+package com.github.ignition.samples.location.ui;
 
 import java.util.Date;
 import java.util.List;
@@ -38,8 +38,8 @@ import com.github.ignition.location.IgnitedLocationConstants;
 import com.github.ignition.location.annotations.IgnitedLocation;
 import com.github.ignition.location.annotations.IgnitedLocationActivity;
 import com.github.ignition.location.utils.IgnitedLocationSupport;
-import com.github.ignition.samples.R;
-import com.github.ignition.samples.overlays.AccuracyCircleOverlay;
+import com.github.ignition.samples.location.R;
+import com.github.ignition.samples.location.overlays.AccuracyCircleOverlay;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
