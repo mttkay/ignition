@@ -9,7 +9,6 @@
   <groupId>com.github.ignition</groupId>
   <artifactId>ignition-location-project</artifactId>
   <packaging>pom</packaging>
-  <name>ignition-location-project</name>
 
   <modules>
     <module>ignition-location-lib</module>
@@ -19,6 +18,7 @@
 
   <properties>
     <androidVersion>2.3.3</androidVersion>
+    <mapsVersion>14_r1</mapsVersion>
   </properties>
 
   <dependencies>

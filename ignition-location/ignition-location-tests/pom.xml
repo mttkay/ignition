@@ -7,7 +7,6 @@
     <version>0.2-SNAPSHOT</version>
   </parent>
   <artifactId>ignition-location-tests</artifactId>
-  <name>ignition-location-tests</name>
 
   <dependencies>
     <dependency>
@@ -18,7 +17,7 @@
     <dependency>
       <groupId>com.google.android.maps</groupId>
       <artifactId>maps</artifactId>
-      <version>15_r1</version>
+      <version>${mapsVersion}</version>
     </dependency>
     <!-- test dependencies -->
     <dependency>
