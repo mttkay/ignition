@@ -3,7 +3,7 @@
   <parent>
     <groupId>com.github.ignition</groupId>
     <artifactId>ignition-location-project</artifactId>
-    <version>0.2</version>
+    <version>0.3-SNAPSHOT</version>
   </parent>
   <artifactId>ignition-location</artifactId>
   <packaging>apklib</packaging>
