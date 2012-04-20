@@ -4,7 +4,7 @@
   <parent>
     <groupId>com.github.ignition</groupId>
     <artifactId>ignition-core-tests</artifactId>
-    <version>0.2-SNAPSHOT</version>
+    <version>0.2</version>
   </parent>
   <artifactId>remote-image-view-test</artifactId>
 
