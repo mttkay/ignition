@@ -1,4 +1,4 @@
-package com.github.ignition.samples;
+package com.github.ignition.samples.support;
 
 import java.io.File;
 import java.util.List;
@@ -29,9 +29,9 @@ public class IgnitedHttpSampleActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
-        statusText = (TextView) findViewById(R.id.status);
-        useCache = (CheckBox) findViewById(R.id.chk_use_cache);
+        setContentView(R.layout.ignited_http_sample);
+        statusText = (TextView) findViewById(R.id.ignitedhttp_status);
+        useCache = (CheckBox) findViewById(R.id.ignitedhttp_chk_use_cache);
         useCache.setOnCheckedChangeListener(new OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -82,9 +82,9 @@ public class IgnitedHttpSampleActivity extends Activity {
     }
 
     public void updateCacheStatus() {
-        EditText memoryCacheText = (EditText) findViewById(R.id.text_cache_memory);
+        EditText memoryCacheText = (EditText) findViewById(R.id.ignitedhttp_text_cache_memory);
         memoryCacheText.setText("");
-        EditText diskCacheText = (EditText) findViewById(R.id.text_cache_disk);
+        EditText diskCacheText = (EditText) findViewById(R.id.ignitedhttp_text_cache_disk);
         diskCacheText.setText("");
 
         HttpResponseCache cache = http.getResponseCache();

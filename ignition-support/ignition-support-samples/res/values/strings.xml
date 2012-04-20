@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <string name="app_name">Samples: ignition-support</string>
+  <string name="ignitedhttp_empty">empty</string>
+  <string name="ignitedhttp_btn_clear_all">Clear all</string>
+  <string name="ignitedhttp_btn_clear_mem">Clear memory</string>
+  <string name="ignitedhttp_btn_clear_disk">Clear disk</string>
+  <string name="ignitedhttp_btn_request">Send HTTP request</string>
+  <string name="ignitedhttp_chk_use_cache">Use cache</string>
+  <string name="ignitedhttp_nodata">No data. Click below to start.</string>
+  <string name="ignitedhttp_memory_cache">Memory Cache</string>
+  <string name="ignitedhttp_disk_cache">Disk Cache</string>
+
+</resources>

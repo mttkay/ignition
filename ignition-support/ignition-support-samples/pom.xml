@@ -8,22 +8,16 @@
     <version>0.2-SNAPSHOT</version>
   </parent>
   <artifactId>ignition-support-samples</artifactId>
-  <packaging>pom</packaging>
+  <packaging>apk</packaging>
 
-  <modules>
-    <module>ignited-http-sample</module>
-  </modules>
-
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>com.github.ignition</groupId>
-        <artifactId>ignition-core</artifactId>
-        <version>${project.version}</version>
-        <type>apklib</type>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
+  <dependencies>
+    <dependency>
+      <groupId>com.github.ignition</groupId>
+      <artifactId>ignition-core</artifactId>
+      <version>${project.version}</version>
+      <type>apklib</type>
+    </dependency>
+  </dependencies>
 
   <build>
     <sourceDirectory>src</sourceDirectory>

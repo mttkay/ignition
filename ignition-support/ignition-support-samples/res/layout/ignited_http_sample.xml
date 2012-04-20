@@ -5,47 +5,46 @@
     android:orientation="vertical" >
 
     <TextView
-      android:id="@+id/status"
+      android:id="@+id/ignitedhttp_status"
       android:layout_width="fill_parent"
       android:layout_height="wrap_content"
       android:textStyle="bold"
       android:textColor="#0F0"
-      android:text="No data. Click below to start." />
+      android:text="@string/ignitedhttp_nodata" />
 
     <LinearLayout
-      android:id="@+id/linearLayout2"
       android:layout_width="fill_parent"
       android:layout_height="wrap_content" >
 
         <Button
-          android:id="@+id/btn_send_request"
+          android:id="@+id/ignitedhttp_btn_send_request"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_weight="1"
           android:onClick="onDownloadButtonClicked"
-          android:text="@string/btn_request" />
+          android:text="@string/ignitedhttp_btn_request" />
 
         <CheckBox
-          android:id="@+id/chk_use_cache"
+          android:id="@+id/ignitedhttp_chk_use_cache"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_weight="1"
           android:checked="true"
-          android:text="@string/chk_use_cache" />
+          android:text="@string/ignitedhttp_chk_use_cache" />
 
     </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Memory Cache"
+        android:text="@string/ignitedhttp_memory_cache"
         android:textAppearance="?android:attr/textAppearanceLarge" />
     
     <EditText
-        android:id="@+id/text_cache_memory"
+        android:id="@+id/ignitedhttp_text_cache_memory"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/empty"
+        android:hint="@string/ignitedhttp_empty"
         android:minLines="3"
         android:gravity="top"
         android:inputType="textMultiLine" >
@@ -54,37 +53,36 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Disk Cache"
+        android:text="@string/ignitedhttp_disk_cache"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <EditText
-        android:id="@+id/text_cache_disk"
+        android:id="@+id/ignitedhttp_text_cache_disk"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/empty"
+        android:hint="@string/ignitedhttp_empty"
         android:minLines="3"
         android:gravity="top"
         android:inputType="textMultiLine" />
 
     <LinearLayout
-      android:id="@+id/linearLayout1"
       android:layout_width="fill_parent"
       android:layout_height="wrap_content" >
 
         <Button
-          android:id="@+id/btn_clear_all"
+          android:id="@+id/ignitedhttp_btn_clear_all"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_weight="1"
-          android:text="@string/btn_clear_all"
+          android:text="@string/ignitedhttp_btn_clear_all"
           android:onClick="onClearAll" />
 
         <Button
-          android:id="@+id/btn_clear_mem"
+          android:id="@+id/ignitedhttp_btn_clear_mem"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_weight="1"
-          android:text="@string/btn_clear_mem"
+          android:text="@string/ignitedhttp_btn_clear_mem"
           android:onClick="onClearMemory" />
 
     </LinearLayout>
