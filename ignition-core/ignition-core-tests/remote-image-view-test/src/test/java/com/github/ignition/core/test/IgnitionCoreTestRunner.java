@@ -12,7 +12,7 @@ import com.xtremelabs.robolectric.RobolectricTestRunner;
 public class IgnitionCoreTestRunner extends RobolectricTestRunner {
 
     public IgnitionCoreTestRunner(Class<?> testClass) throws InitializationError {
-        super(testClass, new File("../../ignition-core-samples/remote-image-view-sample"));
+        super(testClass, new File("../../ignition-core-samples"));
     }
     
     @Override

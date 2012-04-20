@@ -11,7 +11,7 @@
 
   <modules>
     <module>ignition-core-lib</module>
-	<!-- <module>ignition-core-samples</module> -->
+	<module>ignition-core-samples</module>
     <module>ignition-core-tests</module>
   </modules>
 

@@ -14,8 +14,8 @@ import android.widget.ImageView;
 import com.github.ignition.core.test.shadows.RemoteImageLoaderMock;
 import com.github.ignition.core.test.shadows.TestShadowProgressBar;
 import com.github.ignition.core.widgets.RemoteImageView;
-import com.github.ignition.samples.remoteimageview.R;
-import com.github.ignition.samples.remoteimageview.RemoteImageViewActivity;
+import com.github.ignition.samples.core.R;
+import com.github.ignition.samples.core.RemoteImageViewActivity;
 import com.xtremelabs.robolectric.Robolectric;
 import com.xtremelabs.robolectric.shadows.ShadowImageView;
 
