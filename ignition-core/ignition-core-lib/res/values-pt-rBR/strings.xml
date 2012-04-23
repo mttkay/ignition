@@ -2,6 +2,6 @@
 <resources>
 
   <string name="ign_progress_dialog_title">Carregando&#8230;</string>
-  <string name="ign_progress_dialog_message">Espere um momento, por favor.</string>
+  <string name="ign_progress_dialog_msg">Espere um momento, por favor.</string>
 
 </resources>
