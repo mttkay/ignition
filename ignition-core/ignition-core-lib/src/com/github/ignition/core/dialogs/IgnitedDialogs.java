@@ -108,7 +108,8 @@ public class IgnitedDialogs {
 
     public static AlertDialog.Builder newYesNoDialog(final Context context, String title,
             String message, int iconId, OnClickListener listener) {
-        return newYesNoDialog(context, title, message, iconId, listener);
+        return newYesNoDialog(context, title, message, context.getString(android.R.string.yes),
+                context.getString(android.R.string.no), iconId, listener);
     }
 
     public static AlertDialog.Builder newYesNoDialog(final Context context, int titleId,
