@@ -15,7 +15,7 @@ public class RemoteImageViewActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.remote_image_view_sample);
 
-        imageView = (RemoteImageView) findViewById(R.id.image5);
+        // imageView = (RemoteImageView) findViewById(R.id.image5);
     }
 
     public void loadImage(View button) {

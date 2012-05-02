@@ -33,7 +33,7 @@ public class RemoteImageGalleryActivity extends Activity {
             protected void onGetView(int position, RemoteImageView remoteImageView,
                     ViewGroup remoteImageViewContainer, ViewGroup parent) {
                 // just to illustrate how you can adjust aspects of the rendered images here
-                remoteImageView.getImageView().setScaleType(ScaleType.CENTER_CROP);
+                remoteImageView.setScaleType(ScaleType.CENTER_CROP);
                 remoteImageViewContainer.setBackgroundColor(Color.WHITE);
             }
         });

@@ -25,7 +25,7 @@
     ignition:imageUrl="http://developer.android.com/images/home/android-design.png" />
 
   <!-- default error drawable -->
-
+<!-- 
   <com.github.ignition.core.widgets.RemoteImageView
     android:id="@+id/image3"
     android:layout_width="160dp"
@@ -33,7 +33,7 @@
     android:layout_below="@id/image1"
     ignition:imageUrl="http://does.not.exist" />
 
-  <!-- custom error drawable -->
+  custom error drawable
 
   <com.github.ignition.core.widgets.RemoteImageView
     android:id="@+id/image4"
@@ -44,7 +44,7 @@
     ignition:errorDrawable="@android:drawable/stat_notify_error"
     ignition:imageUrl="http://does.not.exist" />
 
-  <!-- no auto load with placeholder drawable -->
+  no auto load with placeholder drawable
 
   <com.github.ignition.core.widgets.RemoteImageView
     android:id="@+id/image5"
@@ -63,7 +63,7 @@
     android:onClick="loadImage"
     android:text="Load image" />
 
-  <!-- custom size and scaling -->
+  custom size and scaling
 
   <com.github.ignition.core.widgets.RemoteImageView
     android:id="@+id/image6"
@@ -72,6 +72,6 @@
     android:layout_below="@id/image3"
     android:layout_toRightOf="@id/image5"
     android:scaleType="centerCrop"
-    ignition:imageUrl="http://developer.android.com/images/home/android-design.png" />
+    ignition:imageUrl="http://developer.android.com/images/home/android-design.png" /> -->
 
 </RelativeLayout>

@@ -18,11 +18,14 @@ package com.github.ignition.core.widgets;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Message;
 import android.util.AttributeSet;
 import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.ViewSwitcher;
@@ -47,7 +50,7 @@ import com.github.ignition.support.images.remote.RemoteImageLoaderHandler;
  * 
  * @author Matthias Kaeppler
  */
-public class RemoteImageView extends ViewSwitcher {
+public class RemoteImageView extends ImageView {
 
     public static final int DEFAULT_ERROR_DRAWABLE_RES_ID = android.R.drawable.ic_dialog_alert;
 
@@ -62,8 +65,8 @@ public class RemoteImageView extends ViewSwitcher {
 
     private boolean autoLoad, isLoaded;
 
+    private ViewSwitcher switcher;
     private ProgressBar loadingSpinner;
-    private ImageView imageView;
 
     private Drawable progressDrawable, errorDrawable;
 
@@ -145,6 +148,8 @@ public class RemoteImageView extends ViewSwitcher {
 
     private void initialize(Context context, String imageUrl, Drawable progressDrawable,
             Drawable errorDrawable, boolean autoLoad, AttributeSet attributes) {
+        setBackgroundColor(Color.BLUE);
+
         this.imageUrl = imageUrl;
         this.autoLoad = autoLoad;
         this.progressDrawable = progressDrawable;
@@ -155,22 +160,13 @@ public class RemoteImageView extends ViewSwitcher {
             this.imageLoader = sharedImageLoader;
         }
 
-        // ScaleAnimation anim = new ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f,
-        // 125.0f, preferredItemHeight / 2.0f);
-        // anim.setDuration(500L);
-
-        // AlphaAnimation anim = new AlphaAnimation(0.0f, 1.0f);
-        // anim.setDuration(500L);
-        // setInAnimation(anim);
-
-        addLoadingSpinnerView(context);
-        addImageView(context, attributes);
+        switcher = new ViewSwitcher(context);
 
         if (autoLoad && imageUrl != null) {
             loadImage();
         } else {
             // if we don't have anything to load yet, don't show the progress element
-            setDisplayedChild(1);
+            switcher.setDisplayedChild(1);
         }
     }
 
@@ -186,23 +182,39 @@ public class RemoteImageView extends ViewSwitcher {
             }
         }
 
-        LayoutParams lp = new LayoutParams(progressDrawable.getIntrinsicWidth(),
-                progressDrawable.getIntrinsicHeight());
+        ViewSwitcher.LayoutParams lp = new ViewSwitcher.LayoutParams(
+                progressDrawable.getIntrinsicWidth(), progressDrawable.getIntrinsicHeight());
         lp.gravity = Gravity.CENTER;
 
-        addView(loadingSpinner, 0, lp);
+        switcher.addView(loadingSpinner);
     }
 
-    private void addImageView(Context context, AttributeSet attributes) {
-        if (attributes != null) {
-            // pass along any view attribtues inflated from XML to the image view
-            imageView = new ImageView(context, attributes);
-        } else {
-            imageView = new ImageView(context);
+    @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
+
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+
+        if (!(getParent() instanceof ViewSwitcher)) {
+            System.out.println("SWAPPING VIEWS!");
+
+            ViewGroup parent = (ViewGroup) this.getParent();
+            System.out.println("PARENT: " + parent);
+            int selfIndex = parent.indexOfChild(this);
+            parent.removeView(this);
+            parent.addView(switcher, selfIndex);
+
+            addLoadingSpinnerView(getContext());
+            switcher.addView(this);
+
+            System.out.println(getLayoutParams().getClass().getCanonicalName());
+
+            getParent().requestLayout();
         }
-        LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-        lp.gravity = Gravity.CENTER;
-        addView(imageView, 1, lp);
     }
 
     /**
@@ -213,8 +225,8 @@ public class RemoteImageView extends ViewSwitcher {
             throw new IllegalStateException(
                     "image URL is null; did you forget to set it for this view?");
         }
-        setDisplayedChild(0);
-        imageLoader.loadImage(imageUrl, imageView, new DefaultImageLoaderHandler());
+        switcher.setDisplayedChild(0);
+        imageLoader.loadImage(imageUrl, this, new DefaultImageLoaderHandler());
     }
 
     public boolean isLoaded() {
@@ -233,21 +245,19 @@ public class RemoteImageView extends ViewSwitcher {
      *            the resource of the placeholder image drawable
      */
     public void setNoImageDrawable(int imageResourceId) {
-        imageView.setImageDrawable(getContext().getResources().getDrawable(imageResourceId));
-        setDisplayedChild(1);
+        setImageDrawable(getContext().getResources().getDrawable(imageResourceId));
+        switcher.setDisplayedChild(1);
     }
 
-    @Override
     public void reset() {
-        super.reset();
-
-        this.setDisplayedChild(0);
+        switcher.reset();
+        switcher.setDisplayedChild(0);
     }
 
     private class DefaultImageLoaderHandler extends RemoteImageLoaderHandler {
 
         public DefaultImageLoaderHandler() {
-            super(imageView, imageUrl, errorDrawable);
+            super(RemoteImageView.this, imageUrl, errorDrawable);
         }
 
         @Override
@@ -255,7 +265,7 @@ public class RemoteImageView extends ViewSwitcher {
             boolean wasUpdated = super.handleImageLoaded(bitmap, msg);
             if (wasUpdated) {
                 isLoaded = true;
-                setDisplayedChild(1);
+                switcher.setDisplayedChild(1);
             }
             return wasUpdated;
         }
@@ -303,20 +313,11 @@ public class RemoteImageView extends ViewSwitcher {
     }
 
     /**
-     * The image view that will render the downloaded image.
-     * 
-     * @return the {@link ImageView}
-     */
-    public ImageView getImageView() {
-        return imageView;
-    }
-
-    /**
      * The progress bar that is shown while the image is loaded.
      * 
      * @return the {@link ProgressBar}
      */
-    public ProgressBar getProgressBar() {
+    public View getProgressBar() {
         return loadingSpinner;
     }
 }
