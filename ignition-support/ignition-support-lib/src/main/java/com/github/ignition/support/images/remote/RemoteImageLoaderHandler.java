@@ -79,8 +79,8 @@ public class RemoteImageLoaderHandler extends Handler {
         // If this handler is used for loading images in a ListAdapter,
         // the thread will set the image only if it's the right position,
         // otherwise it won't do anything.
-        String forUrl = (String) imageView.getTag();
-        if (imageUrl.equals(forUrl)) {
+        Object viewTag = imageView.getTag();
+        if (imageUrl.equals(viewTag)) {
             if (bitmap == null)
                 imageView.setImageDrawable(errorDrawable);
             else

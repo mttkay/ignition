@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:ignition="http://github.com/ignition/schema"
+  android:id="@+id/layout_root"
   android:layout_width="fill_parent"
   android:layout_height="fill_parent" >
 
@@ -8,8 +9,8 @@
 
   <com.github.ignition.core.widgets.RemoteImageView
     android:id="@+id/image1"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="160dp"
+    android:layout_height="147dp"
     android:layout_alignParentLeft="true"
     android:layout_alignParentTop="true"
     ignition:imageUrl="http://developer.android.com/images/home/android-design.png" />
@@ -18,22 +19,23 @@
 
   <com.github.ignition.core.widgets.RemoteImageView
     android:id="@+id/image2"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="160dp"
+    android:layout_height="147dp"
     android:layout_toRightOf="@id/image1"
     android:indeterminateDrawable="@android:drawable/progress_indeterminate_horizontal"
     ignition:imageUrl="http://developer.android.com/images/home/android-design.png" />
 
   <!-- default error drawable -->
-<!-- 
+
   <com.github.ignition.core.widgets.RemoteImageView
     android:id="@+id/image3"
     android:layout_width="160dp"
     android:layout_height="147dp"
     android:layout_below="@id/image1"
+    android:scaleType="center"
     ignition:imageUrl="http://does.not.exist" />
 
-  custom error drawable
+  <!-- custom error drawable -->
 
   <com.github.ignition.core.widgets.RemoteImageView
     android:id="@+id/image4"
@@ -41,10 +43,11 @@
     android:layout_height="147dp"
     android:layout_below="@id/image1"
     android:layout_toRightOf="@id/image3"
+    android:scaleType="center"
     ignition:errorDrawable="@android:drawable/stat_notify_error"
     ignition:imageUrl="http://does.not.exist" />
 
-  no auto load with placeholder drawable
+  <!-- no auto load with placeholder drawable -->
 
   <com.github.ignition.core.widgets.RemoteImageView
     android:id="@+id/image5"
@@ -63,7 +66,7 @@
     android:onClick="loadImage"
     android:text="Load image" />
 
-  custom size and scaling
+  <!-- custom size and scaling -->
 
   <com.github.ignition.core.widgets.RemoteImageView
     android:id="@+id/image6"
@@ -71,7 +74,8 @@
     android:layout_height="50dip"
     android:layout_below="@id/image3"
     android:layout_toRightOf="@id/image5"
+    android:background="@android:drawable/gallery_thumb"
     android:scaleType="centerCrop"
-    ignition:imageUrl="http://developer.android.com/images/home/android-design.png" /> -->
+    ignition:imageUrl="http://developer.android.com/images/home/android-design.png" />
 
 </RelativeLayout>

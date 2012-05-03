@@ -9,7 +9,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import android.graphics.drawable.Drawable;
-import android.widget.ImageView;
 
 import com.github.ignition.core.test.shadows.RemoteImageLoaderMock;
 import com.github.ignition.core.test.shadows.TestShadowProgressBar;
@@ -64,10 +63,9 @@ public class RemoteImageViewTest {
     @Test
     public void canUseImageViewSpecificAttributes() {
         RemoteImageView riv = (RemoteImageView) activity.findViewById(R.id.image5);
-        ImageView imageView = riv.getImageView();
-        ShadowImageView shadow = Robolectric.shadowOf(imageView);
+        ShadowImageView shadow = Robolectric.shadowOf(riv);
         shadow.applyAttributes();
-        System.out.println("IN TEST: " + imageView.getScaleType());
+        System.out.println("IN TEST: " + riv.getScaleType());
     }
 
     @Test

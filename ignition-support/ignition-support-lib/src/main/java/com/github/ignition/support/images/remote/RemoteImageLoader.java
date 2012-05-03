@@ -213,7 +213,7 @@ public class RemoteImageLoader {
                 }
                 return;
             }
-            String oldImageUrl = (String) imageView.getTag();
+            Object oldImageUrl = imageView.getTag();
             if (imageUrl.equals(oldImageUrl)) {
                 // nothing to do
                 return;
