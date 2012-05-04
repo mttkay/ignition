@@ -77,6 +77,7 @@ public abstract class IgnitedAbstractLastLocationFinder implements ILastLocation
                 Bundle extras = bestResult.getExtras();
                 if (extras == null) {
                     extras = new Bundle();
+                    bestResult.setExtras(extras);
                 }
                 extras.putBoolean(LAST_LOCATION_TOO_OLD_OR_INACCURATE_EXTRA, true);
             }
