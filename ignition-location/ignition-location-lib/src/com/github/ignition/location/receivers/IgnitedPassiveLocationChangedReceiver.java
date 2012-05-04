@@ -76,7 +76,7 @@ public class IgnitedPassiveLocationChangedReceiver extends BroadcastReceiver {
             ILastLocationFinder lastLocationFinder = PlatformSpecificImplementationFactory
                     .getLastLocationFinder(context);
             location = lastLocationFinder.getLastBestLocation(locationUpdateDistanceDiff,
-                    System.currentTimeMillis() - locationUpdateInterval, true);
+                    System.currentTimeMillis() - locationUpdateInterval, false);
 
             // Check if the last location detected from the providers is either
             // too soon, or too close to the last

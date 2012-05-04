@@ -43,11 +43,12 @@ public interface ILastLocationFinder {
      *            Minimum distance before we require a location update.
      * @param minTime
      *            Minimum time required between location updates.
-     * @param passiveRequest
-     *            The method is invoked from a passive location updater.
+     * @param refreshLocationIfLastLocationIsTooOld
+     *            Request a single update if the last location is too old.
      * @return The most accurate and / or timely previously detected location.
      */
-    Location getLastBestLocation(int minDistance, long minTime, boolean passiveRequest);
+    Location getLastBestLocation(int minDistance, long minTime,
+            boolean refreshLocationIfLastLocationIsTooOld);
 
     /**
      * Cancel the one-shot current location update.

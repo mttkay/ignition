@@ -1,5 +1,6 @@
 package com.github.ignition.location.tasks;
 
+import android.app.IntentService;
 import android.content.Context;
 import android.location.Location;
 import android.os.AsyncTask;
@@ -10,7 +11,7 @@ import com.github.ignition.location.annotations.IgnitedLocation;
 import com.github.ignition.location.templates.ILastLocationFinder;
 import com.github.ignition.location.utils.PlatformSpecificImplementationFactory;
 
-public class IgnitedLastKnownLocationAsyncTask extends AsyncTask<Void, Void, Location> {
+public class IgnitedLastKnownLocationAsyncTask extends AsyncTask<Boolean, Void, Location> {
     private final int locationUpdateDistanceDiff;
     private final long locationUpdateInterval;
     @SuppressWarnings("unused")
@@ -20,7 +21,7 @@ public class IgnitedLastKnownLocationAsyncTask extends AsyncTask<Void, Void, Loc
 
     /**
      * 
-     * @param appContext
+     * @param context
      * @param locationUpdateDistanceDiff
      * @param locationUpdateInterval
      */
@@ -32,9 +33,26 @@ public class IgnitedLastKnownLocationAsyncTask extends AsyncTask<Void, Void, Loc
                 .getLastLocationFinder(context);
     }
 
+    /**
+     * @param refreshLocationIfLastLocationIsTooOld
+     * @return the last known location
+     */
     @Override
-    protected Location doInBackground(Void... params) {
-        return getLastKnownLocation();
+    protected Location doInBackground(Boolean... params) {
+        return run(params);
+    }
+
+    /**
+     * Typically you do not call this method directly; instead it's called by {@link #execute()} and
+     * run on a worker thread. If however you want to execute the task synchronously - i.e.: from a
+     * {@link IntentService} - you can invoke this method directly.
+     * 
+     * @param refreshLocationIfLastLocationIsTooOld
+     * @return the last known location
+     */
+    public Location run(Boolean... refreshLocationIfLastLocationIsTooOld) {
+        return getLastKnownLocation(refreshLocationIfLastLocationIsTooOld.length > 0 ? refreshLocationIfLastLocationIsTooOld[0]
+                : Boolean.TRUE);
     }
 
     @Override
@@ -54,15 +72,17 @@ public class IgnitedLastKnownLocationAsyncTask extends AsyncTask<Void, Void, Loc
      * Find the last known location (using a {@link LastLocationFinder}) and updates the place list
      * accordingly.
      * 
+     * @param refreshLocationIfLastIsTooOld
+     * 
      */
-    protected Location getLastKnownLocation() {
+    protected Location getLastKnownLocation(Boolean refreshLocationIfLastIsTooOld) {
         // Find the last known location, specifying a required accuracy
         // of within the min distance between updates
         // and a required latency of the minimum time required between
         // updates.
         Location lastKnownLocation = lastLocationFinder.getLastBestLocation(
                 locationUpdateDistanceDiff, System.currentTimeMillis() - locationUpdateInterval,
-                false);
+                refreshLocationIfLastIsTooOld);
 
         return lastKnownLocation;
     }
@@ -76,5 +96,4 @@ public class IgnitedLastKnownLocationAsyncTask extends AsyncTask<Void, Void, Loc
         super.onCancelled();
         lastLocationFinder.cancel();
     }
-
 }
