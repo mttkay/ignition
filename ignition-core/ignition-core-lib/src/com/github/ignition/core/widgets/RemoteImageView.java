@@ -72,8 +72,13 @@ public class RemoteImageView extends ImageView {
     private static final String ATTR_IMAGE_URL = "imageUrl";
     private static final String ATTR_ERROR_DRAWABLE = "errorDrawable";
 
+    private static final int STATE_DEFAULT = -1;
+    private static final int STATE_PENDING = 0;
+    private static final int STATE_LOADED = 1;
+
+    private int state = STATE_DEFAULT;
     private String imageUrl;
-    private boolean autoLoad, isLoaded;
+    private boolean autoLoad;
 
     private ViewSwitcher switcher;
     private Drawable progressDrawable, errorDrawable;
@@ -107,6 +112,23 @@ public class RemoteImageView extends ImageView {
      */
     public static RemoteImageView findViewById(Activity activity, int id) {
         View view = activity.findViewById(id);
+        if (view instanceof ViewSwitcher) {
+            view = ((ViewSwitcher) view).getChildAt(1);
+        }
+        return (RemoteImageView) view;
+    }
+
+    /**
+     * See {@link #findViewById(Activity, int)}
+     * 
+     * @param parent
+     *            the parent layout to search in
+     * @param id
+     *            the {@link RemoteImageView}s view ID
+     * @return the {@link RemoteImageView}
+     */
+    public static RemoteImageView findViewById(ViewGroup parent, int id) {
+        View view = parent.findViewById(id);
         if (view instanceof ViewSwitcher) {
             view = ((ViewSwitcher) view).getChildAt(1);
         }
@@ -217,11 +239,26 @@ public class RemoteImageView extends ImageView {
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        super.onLayout(changed, left, top, right, bottom);
-
         if (!(getParent() instanceof ViewSwitcher)) {
+            System.out.println("SETUP SWITCHER");
             setupViewSwitcher();
+            int widthSpec = MeasureSpec.makeMeasureSpec(getMeasuredWidth(), MeasureSpec.EXACTLY);
+            int heightSpec = MeasureSpec.makeMeasureSpec(getMeasuredHeight(), MeasureSpec.EXACTLY);
+            switcher.measure(widthSpec, heightSpec);
+            switcher.requestLayout();
+        } else {
+            super.onLayout(changed, left, top, right, bottom);
         }
+        // super.onLayout(changed, left, top, right, bottom);
+        System.out.println("onLayout SWITCHER W: " + switcher.getMeasuredWidth());
+        System.out.println("onLayout SWITCHER H: " + switcher.getMeasuredHeight());
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        System.out.println("onMeasure SWITCHER W: " + switcher.getMeasuredWidth());
+        System.out.println("onMeasure SWITCHER H: " + switcher.getMeasuredHeight());
     }
 
     /**
@@ -230,6 +267,8 @@ public class RemoteImageView extends ImageView {
      */
     public void setupViewSwitcher() {
         // "migrate" this view's LPs to the new parent
+        System.out.println("lp width = " + getLayoutParams().width);
+        System.out.println("lp height = " + getLayoutParams().height);
         switcher.setLayoutParams(getLayoutParams());
 
         // swap with view with a ViewSwitcher and re-insert itself under it
@@ -245,7 +284,7 @@ public class RemoteImageView extends ImageView {
                 LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
         switcher.addView(this, newParams);
 
-        if (autoLoad && imageUrl != null) {
+        if (autoLoad && imageUrl != null || state == STATE_PENDING) {
             loadImage();
         } else {
             // if we don't have anything to load yet, don't show the progress element
@@ -261,12 +300,21 @@ public class RemoteImageView extends ImageView {
             throw new IllegalStateException(
                     "image URL is null; did you forget to set it for this view?");
         }
-        switcher.setDisplayedChild(0);
-        imageLoader.loadImage(imageUrl, this, new DefaultImageLoaderHandler());
+        if (isInitialized()) {
+            switcher.setDisplayedChild(0);
+            imageLoader.loadImage(imageUrl, this, new DefaultImageLoaderHandler());
+        } else {
+            // the view swicher isn't fully layouted yet, so record this as a pending load
+            state = STATE_PENDING;
+        }
+    }
+
+    public boolean isInitialized() {
+        return switcher != null && switcher.getChildCount() == 2;
     }
 
     public boolean isLoaded() {
-        return isLoaded;
+        return state == STATE_LOADED;
     }
 
     public void setImageUrl(String imageUrl) {
@@ -300,7 +348,7 @@ public class RemoteImageView extends ImageView {
         protected boolean handleImageLoaded(Bitmap bitmap, Message msg) {
             boolean wasUpdated = super.handleImageLoaded(bitmap, msg);
             if (wasUpdated) {
-                isLoaded = true;
+                state = STATE_LOADED;
                 switcher.setDisplayedChild(1);
             }
             return wasUpdated;

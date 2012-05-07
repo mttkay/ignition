@@ -3,7 +3,6 @@ package com.github.ignition.samples.core;
 import java.util.Arrays;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.ViewGroup;
 import android.widget.Gallery;
@@ -11,6 +10,7 @@ import android.widget.ImageView.ScaleType;
 
 import com.github.ignition.core.adapters.RemoteImageGalleryAdapter;
 import com.github.ignition.core.widgets.RemoteImageView;
+import com.github.ignition.support.IgnitedScreens;
 import com.github.ignition.support.images.remote.RemoteImageLoader;
 
 public class RemoteImageGalleryActivity extends Activity {
@@ -34,7 +34,9 @@ public class RemoteImageGalleryActivity extends Activity {
                     ViewGroup remoteImageViewContainer, ViewGroup parent) {
                 // just to illustrate how you can adjust aspects of the rendered images here
                 remoteImageView.setScaleType(ScaleType.CENTER_CROP);
-                remoteImageViewContainer.setBackgroundColor(Color.WHITE);
+                remoteImageViewContainer.setBackgroundResource(android.R.drawable.gallery_thumb);
+                int padding = IgnitedScreens.dipToPx(parent.getContext(), 15);
+                remoteImageViewContainer.setPadding(padding, padding, padding, padding);
             }
         });
     }
