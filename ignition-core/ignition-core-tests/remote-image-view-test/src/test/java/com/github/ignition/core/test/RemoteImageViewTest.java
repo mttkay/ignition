@@ -16,7 +16,6 @@ import com.github.ignition.core.widgets.RemoteImageView;
 import com.github.ignition.samples.core.R;
 import com.github.ignition.samples.core.RemoteImageViewActivity;
 import com.xtremelabs.robolectric.Robolectric;
-import com.xtremelabs.robolectric.shadows.ShadowImageView;
 
 @RunWith(IgnitionCoreTestRunner.class)
 public class RemoteImageViewTest {
@@ -36,6 +35,8 @@ public class RemoteImageViewTest {
     @Test
     public void testCorrectAttributeInflationAndDefaulting() {
         RemoteImageView imageView = (RemoteImageView) activity.findViewById(R.id.image1);
+
+        imageView.setupViewSwitcher();
 
         // default values for unsupplied attributes
         assertTrue(imageView.isAutoLoad());
@@ -60,13 +61,17 @@ public class RemoteImageViewTest {
         assertEquals(expectedErrorDrawable, imageView.getErrorDrawable());
     }
 
-    @Test
-    public void canUseImageViewSpecificAttributes() {
-        RemoteImageView riv = (RemoteImageView) activity.findViewById(R.id.image5);
-        ShadowImageView shadow = Robolectric.shadowOf(riv);
-        shadow.applyAttributes();
-        System.out.println("IN TEST: " + riv.getScaleType());
-    }
+    // TODO: doesn't work because Robolectric doesn't implement obtainStyledAttributes...
+    // @Test
+    // public void canCustomizeTheProgressDrawable() {
+    // RemoteImageView imageView = (RemoteImageView) activity.findViewById(R.id.image2);
+    //
+    // imageView.setupViewSwitcher();
+    //
+    // Drawable expectedProgressDrawable = Robolectric.application.getResources().getDrawable(
+    // android.R.drawable.progress_indeterminate_horizontal);
+    // assertEquals(expectedProgressDrawable, imageView.getProgressDrawable());
+    // }
 
     @Test
     public void testAutoLoadingOfImages() {
@@ -75,6 +80,12 @@ public class RemoteImageViewTest {
         RemoteImageView view3 = (RemoteImageView) activity.findViewById(R.id.image3);
         RemoteImageView view4 = (RemoteImageView) activity.findViewById(R.id.image4);
         RemoteImageView view5 = (RemoteImageView) activity.findViewById(R.id.image5);
+
+        view1.setupViewSwitcher();
+        view2.setupViewSwitcher();
+        view3.setupViewSwitcher();
+        view4.setupViewSwitcher();
+        view5.setupViewSwitcher();
 
         assertTrue(view1.isAutoLoad());
         assertTrue(imageLoader.isLoadImageCalled(view1));
@@ -94,5 +105,4 @@ public class RemoteImageViewTest {
         Robolectric.clickOn(activity.findViewById(R.id.load_image_button));
         assertTrue(imageLoader.isLoadImageCalled(view5));
     }
-
 }

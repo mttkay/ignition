@@ -224,7 +224,11 @@ public class RemoteImageView extends ImageView {
         }
     }
 
-    private void setupViewSwitcher() {
+    /**
+     * This is called automatically from onLayout, so do not call manually unless you know what
+     * you're doing!
+     */
+    public void setupViewSwitcher() {
         // "migrate" this view's LPs to the new parent
         switcher.setLayoutParams(getLayoutParams());
 
