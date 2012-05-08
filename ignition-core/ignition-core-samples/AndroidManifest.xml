@@ -23,6 +23,7 @@
     <activity android:name=".IgnitedAsyncTaskActivity" />
     <activity android:name=".RemoteImageViewActivity" />
     <activity android:name=".RemoteImageGalleryActivity" />
+    <activity android:name=".ScrollingTextViewActivity" />
   </application>
 
 </manifest>
