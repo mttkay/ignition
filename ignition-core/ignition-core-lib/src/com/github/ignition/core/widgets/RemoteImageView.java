@@ -15,7 +15,6 @@
 
 package com.github.ignition.core.widgets;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -26,7 +25,7 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -72,10 +71,15 @@ public class RemoteImageView extends ImageView {
     private static final String ATTR_IMAGE_URL = "imageUrl";
     private static final String ATTR_ERROR_DRAWABLE = "errorDrawable";
 
-    private String imageUrl;
-    private boolean autoLoad, isLoaded;
+    private static final int STATE_DEFAULT = 0;
+    private static final int STATE_LOADED = 1;
+    private static final int STATE_LOADING = 2;
 
-    private ViewSwitcher switcher;
+    private int state = STATE_DEFAULT;
+    private String imageUrl;
+    private boolean autoLoad;
+
+    private ViewGroup progressViewContainer;
     private Drawable progressDrawable, errorDrawable;
 
     private RemoteImageLoader imageLoader;
@@ -91,26 +95,6 @@ public class RemoteImageView extends ImageView {
      */
     public static void setSharedImageLoader(RemoteImageLoader imageLoader) {
         sharedImageLoader = imageLoader;
-    }
-
-    /**
-     * Since {@link RemoteImageView} and the ViewSwitcher it is contained in share the same view
-     * IDs, Android's own findViewById may cause problems by not returning the view you expect.
-     * Using this helper, you're guaranteed to always retrieve the {@link RemoteImageView} and not
-     * the view switcher. You can still get a reference to the switcher via getParent().
-     * 
-     * @param activity
-     *            the current activity
-     * @param id
-     *            the {@link RemoteImageView}s view ID
-     * @return the {@link RemoteImageView}
-     */
-    public static RemoteImageView findViewById(Activity activity, int id) {
-        View view = activity.findViewById(id);
-        if (view instanceof ViewSwitcher) {
-            view = ((ViewSwitcher) view).getChildAt(1);
-        }
-        return (RemoteImageView) view;
     }
 
     /**
@@ -187,15 +171,17 @@ public class RemoteImageView extends ImageView {
             this.imageLoader = sharedImageLoader;
         }
 
-        switcher = new ViewSwitcher(context);
-        // this is a bit of a smell, since we end up having two views in the same view
-        // tree that share an ID, but in my tests I found that findViewById always returned
-        // the RemoteImageView, which is what a user would expect, so let's keep this as
-        // a curious but useful hack for now ;-)
-        switcher.setId(getId());
+        progressViewContainer = new FrameLayout(getContext());
+        progressViewContainer.addView(buildProgressSpinnerView(getContext()));
+
+        if (autoLoad) {
+            loadImage();
+        } else {
+            showProgressView(false);
+        }
     }
 
-    private View buildProgressSpinnerView(Context context) {
+    protected View buildProgressSpinnerView(Context context) {
         ProgressBar loadingSpinner = new ProgressBar(context);
         loadingSpinner.setIndeterminate(true);
         if (this.progressDrawable == null) {
@@ -207,66 +193,46 @@ public class RemoteImageView extends ImageView {
             }
         }
 
-        ViewSwitcher.LayoutParams lp = new ViewSwitcher.LayoutParams(LayoutParams.WRAP_CONTENT,
-                LayoutParams.WRAP_CONTENT);
-        lp.gravity = Gravity.CENTER;
+        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
+                progressDrawable.getIntrinsicWidth(), progressDrawable.getIntrinsicHeight(),
+                Gravity.CENTER);
         loadingSpinner.setLayoutParams(lp);
 
         return loadingSpinner;
     }
 
     @Override
-    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        super.onLayout(changed, left, top, right, bottom);
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        // insert the progress view and its container as a sibling to this image view
+        if (progressViewContainer.getParent() == null) {
+            // the container for the progress view must behave identically to this view during
+            // layouting, otherwise e.g. relative positioning via IDs will break
+            progressViewContainer.setLayoutParams(getLayoutParams());
 
-        if (!(getParent() instanceof ViewSwitcher)) {
-            setupViewSwitcher();
+            ViewGroup parent = (ViewGroup) getParent();
+            int index = parent.indexOfChild(this);
+            parent.addView(progressViewContainer, index + 1);
         }
-    }
 
-    /**
-     * This is called automatically from onLayout, so do not call manually unless you know what
-     * you're doing!
-     */
-    public void setupViewSwitcher() {
-        // "migrate" this view's LPs to the new parent
-        switcher.setLayoutParams(getLayoutParams());
-
-        // swap with view with a ViewSwitcher and re-insert itself under it
-        ViewGroup parent = (ViewGroup) this.getParent();
-        int selfIndex = parent.indexOfChild(this);
-        parent.removeView(this);
-        parent.addView(switcher, selfIndex);
-
-        View progressSpinner = buildProgressSpinnerView(getContext());
-        switcher.addView(progressSpinner);
-
-        ViewSwitcher.LayoutParams newParams = new ViewSwitcher.LayoutParams(
-                LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
-        switcher.addView(this, newParams);
-
-        if (autoLoad && imageUrl != null) {
-            loadImage();
-        } else {
-            // if we don't have anything to load yet, don't show the progress element
-            switcher.setDisplayedChild(1);
-        }
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
     /**
      * Use this method to trigger the image download if you had previously set autoLoad to false.
      */
     public void loadImage() {
-        if (imageUrl == null) {
-            throw new IllegalStateException(
-                    "image URL is null; did you forget to set it for this view?");
+        if (state != STATE_LOADING) {
+            if (imageUrl == null) {
+                throw new IllegalStateException(
+                        "image URL is null; did you forget to set it for this view?");
+            }
+            showProgressView(true);
+            imageLoader.loadImage(imageUrl, this, new DefaultImageLoaderHandler());
         }
-        switcher.setDisplayedChild(0);
-        imageLoader.loadImage(imageUrl, this, new DefaultImageLoaderHandler());
     }
 
     public boolean isLoaded() {
-        return isLoaded;
+        return state == STATE_LOADED;
     }
 
     public void setImageUrl(String imageUrl) {
@@ -282,12 +248,26 @@ public class RemoteImageView extends ImageView {
      */
     public void setNoImageDrawable(int imageResourceId) {
         setImageDrawable(getContext().getResources().getDrawable(imageResourceId));
-        switcher.setDisplayedChild(1);
+        showProgressView(false);
     }
 
+    /**
+     * Reset to view to its initial state, i.e. hide the progress item and show the image.
+     */
     public void reset() {
-        switcher.reset();
-        switcher.setDisplayedChild(0);
+        showProgressView(false);
+    }
+
+    private void showProgressView(boolean show) {
+        if (show) {
+            state = STATE_LOADING;
+            progressViewContainer.setVisibility(View.VISIBLE);
+            setVisibility(View.INVISIBLE);
+        } else {
+            state = STATE_DEFAULT;
+            progressViewContainer.setVisibility(View.INVISIBLE);
+            setVisibility(View.VISIBLE);
+        }
     }
 
     private class DefaultImageLoaderHandler extends RemoteImageLoaderHandler {
@@ -300,8 +280,8 @@ public class RemoteImageView extends ImageView {
         protected boolean handleImageLoaded(Bitmap bitmap, Message msg) {
             boolean wasUpdated = super.handleImageLoaded(bitmap, msg);
             if (wasUpdated) {
-                isLoaded = true;
-                switcher.setDisplayedChild(1);
+                state = STATE_LOADED;
+                showProgressView(false);
             }
             return wasUpdated;
         }
@@ -328,8 +308,8 @@ public class RemoteImageView extends ImageView {
 
     /**
      * The drawable that should be used to indicate progress while downloading the image.
-     * Corresponds to the view attribute ignition:progressDrawable. If left blank, the platform's
-     * standard indeterminate progress drawable will be used.
+     * Corresponds to the view attribute android:indeterminateDrawable. If left blank, the
+     * platform's standard indeterminate progress drawable will be used.
      * 
      * @return the progress drawable
      */
@@ -349,11 +329,11 @@ public class RemoteImageView extends ImageView {
     }
 
     /**
-     * The progress bar that is shown while the image is loaded.
+     * The progress view that is shown while the image is loaded.
      * 
-     * @return the {@link ProgressBar}
+     * @return the progress view, default is a {@link ProgressBar}
      */
-    public View getProgressBar() {
-        return switcher.getChildAt(0);
+    public View getProgressView() {
+        return progressViewContainer.getChildAt(0);
     }
 }

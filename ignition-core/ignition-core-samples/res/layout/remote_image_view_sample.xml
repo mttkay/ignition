@@ -13,6 +13,7 @@
     android:layout_height="147dp"
     android:layout_alignParentLeft="true"
     android:layout_alignParentTop="true"
+    android:tag="image1"
     ignition:imageUrl="http://developer.android.com/images/home/android-design.png" />
 
   <!-- custom progress -->
@@ -23,6 +24,7 @@
     android:layout_height="147dp"
     android:layout_toRightOf="@id/image1"
     android:indeterminateDrawable="@android:drawable/progress_indeterminate_horizontal"
+    android:tag="image2"
     ignition:imageUrl="http://developer.android.com/images/home/android-design.png" />
 
   <!-- default error drawable -->
@@ -33,6 +35,7 @@
     android:layout_height="147dp"
     android:layout_below="@id/image1"
     android:scaleType="center"
+    android:tag="image3"
     ignition:imageUrl="http://does.not.exist" />
 
   <!-- custom error drawable -->
@@ -44,6 +47,7 @@
     android:layout_below="@id/image1"
     android:layout_toRightOf="@id/image3"
     android:scaleType="center"
+    android:tag="image4"
     ignition:errorDrawable="@android:drawable/stat_notify_error"
     ignition:imageUrl="http://does.not.exist" />
 
@@ -55,6 +59,7 @@
     android:layout_height="147dp"
     android:layout_below="@id/image3"
     android:src="@android:drawable/gallery_thumb"
+    android:tag="image5"
     ignition:autoLoad="false"
     ignition:imageUrl="http://developer.android.com/images/home/android-design.png" />
 
@@ -70,12 +75,13 @@
 
   <com.github.ignition.core.widgets.RemoteImageView
     android:id="@+id/image6"
-    android:layout_width="wrap_content"
-    android:layout_height="50dip"
+    android:layout_width="160dp"
+    android:layout_height="50dp"
     android:layout_below="@id/image3"
     android:layout_toRightOf="@id/image5"
     android:background="@android:drawable/gallery_thumb"
     android:scaleType="centerCrop"
+    android:tag="image6"
     ignition:imageUrl="http://developer.android.com/images/home/android-design.png" />
 
 </RelativeLayout>

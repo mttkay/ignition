@@ -20,7 +20,7 @@ public class RemoteImageViewActivity extends Activity {
         imageView = (RemoteImageView) findViewById(R.id.image5);
 
         // fail-safe find by ID (this is guaranteed to work)
-        RemoteImageView riv = RemoteImageView.findViewById(this, R.id.image1);
+        RemoteImageView riv = (RemoteImageView) findViewById(R.id.image1);
         Log.i(getClass().getSimpleName(), "custom findViewById: "
                 + riv.getClass().getCanonicalName());
     }
