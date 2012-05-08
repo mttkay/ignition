@@ -20,6 +20,7 @@ public class SampleListActivity extends ListActivity {
         adapter.add(new Sample("EndlessListAdapter", EndlessListActivity.class));
         adapter.add(new Sample("RemoteImageView", RemoteImageViewActivity.class));
         adapter.add(new Sample("RemoteImageGalleryAdapter", RemoteImageGalleryActivity.class));
+        adapter.add(new Sample("ScrollingTextView", ScrollingTextViewActivity.class));
 
         setListAdapter(adapter);
     }
