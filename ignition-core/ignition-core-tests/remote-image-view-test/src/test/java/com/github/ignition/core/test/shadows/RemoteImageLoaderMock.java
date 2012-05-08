@@ -3,7 +3,6 @@ package com.github.ignition.core.test.shadows;
 import java.util.LinkedList;
 import java.util.List;
 
-import android.view.View;
 import android.widget.ImageView;
 
 import com.github.ignition.core.widgets.RemoteImageView;
@@ -21,12 +20,12 @@ public class RemoteImageLoaderMock extends RemoteImageLoader {
 
     @Override
     public void loadImage(String imageUrl, ImageView imageView) {
-        loadedImages.add(((View) imageView.getParent()).getId());
+        loadedImages.add(imageView.getId());
     }
 
     @Override
     public void loadImage(String imageUrl, ImageView imageView, RemoteImageLoaderHandler handler) {
-        loadedImages.add(((View) imageView.getParent()).getId());
+        loadedImages.add(imageView.getId());
     }
 
     public boolean isLoadImageCalled(RemoteImageView view) {

@@ -36,8 +36,6 @@ public class RemoteImageViewTest {
     public void testCorrectAttributeInflationAndDefaulting() {
         RemoteImageView imageView = (RemoteImageView) activity.findViewById(R.id.image1);
 
-        imageView.setupViewSwitcher();
-
         // default values for unsupplied attributes
         assertTrue(imageView.isAutoLoad());
 
@@ -80,12 +78,6 @@ public class RemoteImageViewTest {
         RemoteImageView view3 = (RemoteImageView) activity.findViewById(R.id.image3);
         RemoteImageView view4 = (RemoteImageView) activity.findViewById(R.id.image4);
         RemoteImageView view5 = (RemoteImageView) activity.findViewById(R.id.image5);
-
-        view1.setupViewSwitcher();
-        view2.setupViewSwitcher();
-        view3.setupViewSwitcher();
-        view4.setupViewSwitcher();
-        view5.setupViewSwitcher();
 
         assertTrue(view1.isAutoLoad());
         assertTrue(imageLoader.isLoadImageCalled(view1));
