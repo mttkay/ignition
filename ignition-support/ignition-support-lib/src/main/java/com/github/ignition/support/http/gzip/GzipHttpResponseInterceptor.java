@@ -18,12 +18,14 @@ public class GzipHttpResponseInterceptor implements HttpResponseInterceptor {
     public void process(final HttpResponse response, final HttpContext context) {
         // Inflate any responses compressed with gzip
         final HttpEntity entity = response.getEntity();
-        final Header encoding = entity.getContentEncoding();
-        if (encoding != null) {
-            for (HeaderElement element : encoding.getElements()) {
-                if (element.getName().equalsIgnoreCase(IgnitedHttp.ENCODING_GZIP)) {
-                    response.setEntity(new GzipInflatingEntity(response.getEntity()));
-                    break;
+        if (entity != null) {
+            final Header encoding = entity.getContentEncoding();
+            if (encoding != null) {
+                for (HeaderElement element : encoding.getElements()) {
+                    if (element.getName().equalsIgnoreCase(IgnitedHttp.ENCODING_GZIP)) {
+                        response.setEntity(new GzipInflatingEntity(response.getEntity()));
+                        break;
+                    }
                 }
             }
         }
