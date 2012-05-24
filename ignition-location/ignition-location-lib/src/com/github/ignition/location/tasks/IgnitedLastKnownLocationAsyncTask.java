@@ -34,6 +34,18 @@ public class IgnitedLastKnownLocationAsyncTask extends AsyncTask<Boolean, Void, 
     }
 
     /**
+     * Creates a new {@link IgnitedLastKnownLocationAsyncTask} object using
+     * {@link IgnitedLocationConstants#LOCATION_UPDATES_DISTANCE_DIFF_DEFAULT} and
+     * {@link IgnitedLocationConstants#LOCATION_UPDATES_INTERVAL_DEFAULT}
+     * 
+     * @param context
+     */
+    public IgnitedLastKnownLocationAsyncTask(Context context) {
+        this(context, IgnitedLocationConstants.LOCATION_UPDATES_DISTANCE_DIFF_DEFAULT,
+                IgnitedLocationConstants.LOCATION_UPDATES_INTERVAL_DEFAULT);
+    }
+
+    /**
      * @param refreshLocationIfLastLocationIsTooOld
      * @return the last known location
      */
