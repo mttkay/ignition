@@ -5,6 +5,7 @@ import java.util.List;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -48,7 +49,11 @@ public class IgnitedLocationSupport {
                 LocationManager.NETWORK_PROVIDER);
     }
 
-    public static Builder createWaitForLocationDialog(final Context context) {
+    public static Dialog createWaitForLocationDialog(final Context context) {
+        return buildWaitForLocationDialog(context).create();
+    }
+
+    public static Builder buildWaitForLocationDialog(final Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setCancelable(true);
         builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
