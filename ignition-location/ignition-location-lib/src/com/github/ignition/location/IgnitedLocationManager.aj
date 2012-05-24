@@ -47,6 +47,7 @@ import com.github.ignition.location.templates.ILastLocationFinder;
 import com.github.ignition.location.templates.IgnitedAbstractLastLocationFinder;
 import com.github.ignition.location.templates.IgnitedAbstractLocationUpdateRequester;
 import com.github.ignition.location.templates.OnIgnitedLocationChangedListener;
+import com.github.ignition.location.utils.IgnitedLocationSupport;
 import com.github.ignition.location.utils.PlatformSpecificImplementationFactory;
 import com.github.ignition.support.IgnitedDiagnostics;
 
@@ -75,6 +76,7 @@ public aspect IgnitedLocationManager {
     private boolean requestLocationUpdates;
     private boolean locationUpdatesDisabled = true;
     private boolean waitForFixDialogShown = false;
+    private boolean noProvidersEnabledDialogShown = false;
 
     // Switch to another provider if gps doesn't return a location quickly enough.
     private Runnable removeGpsUpdates = new Runnable() {
@@ -273,12 +275,20 @@ public aspect IgnitedLocationManager {
         if (context == null) {
             return;
         }
+
         final Activity activity = (Activity) context;
-        boolean showWaitForLocationDialog = prefs.getBoolean(
-                IgnitedLocationConstants.SP_KEY_SHOW_WAIT_FOR_LOCATION_DIALOG,
-                IgnitedLocationConstants.SHOW_WAIT_FOR_LOCATION_DIALOG_DEFAULT);
+        // 
+        if (IgnitedLocationSupport.getEnabledProviders(context).isEmpty()) {
+            activity.showDialog(R.id.ign_loc_dialog_no_providers_enabled);
+            noProvidersEnabledDialogShown = true;
+            return;
+        }
+
         if (freshLocation == null) {
             // TODO Migrate this to DialogFragment at some point
+            boolean showWaitForLocationDialog = prefs.getBoolean(
+                    IgnitedLocationConstants.SP_KEY_SHOW_WAIT_FOR_LOCATION_DIALOG,
+                    IgnitedLocationConstants.SHOW_WAIT_FOR_LOCATION_DIALOG_DEFAULT);
             if (showWaitForLocationDialog && !activity.isFinishing()) {
                 activity.showDialog(R.id.ign_loc_dialog_wait_for_fix);
                 waitForFixDialogShown = true;
@@ -290,7 +300,10 @@ public aspect IgnitedLocationManager {
         Log.d(LOG_TAG, "New location from " + currentLocation.getProvider() + " (lat, lng/acc): "
                 + currentLocation.getLatitude() + ", " + currentLocation.getLongitude() + "/" + currentLocation.getAccuracy());
         // TODO Migrate this to DialogFragment at some point
-        if (waitForFixDialogShown) {
+        if (noProvidersEnabledDialogShown) {
+            activity.removeDialog(R.id.ign_loc_dialog_no_providers_enabled);
+            noProvidersEnabledDialogShown = false;
+        } else if (waitForFixDialogShown) {
             activity.removeDialog(R.id.ign_loc_dialog_wait_for_fix);
             waitForFixDialogShown = false;
         }

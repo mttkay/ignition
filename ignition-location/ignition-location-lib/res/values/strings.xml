@@ -2,5 +2,8 @@
 <resources>
 
   <string name="ign_loc_dialog_wait_for_fix">Please wait while we try to determine your location. You can hit the back button to cancel anytime.</string>
+  <string name="ign_loc_dialog_location_unavailable_title">Location Unavailable</string>
+  <string name="ign_loc_dialog_location_unavailable_message">Please update your location settings by clicking \'Change Settings\'. For the best results, turn your GPS on (this will use more battery power and won\'t work indoors).</string>
+  <string name="ign_loc_dialog_location_unavailable_change_settings">Change Settings</string>
 
 </resources>

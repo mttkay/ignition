@@ -5,8 +5,10 @@ import java.util.List;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 
@@ -59,5 +61,33 @@ public class IgnitedLocationSupport {
         });
         dialog.setMessage(context.getString(R.string.ign_loc_dialog_wait_for_fix));
         return dialog;
+    public static Builder createNoProvidersEnabledDialog(final Activity activity,
+            final boolean finishActivityOnDismiss) {
+        DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (which == DialogInterface.BUTTON_POSITIVE) {
+                    Intent intent = new Intent();
+                    intent.setAction(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    activity.startActivity(intent);
+                } else {
+                    dialog.dismiss();
+                    if (finishActivityOnDismiss) {
+                        activity.finish();
+                    }
+                }
+            }
+        };
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setPositiveButton(R.string.ign_loc_dialog_location_unavailable_change_settings,
+                listener);
+        builder.setNegativeButton(android.R.string.no, listener);
+        builder.setCancelable(false);
+        builder.setTitle(R.string.ign_loc_dialog_location_unavailable_title);
+        builder.setMessage(R.string.ign_loc_dialog_location_unavailable_message);
+        builder.setIcon(android.R.drawable.ic_dialog_alert);
+
+        return builder;
     }
 }

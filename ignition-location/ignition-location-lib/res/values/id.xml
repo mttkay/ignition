@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+  <item name="ign_loc_dialog_no_providers_enabled" type="id" />
   <item name="ign_loc_dialog_wait_for_fix" type="id" />
 </resources>

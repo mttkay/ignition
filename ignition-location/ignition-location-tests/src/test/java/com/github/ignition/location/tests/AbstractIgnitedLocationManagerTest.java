@@ -116,6 +116,17 @@ public abstract class AbstractIgnitedLocationManagerTest {
     }
 
     @Test
+    public void shouldShowNoEnabledProvidersDialogIfNoProviderAvailable()
+            throws InterruptedException {
+        shadowLocationManager.setProviderEnabled(LocationManager.GPS_PROVIDER, false);
+        shadowLocationManager.setProviderEnabled(LocationManager.NETWORK_PROVIDER, false);
+        resume();
+
+        assertThat("No enabled providers dialog should be shown", Robolectric.shadowOf(activity)
+                .getLastShownDialogId(), equalTo(R.id.ign_loc_dialog_no_providers_enabled));
+    }
+
+    @Test
     public void ignitedLocationIsCurrentLocation() {
         resume();
 
