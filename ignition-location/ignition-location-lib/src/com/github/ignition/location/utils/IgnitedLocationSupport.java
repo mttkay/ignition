@@ -4,7 +4,6 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -49,18 +48,19 @@ public class IgnitedLocationSupport {
                 LocationManager.NETWORK_PROVIDER);
     }
 
-    public static Dialog createWaitForLocationDialog(final Context context) {
+    public static Builder createWaitForLocationDialog(final Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        AlertDialog dialog = builder.create();
-        dialog.setCancelable(true);
-        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+        builder.setCancelable(true);
+        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
                 ((Activity) context).finish();
             }
         });
-        dialog.setMessage(context.getString(R.string.ign_loc_dialog_wait_for_fix));
-        return dialog;
+        builder.setMessage(context.getString(R.string.ign_loc_dialog_wait_for_fix));
+        return builder;
+    }
+
     public static Builder createNoProvidersEnabledDialog(final Activity activity,
             final boolean finishActivityOnDismiss) {
         DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
