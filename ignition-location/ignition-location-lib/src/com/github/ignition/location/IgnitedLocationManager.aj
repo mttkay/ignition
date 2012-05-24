@@ -279,7 +279,7 @@ public aspect IgnitedLocationManager {
                 IgnitedLocationConstants.SHOW_WAIT_FOR_LOCATION_DIALOG_DEFAULT);
         if (freshLocation == null) {
             // TODO Migrate this to DialogFragment at some point
-            if (showWaitForLocationDialog) {
+            if (showWaitForLocationDialog && !activity.isFinishing()) {
                 activity.showDialog(R.id.ign_loc_dialog_wait_for_fix);
                 waitForFixDialogShown = true;
             }
