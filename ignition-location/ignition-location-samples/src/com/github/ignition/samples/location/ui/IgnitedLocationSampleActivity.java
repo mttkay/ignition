@@ -58,8 +58,6 @@ public class IgnitedLocationSampleActivity extends MapActivity {
     private TextView passiveDistance;
     private MapView mapView;
 
-    // private static final int FEEDBACK_DIALOG = 1;
-
     private List<Overlay> mapOverlays;
     private MapController mapController;
     // private long time;
@@ -137,39 +135,6 @@ public class IgnitedLocationSampleActivity extends MapActivity {
 
         return true;
     }
-
-    // protected Dialog onCreateDialog(int id) {
-    // if(FEEDBACK_DIALOG == id) {
-    // return new AlertDialog.Builder(this)
-    // .setTitle("Help us getting better")
-    // .setMessage("Did you get a good location quickly?")
-    // .setCancelable(true)
-    // .setPositiveButton("Yes", new Dialog.OnClickListener() {
-    // @Override
-    // public void onClick(DialogInterface dialog, int which) {
-    // analytics.trackPositiveFeedback();
-    // LocationUpdateList.this.finish();
-    // }
-    // })
-    // .setNegativeButton("No", new Dialog.OnClickListener() {
-    // @Override
-    // public void onClick(DialogInterface dialog, int which) {
-    // analytics.trackNegativeFeedback();
-    // LocationUpdateList.this.finish();
-    // }
-    // }).create();
-    // }
-    // return super.onCreateDialog(id);
-    // };
-
-    // @Override
-    // public boolean onKeyDown(int keyCode, KeyEvent event) {
-    // if ((keyCode == KeyEvent.KEYCODE_BACK)) {
-    // showDialog(FEEDBACK_DIALOG);
-    // return false;
-    // }
-    // return super.onKeyDown(keyCode, event);
-    // }
 
     private void update(Location location) {
         mapOverlays.clear();
