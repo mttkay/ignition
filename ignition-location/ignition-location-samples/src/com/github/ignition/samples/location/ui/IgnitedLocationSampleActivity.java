@@ -236,7 +236,7 @@ public class IgnitedLocationSampleActivity extends MapActivity {
     @Override
     protected Dialog onCreateDialog(int id) {
         if (id == R.id.ign_loc_dialog_wait_for_fix) {
-            return IgnitedLocationSupport.createWaitForLocationDialog(this).create();
+            return IgnitedLocationSupport.createWaitForLocationDialog(this);
         } else if (id == R.id.ign_loc_dialog_no_providers_enabled) {
             return IgnitedLocationSupport.createNoProvidersEnabledDialog(this, true).create();
         }
