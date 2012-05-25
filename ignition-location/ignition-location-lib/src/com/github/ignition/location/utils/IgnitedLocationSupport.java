@@ -16,9 +16,11 @@ import com.github.ignition.location.R;
 import com.github.ignition.support.IgnitedDiagnostics;
 
 public class IgnitedLocationSupport {
-
-    /*
-     * Get all enabled "physical" providers (so don't include passive provider).
+    /**
+     * Gets all enabled "physical" providers (so don't include passive provider).
+     * 
+     * @param context
+     * @return a list of all enabled providers except the passive provider.
      */
     public static List<String> getEnabledProviders(Context context) {
         LocationManager locationManager = (LocationManager) context
@@ -49,10 +51,24 @@ public class IgnitedLocationSupport {
                 LocationManager.NETWORK_PROVIDER);
     }
 
+    /**
+     * Creates a wait for location dialog. By default dismissing the dialog will finish the
+     * {@link Activity} that created it.
+     * 
+     * @param context
+     * @return a wait for location dialog
+     */
     public static Dialog createWaitForLocationDialog(final Context context) {
         return buildWaitForLocationDialog(context).create();
     }
 
+    /**
+     * Creates a builder for the wait for location dialog. By default dismissing the dialog will
+     * finish the {@link Activity} that created it.
+     * 
+     * @param context
+     * @return a builder for the wait for location dialog
+     */
     public static Builder buildWaitForLocationDialog(final Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setCancelable(true);
