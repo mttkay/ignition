@@ -77,7 +77,7 @@ public class IgnitedLocationSupport {
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     activity.startActivity(intent);
                 } else {
-                    dialog.dismiss();
+                    dialog.cancel();
                     if (finishActivityOnDismiss) {
                         activity.finish();
                     }
