@@ -277,10 +277,16 @@ public aspect IgnitedLocationManager {
         }
 
         final Activity activity = (Activity) context;
-        // 
         if (IgnitedLocationSupport.getEnabledProviders(context).isEmpty()) {
-            activity.showDialog(R.id.ign_loc_dialog_no_providers_enabled);
-            noProvidersEnabledDialogShown = true;
+            // On some older versions of Android if a dialog is not shown by the activity after
+            // calling showDialog an IllegalArgunmentException is raised. Catch this exception since
+            // the docs returning a null dialog should be allowed.
+            try {
+                activity.showDialog(R.id.ign_loc_dialog_no_providers_enabled);
+                noProvidersEnabledDialogShown = true;
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+            }
             return;
         }
 
@@ -290,8 +296,15 @@ public aspect IgnitedLocationManager {
                     IgnitedLocationConstants.SP_KEY_SHOW_WAIT_FOR_LOCATION_DIALOG,
                     IgnitedLocationConstants.SHOW_WAIT_FOR_LOCATION_DIALOG_DEFAULT);
             if (showWaitForLocationDialog && !activity.isFinishing()) {
-                activity.showDialog(R.id.ign_loc_dialog_wait_for_fix);
-                waitForFixDialogShown = true;
+                // On some older versions of Android if a dialog is not shown by the activity after
+                // calling showDialog an IllegalArgunmentException is raised. Catch this exception since
+                // the docs returning a null dialog should be allowed.
+                try {
+                    activity.showDialog(R.id.ign_loc_dialog_wait_for_fix);
+                    waitForFixDialogShown = true;
+                } catch (IllegalArgumentException e) {
+                    e.printStackTrace();
+                }
             }
             return;
         }
