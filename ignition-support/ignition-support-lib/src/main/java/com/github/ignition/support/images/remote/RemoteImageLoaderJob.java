@@ -89,44 +89,29 @@ public class RemoteImageLoaderJob implements Runnable {
         URL url = new URL(imageUrl);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
-        // determine the image size and allocate a buffer
-        int fileSize = connection.getContentLength();
-        Log.d(LOG_TAG, "fetching image " + imageUrl + " (" + (fileSize <= 0 ? "size unknown" : Integer.toString(fileSize)) + ")");
+        Log.d(LOG_TAG, "fetching image " + imageUrl);
 
         BufferedInputStream istream = new BufferedInputStream(connection.getInputStream());
-
-        try {   
-            if (fileSize <= 0) {
-                Log.w(LOG_TAG,
-                        "Server did not set a Content-Length header, will default to buffer size of "
-                                + defaultBufferSize + " bytes");
-                ByteArrayOutputStream buf = new ByteArrayOutputStream(defaultBufferSize);
-                byte[] buffer = new byte[defaultBufferSize];
-                int bytesRead = 0;
-                while (bytesRead != -1) {
-                    bytesRead = istream.read(buffer, 0, defaultBufferSize);
-                    if (bytesRead > 0)
-                        buf.write(buffer, 0, bytesRead);
-                }
-                return buf.toByteArray();
-            } else {
-                byte[] imageData = new byte[fileSize];
-        
-                int bytesRead = 0;
-                int offset = 0;
-                while (bytesRead != -1 && offset < fileSize) {
-                    bytesRead = istream.read(imageData, offset, fileSize - offset);
-                    offset += bytesRead;
-                }
-                return imageData;
-            }
+	byte[] imageData = null;
+        ByteArrayOutputStream buf = new ByteArrayOutputStream(defaultBufferSize);;
+        try {
+            byte[] buffer = new byte[defaultBufferSize];
+            int bytesRead = 0;
+	    do {
+	        bytesRead = istream.read(buffer, 0, defaultBufferSize);
+	        if (bytesRead > 0)
+	            buf.write(buffer, 0, bytesRead);
+	    } while (bytesRead != -1);
+            imageData = buf.toByteArray();
         } finally {
             // clean up
             try {
                 istream.close();
+		buf.close();
                 connection.disconnect();
             } catch (Exception ignore) { }
         }
+	return imageData;
     }
 
     protected void notifyImageLoaded(String url, Bitmap bitmap) {
