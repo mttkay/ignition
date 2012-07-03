@@ -15,6 +15,7 @@
 package com.github.ignition.support;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import android.text.TextUtils;
 
@@ -32,6 +33,23 @@ public class IgnitedStrings {
     public static String underscore(String camelCaseString) {
         String[] words = splitByCharacterTypeCamelCase(camelCaseString);
         return TextUtils.join("_", words).toLowerCase();
+    }
+
+    /**
+     * Turns a camel case string into an underscored one, e.g. "HelloWorld" becomes "hello_world".
+     * This variant uses a specific locale, which can be useful to e.g. force conversion from I to i
+     * on Turkish devices, where the lower case i uses a special character.
+     * 
+     * 
+     * @param camelCaseString
+     *            the string to underscore
+     * @param locale
+     *            the locale that should be used for the string conversion
+     * @return the underscored string
+     */
+    public static String underscore(String camelCaseString, Locale locale) {
+        String[] words = splitByCharacterTypeCamelCase(camelCaseString);
+        return TextUtils.join("_", words).toLowerCase(locale);
     }
 
     /**
