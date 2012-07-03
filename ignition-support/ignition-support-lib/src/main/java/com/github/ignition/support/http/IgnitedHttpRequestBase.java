@@ -167,7 +167,7 @@ public abstract class IgnitedHttpRequestBase implements IgnitedHttpRequest,
 
         IgnitedHttpResponse bhttpr = new IgnitedHttpResponseImpl(response);
         HttpResponseCache responseCache = ignitedHttp.getResponseCache();
-        if (responseCache != null) {
+        if (responseCache != null && bhttpr.getResponseBody() != null) {
             ResponseData responseData = new ResponseData(status, bhttpr.getResponseBodyAsBytes());
             responseCache.put(getRequestUrl(), responseData);
         }
