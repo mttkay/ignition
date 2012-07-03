@@ -43,22 +43,25 @@ public class IgnitedHttpResponseImpl implements IgnitedHttpResponse {
 
     @Override
     public InputStream getResponseBody() throws IOException {
-    	if(entity == null)
-    		return null;
+        if (entity == null) {
+            return null;
+        }
         return entity.getContent();
     }
 
     @Override
     public byte[] getResponseBodyAsBytes() throws IOException {
-    	if(entity == null)
-    		return null;
+        if (entity == null) {
+            return null;
+        }
         return EntityUtils.toByteArray(entity);
     }
 
     @Override
     public String getResponseBodyAsString() throws IOException {
-    	if(entity == null)
-    		return null;
+        if (entity == null) {
+            return null;
+        }
         return EntityUtils.toString(entity);
     }
 
