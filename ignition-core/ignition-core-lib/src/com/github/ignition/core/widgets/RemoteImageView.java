@@ -84,6 +84,7 @@ public class RemoteImageView extends ImageView {
 
     private RemoteImageLoader imageLoader;
     private static RemoteImageLoader sharedImageLoader;
+    private RemoteImageViewListener listener;
 
     /**
      * Use this method to inject an image loader that will be shared across all instances of this
@@ -281,6 +282,8 @@ public class RemoteImageView extends ImageView {
             boolean wasUpdated = super.handleImageLoaded(bitmap, msg);
             if (wasUpdated) {
                 state = STATE_LOADED;
+                if(listener != null)
+                	listener.onImageLoaded(bitmap);
                 showProgressView(false);
             }
             return wasUpdated;
@@ -335,5 +338,20 @@ public class RemoteImageView extends ImageView {
      */
     public View getProgressView() {
         return progressViewContainer.getChildAt(0);
+    }
+    
+    public static interface RemoteImageViewListener {
+    	public void onImageLoaded(Bitmap bm);
+    }    
+    
+    /**
+     * Use this method to set a listener for events raised by the remote image view such as image
+     * loaded.
+     * 
+     * @param listener
+     * 			  an implementation of the {@link RemoteImageViewListener} interface
+     */
+    public void setRemoteImageViewListener(RemoteImageViewListener listener) {
+    	this.listener = listener;
     }
 }
