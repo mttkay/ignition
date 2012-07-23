@@ -20,9 +20,11 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.github.ignition.support.cache.ImageCache;
+import com.github.ignition.support.images.remote.RemoteImageLoaderHandler.RemoteImageLoaderViewAdapter;
 
 /**
  * Realizes a background image loader that downloads an image from a URL, optionally backed by a
@@ -148,8 +150,9 @@ public class RemoteImageLoader {
      *            the ImageView which should be updated with the new image
      */
     public void loadImage(String imageUrl, ImageView imageView) {
-        loadImage(imageUrl, imageView, defaultDummyDrawable, new RemoteImageLoaderHandler(
-                imageView, imageUrl, errorDrawable));
+        RemoteImageLoaderHandler handler = new RemoteImageLoaderHandler(
+                new RemoteImageLoaderImageViewAdapter(imageUrl, imageView, errorDrawable));
+        loadImage(imageUrl, imageView, defaultDummyDrawable, handler);
     }
 
     /**
@@ -157,7 +160,7 @@ public class RemoteImageLoader {
      * concurrently to the UI main thread, using a fixed size thread pool. The loaded image will be
      * posted back to the given ImageView upon completion. This method will the default
      * {@link RemoteImageLoaderHandler} to process the bitmap after downloading it.
-     *
+     * 
      * @param imageUrl
      *            the URL of the image to download
      * @param imageView
@@ -166,8 +169,9 @@ public class RemoteImageLoader {
      *            the Drawable to be shown while the image is being downloaded.
      */
     public void loadImage(String imageUrl, ImageView imageView, Drawable dummyDrawable) {
-        loadImage(imageUrl, imageView, dummyDrawable, new RemoteImageLoaderHandler(
-                imageView, imageUrl, errorDrawable));
+        RemoteImageLoaderHandler handler = new RemoteImageLoaderHandler(
+                new RemoteImageLoaderImageViewAdapter(imageUrl, imageView, dummyDrawable));
+        loadImage(imageUrl, imageView, dummyDrawable, handler);
     }
 
     /**
@@ -194,35 +198,44 @@ public class RemoteImageLoader {
      * 
      * @param imageUrl
      *            the URL of the image to download
-     * @param imageView
-     *            the ImageView which should be updated with the new image
+     * @param view
+     *            the View which should be updated with the new image
      * @param dummyDrawable
      *            the Drawable to be shown while the image is being downloaded.
      * @param handler
      *            the handler that will process the bitmap after completion
      */
-    public void loadImage(String imageUrl, ImageView imageView, Drawable dummyDrawable,
+    @Deprecated
+    public void loadImage(String imageUrl, View view, Drawable dummyDrawable,
             RemoteImageLoaderHandler handler) {
-        if (imageView != null) {
+        loadImage(dummyDrawable, handler);
+    }
+
+    public void loadImage(Drawable dummyDrawable, RemoteImageLoaderHandler handler) {
+        RemoteImageLoaderViewAdapter remoteImageLoaderViewAdapter = handler
+                .getRemoteImageLoaderViewAdapter();
+        String imageUrl = remoteImageLoaderViewAdapter.getImageUrl();
+        View view = remoteImageLoaderViewAdapter.getView();
+        if (view != null) {
             if (imageUrl == null) {
                 // In a ListView views are reused, so we must be sure to remove the tag that could
                 // have been set to the ImageView to prevent that the wrong image is set.
-                imageView.setTag(null);
+                view.setTag(null);
                 if (dummyDrawable != null) {
-                    imageView.setImageDrawable(dummyDrawable);
+                    remoteImageLoaderViewAdapter.setDrawable(dummyDrawable);
                 }
                 return;
             }
-            Object oldImageUrl = imageView.getTag();
+            Object oldImageUrl = view.getTag();
             if (imageUrl.equals(oldImageUrl)) {
                 // nothing to do
                 return;
             } else {
                 if (dummyDrawable != null) {
                     // Set the dummy image while waiting for the actual image to be downloaded.
-                    imageView.setImageDrawable(dummyDrawable);
+                    remoteImageLoaderViewAdapter.setDrawable(dummyDrawable);
                 }
-                imageView.setTag(imageUrl);
+                view.setTag(imageUrl);
             }
         }
 
