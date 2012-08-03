@@ -53,6 +53,14 @@ public class RemoteImageLoaderTextViewAdapter extends RemoteImageLoaderViewAdapt
     }
 
     private void setCompoundDrawable(Drawable drawable) {
+        DisplayMetrics metrics = new DisplayMetrics();
+        ((WindowManager) view.getContext().getSystemService(Context.WINDOW_SERVICE))
+                .getDefaultDisplay().getMetrics(metrics);
+        if (drawable instanceof BitmapDrawable) {
+            // For some reason this must be set explicitly or otherwise the target density will be
+            // wrong.
+            ((BitmapDrawable) drawable).setTargetDensity(metrics.densityDpi);
+        }
         Drawable leftDrawable = left ? drawable : null;
         Drawable topDrawable = top ? drawable : null;
         Drawable rightDrawable = right ? drawable : null;
