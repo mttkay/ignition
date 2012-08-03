@@ -15,6 +15,7 @@
 
 package com.github.ignition.support.images.remote;
 
+import java.security.InvalidParameterException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -22,6 +23,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.github.ignition.support.cache.ImageCache;
 import com.github.ignition.support.images.remote.RemoteImageLoaderHandler.RemoteImageLoaderViewAdapter;
@@ -35,7 +37,7 @@ import com.github.ignition.support.images.remote.RemoteImageLoaderHandler.Remote
  * @author Matthias Kaeppler
  */
 public class RemoteImageLoader {
-
+    private static final int COMPOUND_DRAWABLES_COUNT = 4;
     // the default thread pool size
     private static final int DEFAULT_POOL_SIZE = 3;
     // expire images after a day
@@ -51,6 +53,8 @@ public class RemoteImageLoader {
     private long expirationInMinutes = DEFAULT_TTL_MINUTES;
 
     private Drawable defaultDummyDrawable, errorDrawable;
+
+    private RemoteImageLoaderHandler handler;
 
     public RemoteImageLoader(Context context) {
         this(context, true);
@@ -111,8 +115,9 @@ public class RemoteImageLoader {
         this.defaultDummyDrawable = drawable;
     }
 
-    public void setDownloadFailedDrawable(Drawable drawable) {
-        this.errorDrawable = drawable;
+    public void setDownloadFailedDrawable(Drawable errorDrawable) {
+        this.errorDrawable = errorDrawable;
+        handler.setErrorDrawable(errorDrawable);
     }
 
     public void setImageCache(ImageCache imageCache) {
@@ -150,9 +155,60 @@ public class RemoteImageLoader {
      *            the ImageView which should be updated with the new image
      */
     public void loadImage(String imageUrl, ImageView imageView) {
-        RemoteImageLoaderHandler handler = new RemoteImageLoaderHandler(
-                new RemoteImageLoaderImageViewAdapter(imageUrl, imageView, errorDrawable));
-        loadImage(imageUrl, imageView, defaultDummyDrawable, handler);
+        loadImage(defaultDummyDrawable, new RemoteImageLoaderHandler(imageView, imageUrl,
+                errorDrawable));
+    }
+
+    /**
+     * Triggers the image loader for the given image and view. The image loading will be performed
+     * concurrently to the UI main thread, using a fixed size thread pool. The loaded image will be
+     * posted back to the given ImageView upon completion. This method will the default
+     * {@link RemoteImageLoaderHandler} to process the bitmap after downloading it.
+     * 
+     * @param imageUrl
+     *            the URL of the image to download
+     * @param textView
+     *            the TextView which should be updated with the new compound drawable
+     * @param dummyDrawable
+     *            the Drawable to be shown while the image is being downloaded.
+     * @param compoundDrawablesEnabledPositions
+     *            the positions where compound drawables should be shown (left, top, right, bottom).
+     *            The method expects an array with exactly 4 elements or an
+     *            {@link InvalidParameterException} will be thrown.
+     */
+    public void loadImage(String imageUrl, TextView textView, Drawable dummyDrawable,
+            boolean[] compoundDrawablesEnabledPositions) {
+        if (compoundDrawablesEnabledPositions.length != COMPOUND_DRAWABLES_COUNT) {
+            throw new InvalidParameterException(
+                    "compoundDrawablesEnabledPositions parameter must be an array of four elements!");
+        }
+        loadImage(dummyDrawable, new RemoteImageLoaderHandler(textView, imageUrl, errorDrawable,
+                compoundDrawablesEnabledPositions));
+    }
+
+    /**
+     * Triggers the image loader for the given image and view. The image loading will be performed
+     * concurrently to the UI main thread, using a fixed size thread pool. The loaded image will be
+     * posted back to the given ImageView upon completion. This method will the default
+     * {@link RemoteImageLoaderHandler} to process the bitmap after downloading it.
+     * 
+     * @param imageUrl
+     *            the URL of the image to download
+     * @param textView
+     *            the TextView which should be updated with the new compound drawable
+     * @param compoundDrawablesEnabledPositions
+     *            the positions where compound drawables should be shown (left, top, right, bottom).
+     *            The method expects an array with exactly 4 elements or an
+     *            {@link InvalidParameterException} will be thrown.
+     */
+    public void loadImage(String imageUrl, TextView textView,
+            boolean[] compoundDrawablesEnabledPositions) {
+        if (compoundDrawablesEnabledPositions.length != COMPOUND_DRAWABLES_COUNT) {
+            throw new InvalidParameterException(
+                    "compoundDrawablesEnabledPositions parameter must be an array of four elements!");
+        }
+        loadImage(defaultDummyDrawable, new RemoteImageLoaderHandler(textView, imageUrl,
+                errorDrawable, compoundDrawablesEnabledPositions));
     }
 
     /**
@@ -169,9 +225,7 @@ public class RemoteImageLoader {
      *            the Drawable to be shown while the image is being downloaded.
      */
     public void loadImage(String imageUrl, ImageView imageView, Drawable dummyDrawable) {
-        RemoteImageLoaderHandler handler = new RemoteImageLoaderHandler(
-                new RemoteImageLoaderImageViewAdapter(imageUrl, imageView, dummyDrawable));
-        loadImage(imageUrl, imageView, dummyDrawable, handler);
+        loadImage(dummyDrawable, new RemoteImageLoaderHandler(imageView, imageUrl, errorDrawable));
     }
 
     /**
@@ -186,6 +240,7 @@ public class RemoteImageLoader {
      * @param handler
      *            the handler that will process the bitmap after completion
      */
+    @Deprecated
     public void loadImage(String imageUrl, ImageView imageView, RemoteImageLoaderHandler handler) {
         loadImage(imageUrl, imageView, defaultDummyDrawable, handler);
     }
@@ -206,12 +261,13 @@ public class RemoteImageLoader {
      *            the handler that will process the bitmap after completion
      */
     @Deprecated
-    public void loadImage(String imageUrl, View view, Drawable dummyDrawable,
+    public void loadImage(String imageUrl, ImageView view, Drawable dummyDrawable,
             RemoteImageLoaderHandler handler) {
         loadImage(dummyDrawable, handler);
     }
 
     public void loadImage(Drawable dummyDrawable, RemoteImageLoaderHandler handler) {
+        this.handler = handler;
         RemoteImageLoaderViewAdapter remoteImageLoaderViewAdapter = handler
                 .getRemoteImageLoaderViewAdapter();
         String imageUrl = remoteImageLoaderViewAdapter.getImageUrl();
@@ -222,7 +278,7 @@ public class RemoteImageLoader {
                 // have been set to the ImageView to prevent that the wrong image is set.
                 view.setTag(null);
                 if (dummyDrawable != null) {
-                    remoteImageLoaderViewAdapter.setDrawable(dummyDrawable);
+                    remoteImageLoaderViewAdapter.setDummyDrawableForView(dummyDrawable);
                 }
                 return;
             }
@@ -233,7 +289,7 @@ public class RemoteImageLoader {
             } else {
                 if (dummyDrawable != null) {
                     // Set the dummy image while waiting for the actual image to be downloaded.
-                    remoteImageLoaderViewAdapter.setDrawable(dummyDrawable);
+                    remoteImageLoaderViewAdapter.setDummyDrawableForView(dummyDrawable);
                 }
                 view.setTag(imageUrl);
             }

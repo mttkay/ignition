@@ -1,14 +1,16 @@
 package com.github.ignition.support.images.remote;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Message;
+import android.util.DisplayMetrics;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.github.ignition.support.images.remote.RemoteImageLoaderHandler.RemoteImageLoaderViewAdapter;
 
-// TODO: extend this class so that it can handle more than one drawable.
+// TODO: extend this class so that it can download more than one drawable.
 public class RemoteImageLoaderTextViewAdapter extends RemoteImageLoaderViewAdapter {
     private boolean left, top, right, bottom;
 
@@ -21,30 +23,20 @@ public class RemoteImageLoaderTextViewAdapter extends RemoteImageLoaderViewAdapt
     }
 
     @Override
-    public boolean handleImageLoaded(Bitmap bitmap, Message msg) {
-        Object viewTag = view.getTag();
-        if (imageUrl.equals(viewTag)) {
-            if (bitmap == null) {
-                if (view != null) {
-                    setCompoundDrawable(errorDrawable);
-                }
-            } else {
-                if (view != null) {
-                    Bitmap processedBitmap = processBitmap(bitmap);
-                    Drawable drawable = new BitmapDrawable(processedBitmap);
-                    setCompoundDrawable(drawable);
-                }
-            }
-            // remove the image URL from the view's tag
-            view.setTag(null);
-            return true;
-        }
-        return false;
+    protected void onImageLoadedFailed() {
+        setCompoundDrawable(errorDrawable);
     }
 
     @Override
-    public void setDrawable(Drawable drawable) {
+    protected void onImageLoadedSuccess(Bitmap bitmap) {
+        Bitmap processedBitmap = processBitmap(bitmap);
+        Drawable drawable = new BitmapDrawable(processedBitmap);
         setCompoundDrawable(drawable);
+    }
+
+    @Override
+    public void setDummyDrawableForView(Drawable dummyDrawable) {
+        setCompoundDrawable(dummyDrawable);
     }
 
     @Override
@@ -68,5 +60,4 @@ public class RemoteImageLoaderTextViewAdapter extends RemoteImageLoaderViewAdapt
         ((TextView) view).setCompoundDrawablesWithIntrinsicBounds(leftDrawable, topDrawable,
                 rightDrawable, bottomDrawable);
     }
-
 }
