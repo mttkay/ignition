@@ -115,6 +115,14 @@ public class RemoteImageLoaderHandler extends Handler {
         remoteImageLoaderViewAdapter.setErrorDrawable(errorDrawable);
     }
 
+    public View getView() {
+        return remoteImageLoaderViewAdapter.getView();
+    }
+
+    public void setView(View view) {
+        remoteImageLoaderViewAdapter.setView(view);
+    }
+
     @Deprecated
     public ImageView getImageView() {
         return imageView;
@@ -181,7 +189,11 @@ public class RemoteImageLoaderHandler extends Handler {
             return errorDrawable;
         }
 
-        protected View getView() {
+        public void setView(View view) {
+            this.view = view;
+        }
+
+        public View getView() {
             return view;
         }
 
