@@ -229,9 +229,10 @@ public class RemoteImageLoader {
     }
 
     /**
-     * Triggers the image loader for the given image and view. The image loading will be performed
-     * concurrently to the UI main thread, using a fixed size thread pool. The loaded image will be
-     * posted back to the given ImageView upon completion.
+     * @deprecated Use {@link RemoteImageLoader#loadImage(RemoteImageLoaderHandler)} instead.
+     *             Triggers the image loader for the given image and view. The image loading will be
+     *             performed concurrently to the UI main thread, using a fixed size thread pool. The
+     *             loaded image will be posted back to the given ImageView upon completion.
      * 
      * @param imageUrl
      *            the URL of the image to download
@@ -246,10 +247,11 @@ public class RemoteImageLoader {
     }
 
     /**
-     * Triggers the image loader for the given image and view. The image loading will be performed
-     * concurrently to the UI main thread, using a fixed size thread pool. The loaded image will be
-     * posted back to the given ImageView upon completion. While waiting, the dummyDrawable is
-     * shown.
+     * @deprecated Use {@link RemoteImageLoader#loadImage(Drawable, RemoteImageLoaderHandler)}
+     *             instead. Triggers the image loader for the given image and view. The image
+     *             loading will be performed concurrently to the UI main thread, using a fixed size
+     *             thread pool. The loaded image will be posted back to the given ImageView upon
+     *             completion. While waiting, the dummyDrawable is shown.
      * 
      * @param imageUrl
      *            the URL of the image to download
@@ -268,6 +270,30 @@ public class RemoteImageLoader {
         loadImage(dummyDrawable, handler);
     }
 
+    /**
+     * Triggers the image loader for the given handler. The image loading will be performed
+     * concurrently to the UI main thread, using a fixed size thread pool. The loaded image will be
+     * posted back to the given ImageView upon completion. While waiting, the dummyDrawable is
+     * shown.
+     * 
+     * @param handler
+     *            the handler that will process the bitmap after completion
+     **/
+    public void loadImage(RemoteImageLoaderHandler handler) {
+        loadImage(defaultDummyDrawable, handler);
+    }
+
+    /**
+     * Triggers the image loader for the given handler. The image loading will be performed
+     * concurrently to the UI main thread, using a fixed size thread pool. The loaded image will be
+     * posted back to the given ImageView upon completion. While waiting, the dummyDrawable is
+     * shown.
+     * 
+     * @param dummyDrawable
+     *            the Drawable to be shown while the image is being downloaded.
+     * @param handler
+     *            the handler that will process the bitmap after completion
+     **/
     public void loadImage(Drawable dummyDrawable, RemoteImageLoaderHandler handler) {
         this.imageLoaderHandler = handler;
         RemoteImageLoaderViewAdapter remoteImageLoaderViewAdapter = imageLoaderHandler
