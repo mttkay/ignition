@@ -263,6 +263,8 @@ public class RemoteImageLoader {
     @Deprecated
     public void loadImage(String imageUrl, ImageView view, Drawable dummyDrawable,
             RemoteImageLoaderHandler handler) {
+        handler.setImageUrl(imageUrl);
+        handler.setView(view);
         loadImage(dummyDrawable, handler);
     }
 
