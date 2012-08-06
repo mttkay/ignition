@@ -282,8 +282,9 @@ public class RemoteImageView extends ImageView {
             boolean wasUpdated = super.handleImageLoaded(bitmap, msg);
             if (wasUpdated) {
                 state = STATE_LOADED;
-                if(listener != null)
-                	listener.onImageLoaded(bitmap);
+                if (listener != null) {
+                    listener.onImageLoaded(bitmap);
+                }
                 showProgressView(false);
             }
             return wasUpdated;
@@ -339,19 +340,19 @@ public class RemoteImageView extends ImageView {
     public View getProgressView() {
         return progressViewContainer.getChildAt(0);
     }
-    
+
     public static interface RemoteImageViewListener {
-    	public void onImageLoaded(Bitmap bm);
-    }    
-    
+        public void onImageLoaded(Bitmap bm);
+    }
+
     /**
      * Use this method to set a listener for events raised by the remote image view such as image
      * loaded.
      * 
      * @param listener
-     * 			  an implementation of the {@link RemoteImageViewListener} interface
+     *            an implementation of the {@link RemoteImageViewListener} interface
      */
     public void setRemoteImageViewListener(RemoteImageViewListener listener) {
-    	this.listener = listener;
+        this.listener = listener;
     }
 }
