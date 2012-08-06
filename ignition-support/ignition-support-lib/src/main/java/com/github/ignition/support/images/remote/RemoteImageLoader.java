@@ -54,7 +54,7 @@ public class RemoteImageLoader {
 
     private Drawable defaultDummyDrawable, errorDrawable;
 
-    private RemoteImageLoaderHandler handler;
+    private RemoteImageLoaderHandler imageLoaderHandler;
 
     public RemoteImageLoader(Context context) {
         this(context, true);
@@ -117,7 +117,7 @@ public class RemoteImageLoader {
 
     public void setDownloadFailedDrawable(Drawable errorDrawable) {
         this.errorDrawable = errorDrawable;
-        handler.setErrorDrawable(errorDrawable);
+        imageLoaderHandler.setErrorDrawable(errorDrawable);
     }
 
     public void setImageCache(ImageCache imageCache) {
@@ -267,8 +267,8 @@ public class RemoteImageLoader {
     }
 
     public void loadImage(Drawable dummyDrawable, RemoteImageLoaderHandler handler) {
-        this.handler = handler;
-        RemoteImageLoaderViewAdapter remoteImageLoaderViewAdapter = handler
+        this.imageLoaderHandler = handler;
+        RemoteImageLoaderViewAdapter remoteImageLoaderViewAdapter = imageLoaderHandler
                 .getRemoteImageLoaderViewAdapter();
         String imageUrl = remoteImageLoaderViewAdapter.getImageUrl();
         View view = remoteImageLoaderViewAdapter.getView();
@@ -297,10 +297,10 @@ public class RemoteImageLoader {
 
         if (imageCache != null && imageCache.containsKeyInMemory(imageUrl)) {
             // do not go through message passing, handle directly instead
-            handler.handleImageLoaded(imageCache.getBitmap(imageUrl), null);
+            imageLoaderHandler.handleImageLoaded(imageCache.getBitmap(imageUrl), null);
         } else {
-            executor.execute(new RemoteImageLoaderJob(imageUrl, handler, imageCache, numRetries,
-                    defaultBufferSize));
+            executor.execute(new RemoteImageLoaderJob(imageUrl, imageLoaderHandler, imageCache,
+                    numRetries, defaultBufferSize));
         }
     }
 }
