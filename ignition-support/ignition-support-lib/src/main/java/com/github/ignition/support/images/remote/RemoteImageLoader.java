@@ -15,14 +15,18 @@
 
 package com.github.ignition.support.images.remote;
 
+import java.security.InvalidParameterException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.github.ignition.support.cache.ImageCache;
+import com.github.ignition.support.images.remote.RemoteImageLoaderHandler.RemoteImageLoaderViewAdapter;
 
 /**
  * Realizes a background image loader that downloads an image from a URL, optionally backed by a
@@ -33,7 +37,7 @@ import com.github.ignition.support.cache.ImageCache;
  * @author Matthias Kaeppler
  */
 public class RemoteImageLoader {
-
+    private static final int COMPOUND_DRAWABLES_COUNT = 4;
     // the default thread pool size
     private static final int DEFAULT_POOL_SIZE = 3;
     // expire images after a day
@@ -49,6 +53,8 @@ public class RemoteImageLoader {
     private long expirationInMinutes = DEFAULT_TTL_MINUTES;
 
     private Drawable defaultDummyDrawable, errorDrawable;
+
+    private RemoteImageLoaderHandler imageLoaderHandler;
 
     public RemoteImageLoader(Context context) {
         this(context, true);
@@ -109,8 +115,9 @@ public class RemoteImageLoader {
         this.defaultDummyDrawable = drawable;
     }
 
-    public void setDownloadFailedDrawable(Drawable drawable) {
-        this.errorDrawable = drawable;
+    public void setDownloadFailedDrawable(Drawable errorDrawable) {
+        this.errorDrawable = errorDrawable;
+        imageLoaderHandler.setErrorDrawable(errorDrawable);
     }
 
     public void setImageCache(ImageCache imageCache) {
@@ -148,8 +155,8 @@ public class RemoteImageLoader {
      *            the ImageView which should be updated with the new image
      */
     public void loadImage(String imageUrl, ImageView imageView) {
-        loadImage(imageUrl, imageView, defaultDummyDrawable, new RemoteImageLoaderHandler(
-                imageView, imageUrl, errorDrawable));
+        loadImage(defaultDummyDrawable, new RemoteImageLoaderHandler(imageView, imageUrl,
+                errorDrawable));
     }
 
     /**
@@ -157,7 +164,59 @@ public class RemoteImageLoader {
      * concurrently to the UI main thread, using a fixed size thread pool. The loaded image will be
      * posted back to the given ImageView upon completion. This method will the default
      * {@link RemoteImageLoaderHandler} to process the bitmap after downloading it.
-     *
+     * 
+     * @param imageUrl
+     *            the URL of the image to download
+     * @param textView
+     *            the TextView which should be updated with the new compound drawable
+     * @param dummyDrawable
+     *            the Drawable to be shown while the image is being downloaded.
+     * @param compoundDrawablesEnabledPositions
+     *            the positions where compound drawables should be shown (left, top, right, bottom).
+     *            The method expects an array with exactly 4 elements or an
+     *            {@link InvalidParameterException} will be thrown.
+     */
+    public void loadImage(String imageUrl, TextView textView, Drawable dummyDrawable,
+            boolean[] compoundDrawablesEnabledPositions) {
+        if (compoundDrawablesEnabledPositions.length != COMPOUND_DRAWABLES_COUNT) {
+            throw new InvalidParameterException(
+                    "compoundDrawablesEnabledPositions parameter must be an array of four elements!");
+        }
+        loadImage(dummyDrawable, new RemoteImageLoaderHandler(textView, imageUrl, errorDrawable,
+                compoundDrawablesEnabledPositions));
+    }
+
+    /**
+     * Triggers the image loader for the given image and view. The image loading will be performed
+     * concurrently to the UI main thread, using a fixed size thread pool. The loaded image will be
+     * posted back to the given ImageView upon completion. This method will the default
+     * {@link RemoteImageLoaderHandler} to process the bitmap after downloading it.
+     * 
+     * @param imageUrl
+     *            the URL of the image to download
+     * @param textView
+     *            the TextView which should be updated with the new compound drawable
+     * @param compoundDrawablesEnabledPositions
+     *            the positions where compound drawables should be shown (left, top, right, bottom).
+     *            The method expects an array with exactly 4 elements or an
+     *            {@link InvalidParameterException} will be thrown.
+     */
+    public void loadImage(String imageUrl, TextView textView,
+            boolean[] compoundDrawablesEnabledPositions) {
+        if (compoundDrawablesEnabledPositions.length != COMPOUND_DRAWABLES_COUNT) {
+            throw new InvalidParameterException(
+                    "compoundDrawablesEnabledPositions parameter must be an array of four elements!");
+        }
+        loadImage(defaultDummyDrawable, new RemoteImageLoaderHandler(textView, imageUrl,
+                errorDrawable, compoundDrawablesEnabledPositions));
+    }
+
+    /**
+     * Triggers the image loader for the given image and view. The image loading will be performed
+     * concurrently to the UI main thread, using a fixed size thread pool. The loaded image will be
+     * posted back to the given ImageView upon completion. This method will the default
+     * {@link RemoteImageLoaderHandler} to process the bitmap after downloading it.
+     * 
      * @param imageUrl
      *            the URL of the image to download
      * @param imageView
@@ -166,14 +225,14 @@ public class RemoteImageLoader {
      *            the Drawable to be shown while the image is being downloaded.
      */
     public void loadImage(String imageUrl, ImageView imageView, Drawable dummyDrawable) {
-        loadImage(imageUrl, imageView, dummyDrawable, new RemoteImageLoaderHandler(
-                imageView, imageUrl, errorDrawable));
+        loadImage(dummyDrawable, new RemoteImageLoaderHandler(imageView, imageUrl, errorDrawable));
     }
 
     /**
-     * Triggers the image loader for the given image and view. The image loading will be performed
-     * concurrently to the UI main thread, using a fixed size thread pool. The loaded image will be
-     * posted back to the given ImageView upon completion.
+     * @deprecated Use {@link RemoteImageLoader#loadImage(RemoteImageLoaderHandler)} instead.
+     *             Triggers the image loader for the given image and view. The image loading will be
+     *             performed concurrently to the UI main thread, using a fixed size thread pool. The
+     *             loaded image will be posted back to the given ImageView upon completion.
      * 
      * @param imageUrl
      *            the URL of the image to download
@@ -182,56 +241,94 @@ public class RemoteImageLoader {
      * @param handler
      *            the handler that will process the bitmap after completion
      */
+    @Deprecated
     public void loadImage(String imageUrl, ImageView imageView, RemoteImageLoaderHandler handler) {
         loadImage(imageUrl, imageView, defaultDummyDrawable, handler);
     }
 
     /**
-     * Triggers the image loader for the given image and view. The image loading will be performed
-     * concurrently to the UI main thread, using a fixed size thread pool. The loaded image will be
-     * posted back to the given ImageView upon completion. While waiting, the dummyDrawable is
-     * shown.
+     * @deprecated Use {@link RemoteImageLoader#loadImage(Drawable, RemoteImageLoaderHandler)}
+     *             instead. Triggers the image loader for the given image and view. The image
+     *             loading will be performed concurrently to the UI main thread, using a fixed size
+     *             thread pool. The loaded image will be posted back to the given ImageView upon
+     *             completion. While waiting, the dummyDrawable is shown.
      * 
      * @param imageUrl
      *            the URL of the image to download
-     * @param imageView
-     *            the ImageView which should be updated with the new image
+     * @param view
+     *            the View which should be updated with the new image
      * @param dummyDrawable
      *            the Drawable to be shown while the image is being downloaded.
      * @param handler
      *            the handler that will process the bitmap after completion
      */
-    public void loadImage(String imageUrl, ImageView imageView, Drawable dummyDrawable,
+    @Deprecated
+    public void loadImage(String imageUrl, ImageView view, Drawable dummyDrawable,
             RemoteImageLoaderHandler handler) {
-        if (imageView != null) {
+        handler.setImageUrl(imageUrl);
+        handler.setView(view);
+        loadImage(dummyDrawable, handler);
+    }
+
+    /**
+     * Triggers the image loader for the given handler. The image loading will be performed
+     * concurrently to the UI main thread, using a fixed size thread pool. The loaded image will be
+     * posted back to the given ImageView upon completion. While waiting, the dummyDrawable is
+     * shown.
+     * 
+     * @param handler
+     *            the handler that will process the bitmap after completion
+     **/
+    public void loadImage(RemoteImageLoaderHandler handler) {
+        loadImage(defaultDummyDrawable, handler);
+    }
+
+    /**
+     * Triggers the image loader for the given handler. The image loading will be performed
+     * concurrently to the UI main thread, using a fixed size thread pool. The loaded image will be
+     * posted back to the given ImageView upon completion. While waiting, the dummyDrawable is
+     * shown.
+     * 
+     * @param dummyDrawable
+     *            the Drawable to be shown while the image is being downloaded.
+     * @param handler
+     *            the handler that will process the bitmap after completion
+     **/
+    public void loadImage(Drawable dummyDrawable, RemoteImageLoaderHandler handler) {
+        this.imageLoaderHandler = handler;
+        RemoteImageLoaderViewAdapter remoteImageLoaderViewAdapter = imageLoaderHandler
+                .getRemoteImageLoaderViewAdapter();
+        String imageUrl = remoteImageLoaderViewAdapter.getImageUrl();
+        View view = remoteImageLoaderViewAdapter.getView();
+        if (view != null) {
             if (imageUrl == null) {
                 // In a ListView views are reused, so we must be sure to remove the tag that could
                 // have been set to the ImageView to prevent that the wrong image is set.
-                imageView.setTag(null);
+                view.setTag(null);
                 if (dummyDrawable != null) {
-                    imageView.setImageDrawable(dummyDrawable);
+                    remoteImageLoaderViewAdapter.setDummyDrawableForView(dummyDrawable);
                 }
                 return;
             }
-            Object oldImageUrl = imageView.getTag();
+            Object oldImageUrl = view.getTag();
             if (imageUrl.equals(oldImageUrl)) {
                 // nothing to do
                 return;
             } else {
                 if (dummyDrawable != null) {
                     // Set the dummy image while waiting for the actual image to be downloaded.
-                    imageView.setImageDrawable(dummyDrawable);
+                    remoteImageLoaderViewAdapter.setDummyDrawableForView(dummyDrawable);
                 }
-                imageView.setTag(imageUrl);
+                view.setTag(imageUrl);
             }
         }
 
         if (imageCache != null && imageCache.containsKeyInMemory(imageUrl)) {
             // do not go through message passing, handle directly instead
-            handler.handleImageLoaded(imageCache.getBitmap(imageUrl), null);
+            imageLoaderHandler.handleImageLoaded(imageCache.getBitmap(imageUrl), null);
         } else {
-            executor.execute(new RemoteImageLoaderJob(imageUrl, handler, imageCache, numRetries,
-                    defaultBufferSize));
+            executor.execute(new RemoteImageLoaderJob(imageUrl, imageLoaderHandler, imageCache,
+                    numRetries, defaultBufferSize));
         }
     }
 }
