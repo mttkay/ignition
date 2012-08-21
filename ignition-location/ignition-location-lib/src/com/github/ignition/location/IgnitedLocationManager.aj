@@ -77,6 +77,8 @@ public aspect IgnitedLocationManager {
     private boolean locationUpdatesDisabled = true;
     private boolean waitForFixDialogShown = false;
     private boolean noProvidersEnabledDialogShown = false;
+    private boolean locationProviderDisabledReceiverRegistered = false;
+    private boolean refreshLocationUpdatesReceiverRegistered = false;
 
     // Switch to another provider if gps doesn't return a location quickly enough.
     private Runnable removeGpsUpdates = new Runnable() {
@@ -373,10 +375,12 @@ public aspect IgnitedLocationManager {
                 IgnitedLocationConstants.ACTIVE_LOCATION_UPDATE_PROVIDER_DISABLED_ACTION);
         context.registerReceiver(locationProviderDisabledReceiver,
                 locationProviderDisabledIntentFilter);
+        locationProviderDisabledReceiverRegistered = true;
 
         IntentFilter refreshLocationUpdatesIntentFilter = new IntentFilter(
                 IgnitedLocationConstants.UPDATE_LOCATION_UPDATES_CRITERIA_ACTION);
         context.registerReceiver(refreshLocationUpdatesReceiver, refreshLocationUpdatesIntentFilter);
+        refreshLocationUpdatesReceiverRegistered = true;
 
         // Register a receiver that listens for when a better provider than I'm
         // using becomes available.
@@ -411,9 +415,14 @@ public aspect IgnitedLocationManager {
         }
 
         Log.d(LOG_TAG, "Disabling location updates");
-        context.unregisterReceiver(locationProviderDisabledReceiver);
-        context.unregisterReceiver(refreshLocationUpdatesReceiver);
-
+        if (locationProviderDisabledReceiverRegistered) {
+            context.unregisterReceiver(locationProviderDisabledReceiver);
+            locationProviderDisabledReceiverRegistered = false;
+        }
+        if (refreshLocationUpdatesReceiverRegistered) {
+            context.unregisterReceiver(refreshLocationUpdatesReceiver);
+            refreshLocationUpdatesReceiverRegistered = false;
+        }
         locationUpdateRequester.removeLocationUpdates();
         if (bestInactiveLocationProviderListener != null) {
             locationManager.removeUpdates(bestInactiveLocationProviderListener);
