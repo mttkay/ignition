@@ -74,8 +74,12 @@ public class IgnitedGingerbreadLastLocationFinder extends IgnitedAbstractLastLoc
         } catch (IllegalArgumentException e) {
             // Fold back to the network provider, since we know it's the quickest and less battery
             // draining location provider.
-            Log.e(LOG_TAG, "no provider found for the supplied criteria, request network update");
-            locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, singleUpatePI);
+            Log.e(LOG_TAG,
+                    "no provider found for the supplied criteria, try requesting network update");
+            if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+                locationManager
+                        .requestSingleUpdate(LocationManager.NETWORK_PROVIDER, singleUpatePI);
+            }
         }
     }
 
