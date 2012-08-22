@@ -21,7 +21,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 public class RemoteImageLoaderHandler extends Handler {
 
@@ -29,14 +31,12 @@ public class RemoteImageLoaderHandler extends Handler {
     public static final String BITMAP_EXTRA = "ign:extra_bitmap";
     public static final String IMAGE_URL_EXTRA = "ign:extra_image_url";
 
+    @Deprecated
     private ImageView imageView;
-    private String imageUrl;
-    private Drawable errorDrawable;
+    private RemoteImageLoaderViewAdapter remoteImageLoaderViewAdapter;
 
     public RemoteImageLoaderHandler(ImageView imageView, String imageUrl, Drawable errorDrawable) {
         this.imageView = imageView;
-        this.imageUrl = imageUrl;
-        this.errorDrawable = errorDrawable;
         init(imageView, imageUrl, errorDrawable);
     }
 
@@ -46,10 +46,31 @@ public class RemoteImageLoaderHandler extends Handler {
         init(imageView, imageUrl, errorDrawable);
     }
 
-    private void init(ImageView imageView, String imageUrl, Drawable errorDrawable) {
-        this.imageView = imageView;
-        this.imageUrl = imageUrl;
-        this.errorDrawable = errorDrawable;
+    public RemoteImageLoaderHandler(Looper looper, TextView textView, String imageUrl,
+            Drawable errorDrawable, boolean[] compoundDrawablesEnabledPositions) {
+        super(looper);
+        init(textView, imageUrl, errorDrawable, compoundDrawablesEnabledPositions[0],
+                compoundDrawablesEnabledPositions[1], compoundDrawablesEnabledPositions[2],
+                compoundDrawablesEnabledPositions[3]);
+    }
+
+    public RemoteImageLoaderHandler(TextView textView, String imageUrl, Drawable errorDrawable,
+            boolean[] compoundDrawablesEnabledPositions) {
+        init(textView, imageUrl, errorDrawable, compoundDrawablesEnabledPositions[0],
+                compoundDrawablesEnabledPositions[1], compoundDrawablesEnabledPositions[2],
+                compoundDrawablesEnabledPositions[3]);
+    }
+
+    private void init(TextView textView, String imageUrl, Drawable errorDrawable, boolean left,
+            boolean top, boolean right, boolean bottom) {
+        this.remoteImageLoaderViewAdapter = new RemoteImageLoaderTextViewAdapter(imageUrl,
+                textView, errorDrawable, left, top, right, bottom);
+    }
+
+    private void init(ImageView view, String imageUrl, Drawable errorDrawable) {
+        this.imageView = view;
+        this.remoteImageLoaderViewAdapter = new RemoteImageLoaderImageViewAdapter(imageUrl, view,
+                errorDrawable);
     }
 
     @Override
@@ -76,38 +97,116 @@ public class RemoteImageLoaderHandler extends Handler {
      * @return true if the view was updated with the new image, false if it was discarded
      */
     protected boolean handleImageLoaded(Bitmap bitmap, Message msg) {
-        // If this handler is used for loading images in a ListAdapter,
-        // the thread will set the image only if it's the right position,
-        // otherwise it won't do anything.
-        Object viewTag = imageView.getTag();
-        if (imageUrl.equals(viewTag)) {
-            if (bitmap == null)
-                imageView.setImageDrawable(errorDrawable);
-            else
-                imageView.setImageBitmap(bitmap);
-
-            // remove the image URL from the view's tag
-            imageView.setTag(null);
-
-            return true;
+        if (remoteImageLoaderViewAdapter == null) {
+            throw new IllegalStateException("A RemoteImageLoaderViewAdapter must be set!");
         }
-
-        return false;
+        return remoteImageLoaderViewAdapter.handleImageLoaded(bitmap, msg);
     }
 
     public String getImageUrl() {
-        return imageUrl;
+        return remoteImageLoaderViewAdapter.getImageUrl();
     }
 
     public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+        remoteImageLoaderViewAdapter.setImageUrl(imageUrl);
     }
 
+    public void setErrorDrawable(Drawable errorDrawable) {
+        remoteImageLoaderViewAdapter.setErrorDrawable(errorDrawable);
+    }
+
+    public View getView() {
+        return remoteImageLoaderViewAdapter.getView();
+    }
+
+    public void setView(View view) {
+        remoteImageLoaderViewAdapter.setView(view);
+    }
+
+    @Deprecated
     public ImageView getImageView() {
         return imageView;
     }
 
+    @Deprecated
     public void setImageView(ImageView imageView) {
         this.imageView = imageView;
+    }
+
+    public RemoteImageLoaderViewAdapter getRemoteImageLoaderViewAdapter() {
+        return remoteImageLoaderViewAdapter;
+    }
+
+    public void setRemoteImageLoaderViewAdapter(
+            RemoteImageLoaderViewAdapter remoteImageLoaderViewAdapter) {
+        this.remoteImageLoaderViewAdapter = remoteImageLoaderViewAdapter;
+    }
+
+    public static abstract class RemoteImageLoaderViewAdapter {
+        protected View view;
+        protected Drawable errorDrawable;
+        protected String imageUrl;
+
+        public RemoteImageLoaderViewAdapter(String imageUrl, View view, Drawable errorDrawable) {
+            this.imageUrl = imageUrl;
+            this.view = view;
+            this.errorDrawable = errorDrawable;
+        }
+
+        protected boolean handleImageLoaded(Bitmap bitmap, Message msg) {
+            // If this handler is used for loading images in a ListAdapter,
+            // the thread will set the image only if it's the right position,
+            // otherwise it won't do anything.
+            Object viewTag = view.getTag();
+            if (imageUrl.equals(viewTag)) {
+                if (bitmap == null) {
+                    if (view != null) {
+                        onImageLoadedFailed();
+                    }
+                } else {
+                    if (view != null) {
+                        onImageLoadedSuccess(bitmap);
+                    }
+                }
+                // remove the image URL from the view's tag
+                view.setTag(null);
+                return true;
+            }
+            return false;
+        }
+
+        protected abstract void onImageLoadedFailed();
+
+        protected abstract void onImageLoadedSuccess(Bitmap bitmap);
+
+        protected abstract void setDummyDrawableForView(Drawable dummyDrawable);
+
+        public void setErrorDrawable(Drawable errorDrawable) {
+            this.errorDrawable = errorDrawable;
+        }
+
+        public Drawable getErrorDrawable() {
+            return errorDrawable;
+        }
+
+        public void setView(View view) {
+            this.view = view;
+        }
+
+        public View getView() {
+            return view;
+        }
+
+        public void setImageUrl(String imageUrl) {
+            this.imageUrl = imageUrl;
+        }
+
+        public String getImageUrl() {
+            return imageUrl;
+        }
+
+        public Bitmap processBitmap(Bitmap bitmap) {
+            return bitmap;
+        }
     }
 }
