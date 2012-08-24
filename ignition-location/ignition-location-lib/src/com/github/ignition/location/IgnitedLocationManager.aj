@@ -73,7 +73,7 @@ public aspect IgnitedLocationManager {
     private long locationUpdatesInterval, passiveLocationUpdatesInterval;
     private int locationUpdatesDistanceDiff;
     private int passiveLocationUpdatesDistanceDiff;
-    private boolean requestLocationUpdates;
+    private boolean requestLocationUpdates = false;
     private boolean locationUpdatesDisabled = true;
     private boolean waitForFixDialogShown = false;
     private boolean noProvidersEnabledDialogShown = false;
@@ -254,6 +254,15 @@ public aspect IgnitedLocationManager {
         boolean finishing = activity.isFinishing();
         if (finishing) {
             context = null;
+            // Be sure to reset every flag previously set (since an aspect is a
+            // singleton by default, so its state will be shared across all Activities that
+            // reference it).
+            requestLocationUpdates = false;
+            locationUpdatesDisabled = true;
+            waitForFixDialogShown = false;
+            noProvidersEnabledDialogShown = false;
+            locationProviderDisabledReceiverRegistered = false;
+            refreshLocationUpdatesReceiverRegistered = false;
         }
     }
 
