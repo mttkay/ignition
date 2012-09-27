@@ -1,11 +1,9 @@
 package com.github.ignition.support.images.remote;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.DisplayMetrics;
-import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.github.ignition.support.images.remote.RemoteImageLoaderHandler.RemoteImageLoaderViewAdapter;
@@ -46,8 +44,7 @@ public class RemoteImageLoaderTextViewAdapter extends RemoteImageLoaderViewAdapt
 
     private void setCompoundDrawable(Drawable drawable) {
         DisplayMetrics metrics = new DisplayMetrics();
-        ((WindowManager) view.getContext().getSystemService(Context.WINDOW_SERVICE))
-                .getDefaultDisplay().getMetrics(metrics);
+        metrics = view.getContext().getResources().getDisplayMetrics();
         if (drawable instanceof BitmapDrawable) {
             // For some reason this must be set explicitly or otherwise the target density will be
             // wrong.
