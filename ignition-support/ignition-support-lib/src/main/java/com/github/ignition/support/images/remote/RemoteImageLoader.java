@@ -162,7 +162,7 @@ public class RemoteImageLoader {
     /**
      * Triggers the image loader for the given image and view. The image loading will be performed
      * concurrently to the UI main thread, using a fixed size thread pool. The loaded image will be
-     * posted back to the given ImageView upon completion. This method will the default
+     * posted back to the given {@link TextView} upon completion. This method will the default
      * {@link RemoteImageLoaderHandler} to process the bitmap after downloading it.
      * 
      * @param imageUrl
@@ -189,7 +189,7 @@ public class RemoteImageLoader {
     /**
      * Triggers the image loader for the given image and view. The image loading will be performed
      * concurrently to the UI main thread, using a fixed size thread pool. The loaded image will be
-     * posted back to the given ImageView upon completion. This method will the default
+     * posted back to the given {@link TextView} upon completion. This method will the default
      * {@link RemoteImageLoaderHandler} to process the bitmap after downloading it.
      * 
      * @param imageUrl
