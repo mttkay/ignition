@@ -74,6 +74,12 @@ public class RemoteImageLoaderJob implements Runnable {
 
                 return BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
 
+
+            } catch (OutOfMemoryError e) {
+                // do not retry, would make it worse
+                Log.w(LOG_TAG, "download for " + imageUrl + " failed (attempt " + timesTried + ")");
+                return null;
+
             } catch (Throwable e) {
                 Log.w(LOG_TAG, "download for " + imageUrl + " failed (attempt " + timesTried + ")");
                 e.printStackTrace();
