@@ -49,6 +49,10 @@ public class RemoteImageLoaderJob implements Runnable {
         }
 
         if (bitmap == null) {
+			// If the view is reused do not download the bitmap
+			if (reusableView != null & !imageUrl.equals(reusableView.getTag())) {
+				return;
+			}
             bitmap = downloadImage();
         }
 
