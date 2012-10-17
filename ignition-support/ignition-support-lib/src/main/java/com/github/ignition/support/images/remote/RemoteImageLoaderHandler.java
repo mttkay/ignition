@@ -40,6 +40,11 @@ public class RemoteImageLoaderHandler extends Handler {
         init(imageView, imageUrl, errorDrawable);
     }
 
+	public RemoteImageLoaderHandler(RemoteImageLoaderImageViewAdapter remoteImageLoaderImageViewAdapter) {
+		this.imageView = remoteImageLoaderImageViewAdapter.getView();
+		setRemoteImageLoaderViewAdapter(remoteImageLoaderImageViewAdapter);
+	}
+	
     public RemoteImageLoaderHandler(Looper looper, ImageView imageView, String imageUrl,
             Drawable errorDrawable) {
         super(looper);
