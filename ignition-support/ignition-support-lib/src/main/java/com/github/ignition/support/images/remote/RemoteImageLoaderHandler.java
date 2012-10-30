@@ -158,21 +158,19 @@ public class RemoteImageLoaderHandler extends Handler {
             // the thread will set the image only if it's the right position,
             // otherwise it won't do anything.
             Object viewTag = view.getTag();
-            if (imageUrl.equals(viewTag)) {
-                if (bitmap == null) {
-                    if (view != null) {
-                        onImageLoadedFailed();
-                    }
-                } else {
-                    if (view != null) {
-                        onImageLoadedSuccess(bitmap);
-                    }
-                }
+            if (!imageUrl.equals(viewTag)) {
+                return false;
+            }
+            if (bitmap == null) {
+                onImageLoadedFailed();
+            } else {
+                onImageLoadedSuccess(bitmap);
+            }
+            if (view != null) {
                 // remove the image URL from the view's tag
                 view.setTag(null);
-                return true;
             }
-            return false;
+            return true;
         }
 
         protected abstract void onImageLoadedFailed();
