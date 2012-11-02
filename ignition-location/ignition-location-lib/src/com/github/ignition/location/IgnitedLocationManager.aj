@@ -191,7 +191,11 @@ public aspect IgnitedLocationManager {
         // worker thread.
         ignitedLastKnownLocationTask = new IgnitedLastKnownLocationAsyncTask(context,
                 locationUpdatesDistanceDiff, locationUpdatesInterval);
-        ignitedLastKnownLocationTask.execute();
+        if(IgnitedDiagnostics.SUPPORTS_HONEYCOMB) {
+            ignitedLastKnownLocationTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, new Boolean[0]);
+        } else {
+            ignitedLastKnownLocationTask.execute();
+        }
     }
 
     /**
