@@ -26,6 +26,7 @@ public class IgnitedScreens {
 
     public static final int SCREEN_DENSITY_LOW = 120;
     public static final int SCREEN_DENSITY_MEDIUM = 160;
+    public static final int SCREEN_DENSITY_TV = 213;
     public static final int SCREEN_DENSITY_HIGH = 240;
     public static final int SCREEN_DENSITY_XHIGH = 320;
 
@@ -45,7 +46,7 @@ public class IgnitedScreens {
 
     /**
      * Provides a save (i.e. backwards compatible) of accessing the device's screen density.
-     * 
+     *
      * @param context
      *            the current context
      * @return the screen density in dots-per-inch
