@@ -17,7 +17,7 @@
   </modules>
 
   <properties>
-    <androidVersion>2.3.3</androidVersion>
+    <androidVersion>4.0.1.2</androidVersion>
     <mapsVersion>14_r1</mapsVersion>
   </properties>
 
