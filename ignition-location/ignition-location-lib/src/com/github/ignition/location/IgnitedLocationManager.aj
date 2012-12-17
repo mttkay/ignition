@@ -164,7 +164,7 @@ public aspect IgnitedLocationManager {
                 .getLocationUpdateRequester(context);
     }
 
-    private boolean isBatteryOk() {
+    private boolean isBatteryLevelOk() {
         IntentFilter filter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
         Intent intent = context.registerReceiver(null, filter);
         double currentLevel = 100.0;
@@ -368,7 +368,7 @@ public aspect IgnitedLocationManager {
         }
         Criteria locationUpdateCriteria = criteria;
         if (criteria == null) {
-            if (isBatteryOk()) {
+            if (isBatteryLevelOk()) {
                 locationUpdateCriteria = defaultCriteria;
             } else {
                 locationUpdateCriteria = lowPowerCriteria();
