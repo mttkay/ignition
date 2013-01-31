@@ -19,20 +19,20 @@ Ignition is split up into three sub-projects.
 ## Changelog
 The latest version of ignition is 0.2 and was released on April 20th 2012.
 
-Go here for a [list of changes](https://github.com/kaeppler/ignition/wiki/Changelog).
+Go here for a [list of changes](https://github.com/mttkay/ignition/wiki/Changelog).
 
 ## Documentation
-We decided to not write exhaustive documentation, since it would get outdated frequently. Instead, the project is documented both via [sample applications](https://github.com/kaeppler/ignition/wiki/Sample-applications) that are part of the build, as well as online JavaDoc:
+We decided to not write exhaustive documentation, since it would get outdated frequently. Instead, the project is documented both via [sample applications](https://github.com/mttkay/ignition/wiki/Sample-applications) that are part of the build, as well as online JavaDoc:
 
- * [ignition-core](http://kaeppler.github.com/ignition-docs/ignition-core/apidocs/)
- * [ignition-support](http://kaeppler.github.com/ignition-docs/ignition-support/apidocs/)
- * [ignition-location](http://kaeppler.github.com/ignition-docs/ignition-location/apidocs/)
+ * [ignition-core](http://mttkay.github.com/ignition-docs/ignition-core/apidocs/)
+ * [ignition-support](http://mttkay.github.com/ignition-docs/ignition-support/apidocs/)
+ * [ignition-location](http://mttkay.github.com/ignition-docs/ignition-location/apidocs/)
 
 ## Installation
-Please refer to [Installation and setup](https://github.com/kaeppler/ignition/wiki/Installation-and-setup). We are also collecting answers to [frequently asked questions](https://github.com/kaeppler/ignition/wiki/FAQ).
+Please refer to [Installation and setup](https://github.com/mttkay/ignition/wiki/Installation-and-setup). We are also collecting answers to [frequently asked questions](https://github.com/mttkay/ignition/wiki/FAQ).
 
 ## Getting help
-First, please check if your question is answered in the [FAQ](https://github.com/kaeppler/ignition/wiki/FAQ). If not, you can ask questions and get help by joining [ignition-users](https://groups.google.com/group/ignition-users) on Google Groups.
+First, please check if your question is answered in the [FAQ](https://github.com/mttkay/ignition/wiki/FAQ). If not, you can ask questions and get help by joining [ignition-users](https://groups.google.com/group/ignition-users) on Google Groups.
 
 ## Contributing
 Feel like giving back? We'll happily take contributions via GitHub. For questions, please turn to [ignition-developers](https://groups.google.com/group/ignition-developers) on Google Groups.
@@ -41,7 +41,7 @@ Feel like giving back? We'll happily take contributions via GitHub. For question
 Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
 
 ## Authors
- * Matthias Käppler (m.kaeppler@gmail.com)
- * Stefano Dacchille (stefano.dacchille@gmail.com)
- * Michael England (mg.england@gmail.com)
+ * Matthias Käppler
+ * Stefano Dacchille
+ * Michael England
  * the Android open-source community (http://stackoverflow.com/questions/tagged/android)
