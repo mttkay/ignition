@@ -32,16 +32,24 @@ import android.provider.Settings.SettingNotFoundException;
 public class IgnitedDiagnostics {
     public static final int ANDROID_API_LEVEL;
 
+    public static final int JELLY_BEAN_MR1 = 17;
+    public static final int JELLY_BEAN = 16;
+    public static final int ICS_MR1 = 15;
     public static final int ICS = 14;
+    public static final int HONEYCOMB_MR2 = 13;
+    public static final int HONEYCOMB_MR1 = 12;
     public static final int HONEYCOMB = 11;
+    public static final int GINGERBREAD_MR1 = 10;
     public static final int GINGERBREAD = 9;
     public static final int FROYO = 8;
     public static final int ECLAIR = 7;
     public static final int DONUT = 4;
     public static final int CUPCAKE = 3;
 
-    public static final boolean SUPPORTS_ICS, SUPPORTS_HONEYCOMB, SUPPORTS_GINGERBREAD,
-            SUPPORTS_FROYO, SUPPORTS_ECLAIR, SUPPORTS_DONUT, SUPPORTS_CUPCAKE;
+    public static final boolean SUPPORTS_JELLY_BEAN_MR1, SUPPORTS_JELLY_BEAN, SUPPORTS_ICS_MR1,
+            SUPPORTS_ICS, SUPPORTS_HONEYCOMB_MR2, SUPPORTS_HONEYCOMB_MR1, SUPPORTS_HONEYCOMB,
+            SUPPORTS_GINGERBREAD, SUPPORTS_GINGERBREAD_MR1, SUPPORTS_FROYO, SUPPORTS_ECLAIR,
+            SUPPORTS_DONUT, SUPPORTS_CUPCAKE;
 
     private static boolean test = false;
     private static int testAndroidApiLevel;
@@ -54,8 +62,14 @@ public class IgnitedDiagnostics {
             apiLevel = Integer.parseInt(Build.VERSION.SDK);
         }
         ANDROID_API_LEVEL = apiLevel;
+        SUPPORTS_JELLY_BEAN_MR1 = ANDROID_API_LEVEL >= JELLY_BEAN_MR1;
+        SUPPORTS_JELLY_BEAN = ANDROID_API_LEVEL >= JELLY_BEAN;
+        SUPPORTS_ICS_MR1 = ANDROID_API_LEVEL >= ICS_MR1;
         SUPPORTS_ICS = ANDROID_API_LEVEL >= ICS;
+        SUPPORTS_HONEYCOMB_MR2 = ANDROID_API_LEVEL >= HONEYCOMB_MR2;
+        SUPPORTS_HONEYCOMB_MR1 = ANDROID_API_LEVEL >= HONEYCOMB_MR1;
         SUPPORTS_HONEYCOMB = ANDROID_API_LEVEL >= HONEYCOMB;
+        SUPPORTS_GINGERBREAD_MR1 = ANDROID_API_LEVEL >= GINGERBREAD_MR1;
         SUPPORTS_GINGERBREAD = ANDROID_API_LEVEL >= GINGERBREAD;
         SUPPORTS_FROYO = ANDROID_API_LEVEL >= FROYO;
         SUPPORTS_ECLAIR = ANDROID_API_LEVEL >= ECLAIR;
