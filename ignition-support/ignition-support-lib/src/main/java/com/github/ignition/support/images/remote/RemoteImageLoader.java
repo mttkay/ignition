@@ -331,4 +331,10 @@ public class RemoteImageLoader {
                     numRetries, defaultBufferSize));
         }
     }
+    
+    public void destroy() {
+        Log.i("", "shutting down remote image loader");
+        executor.shutdownNow();
+    }
+
 }
