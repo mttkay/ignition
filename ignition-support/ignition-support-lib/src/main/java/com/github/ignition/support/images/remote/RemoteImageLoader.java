@@ -326,9 +326,9 @@ public class RemoteImageLoader {
         if (imageCache != null && imageCache.containsKeyInMemory(imageUrl)) {
             // do not go through message passing, handle directly instead
             imageLoaderHandler.handleImageLoaded(imageCache.getBitmap(imageUrl), null);
-        } else {
-            executor.execute(new RemoteImageLoaderJob(imageUrl, imageLoaderHandler, imageCache,
-                    numRetries, defaultBufferSize));
+		} else {
+			executor.execute(new RemoteImageLoaderJob(imageUrl, imageLoaderHandler, imageCache, numRetries, defaultBufferSize,
+					view));
         }
     }
 }
