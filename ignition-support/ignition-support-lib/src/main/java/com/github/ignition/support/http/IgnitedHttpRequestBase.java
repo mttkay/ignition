@@ -29,6 +29,8 @@ import org.apache.http.impl.client.AbstractHttpClient;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
+import org.apache.http.client.protocol.ClientContext;
+import org.apache.http.impl.client.BasicCookieStore;
 
 import android.util.Log;
 
@@ -51,6 +53,8 @@ public abstract class IgnitedHttpRequestBase implements IgnitedHttpRequest,
     protected HttpUriRequest request;
 
     protected int maxRetries = MAX_RETRIES;
+	
+	protected boolean useCookies = false;
 
     private int oldSocketTimeout, oldConnTimeout;
     private boolean timeoutChanged;
@@ -105,6 +109,11 @@ public abstract class IgnitedHttpRequestBase implements IgnitedHttpRequest,
         return this;
     }
 
+	@Override
+	public IgnitedHttpRequest cookies(boolean useCookies) {
+		this.useCookies = useCookies;
+	}
+	
     @Override
     public IgnitedHttpResponse send() throws ConnectException {
 
@@ -115,6 +124,11 @@ public abstract class IgnitedHttpRequestBase implements IgnitedHttpRequest,
 
         HttpContext context = new BasicHttpContext();
 
+		if (useCookies) {
+			BasicCookieStore cookieStore = new BasicCookieStore();
+			context.setAttribute(ClientContext.COOKIE_STORE, cookieStore);
+		}
+			
         // Grab a coffee now and lean back, I'm not good at explaining stuff. This code realizes
         // a second retry layer on top of HttpClient. Rationale: HttpClient.execute sometimes craps
         // out even *before* the HttpRequestRetryHandler set above is called, e.g. on a

@@ -72,4 +72,10 @@ public interface IgnitedHttpRequest {
      * Wi-Fi and 3G).
      */
     public IgnitedHttpResponse send() throws ConnectException;
+	
+	/**
+	 * Sets the request to use the cookie store
+	 *
+	 */
+	public IgnitedHttpResponse cookies();
 }
